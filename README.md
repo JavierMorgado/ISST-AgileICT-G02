@@ -27,7 +27,11 @@ Siempre asegúrate de tener la última versión del código antes de modificar n
 
 ```sh  
 git pull origin main  
-```  
+```
+O si no queremos que se fusionen los cambios directamente pero si verlos:
+```sh  
+git fetch origin main  
+```
 
 ## 🛠 Hacer cambios en el código  
 
