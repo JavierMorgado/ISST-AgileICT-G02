@@ -83,3 +83,7 @@ Si Git detecta conflictos, sigue estos pasos:
 
 💡 **Consejo:** Trabaja siempre en una rama separada y revisa bien los cambios antes de subirlos.  
 📢 ¡Cualquier duda, pregunta en el grupo!   
+
+
+
+Patata
