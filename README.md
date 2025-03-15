@@ -85,5 +85,4 @@ Si Git detecta conflictos, sigue estos pasos:
 📢 ¡Cualquier duda, pregunta en el grupo!   
 
 
-
-Patata
+Patata añadida aqui
