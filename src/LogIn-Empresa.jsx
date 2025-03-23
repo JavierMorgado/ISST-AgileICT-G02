@@ -13,11 +13,11 @@ export default function LogInEmpresa(props){
 
     return(
         <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
-            <div className='d-flex justify-content-end align-items-center pt-3 me-3 w-50'>
+            <div className='d-flex justify-content-end align-items-center mt-5 me-3 w-50'>
                 <h1>INICIO DE SESIÓN PARA EMPRESAS</h1>
             </div>
 
-            <div style={{backgroundColor: '#002C4B', width: '75%', height: '50%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center">
+            <div style={{backgroundColor: '#002C4B', width: '75%', height: '50%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-5">
                 <h3 className='mb-4'>INICIA SESIÓN CON TU <br /> CORREO Y CONTRASEÑA</h3>
 
                 <Row>

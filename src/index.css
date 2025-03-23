@@ -39,6 +39,7 @@ p {
   font-weight: 400!important;
   letter-spacing: 0.5px !important;
   margin-top: revert-layer !important;
+  text-transform: uppercase;
 }
 
 st{
@@ -114,6 +115,7 @@ button {
   transition: border-color 0.25s;
   color: black !important;
   text-transform:uppercase !important;
+  border: 0px;
 }
 button:hover {
   border-color: #646cff;
@@ -181,4 +183,22 @@ input:not(:placeholder-shown) {
 
 .white{
   color: white !important;
+}
+
+.size10{
+  font-size: 10px !important;
+  letter-spacing: 3px !important;
+}
+
+
+.colorBronce{
+  color: #935619 !important;
+}
+
+.colorPlata{
+  color: #858585 !important;
+}
+
+.colorOro{
+  color: #977409 !important;
 }

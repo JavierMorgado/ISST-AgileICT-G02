@@ -20,7 +20,7 @@ const DynamicInput = ({ label, name, placeholder, value, onChange }) => {
 
   return (
     <div className="mb-5 d-flex flex-column align-items-center">
-      <h4 className="text-uppercase">{label}</h4>
+      <h4 className="fw-semibold text-uppercase">{label}</h4>
       <div className="input-wrapper">
         {/* Span oculto para medir el ancho dinámico del texto */}
         <span ref={measureRef} className="input-measure">

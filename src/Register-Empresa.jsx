@@ -8,7 +8,6 @@ export default function RegisterEmpresa(props){
         nombre: '',
         email: '',
         password: '',
-        movil: '',
         plan: ''
     })
 
@@ -23,14 +22,14 @@ export default function RegisterEmpresa(props){
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(!formData.nombre || !formData.email || !formData.password || !formData.movil || !formData.plan){
+        if(!formData.nombre || !formData.email || !formData.password || !formData.plan){
             alert('Por favor, rellene todos los campos');
+            console.log(formData.nombre, formData.email, formData.password, formData.plan);
             return;
         }
-
         //Aqui puedes enviar los datos al backend
         console.log('Datos enviados:', formData);
-        alert('Registro exitoso');
+        goToEmpresa();
     };
 
 
@@ -40,12 +39,12 @@ export default function RegisterEmpresa(props){
     }
 
     return(
-        <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
+        <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100 mt-5">
             <h1>REGÍSTRATE COMO  <br /> EMPRESA</h1>
 
             <form
                 onSubmit={handleSubmit}
-                className='btext-white rounded-4 mt-4 p-4 d-flex flex-column align-items-center'
+                className='btext-white rounded-5 mt-5 p-4 d-flex flex-column align-items-center'
                 style={{backgroundColor: '#002C4B', width: '50%'}}
             >
                 
@@ -62,6 +61,15 @@ export default function RegisterEmpresa(props){
                     value={formData.nombre}
                     onChange={handleChange}
                 />
+
+                <DynamicInput
+                    label="Contraseña"
+                    name="password"
+                    placeholder="***********"
+                    value={formData.password}
+                    onChange={handleChange}
+                />
+
                 <DynamicInput
                     label="Correo"
                     name="email"
@@ -69,57 +77,80 @@ export default function RegisterEmpresa(props){
                     value={formData.email}
                     onChange={handleChange}
                 />
-                <DynamicInput
-                    label="Móvil"
-                    name="movil"
-                    placeholder="91 654 55 45"
-                    value={formData.movil}
-                    onChange={handleChange}
-                />
 
 
-                <h4 className="fw-semibold text-uppercase text-center mt-2 mb-4" style={{ letterSpacing: '1px' }}>
+                <h4 className=" mt-4 fw-semibold text-uppercase text-center mt-2 mb-4" style={{ letterSpacing: '1px' }}>
                     ¿A qué nivel te quieres suscribir?
                 </h4>
 
                 <Row className="mb-4">
                     <Col sm={4}>
-                        <Stack direction='vertical' className='rounded-4' 
-                        onClick={() => handlePlanSelect('Bronce')}
-                        style={{ cursor: 'pointer', backgroundColor: '#CD7F32' }}>
-                            <h4 className="fw-bold">BRONCE</h4>
-                            <p className="mb-0" style={{color: 'black' }}> 
-                                AgyleICT gestiona el reclutamiento de tus profesionales
-                            </p>
+                        <Stack direction='vertical' className='rounded-5 mt-4 mb-4 d-flex flex-column justify-content-center align-items-center'
+                                role="button" tabIndex={0} onClick={() => handlePlanSelect('Bronce')} 
+                                style={{cursor: 'pointer', backgroundColor: '#CD7F32', filter: formData.plan === 'Bronce' ? 'drop-shadow(0 0 2em #646cffaa)' : 'none' }}>
+                            <Container className='mt-4 mb-4 d-flex flex-column justify-content-center align-items-center'>
+                                <h4 className="fw-bold colorBronce mb1">BRONCE</h4>
+                                <hr style={{ width: '9rem', height: '2px', backgroundColor: '#935619'}} />
+                                <p className="mb-1 size10" style={{color: 'black' }}> 
+                                    AGILEICT GESTIONA EL RECLUTAMIENTO DE TUS PROFESIONALES
+                                </p>
+                                <hr style={{ width: '9rem', height: '2px', backgroundColor: '#935619'}} />
+                                <p className="mb-1 size10" style={{color: 'transparent' }}> 
+                                    AGILEICT REALIZA BRANDING EN TU NOMBRE PARA LOS PARTICULARES SUSCRITOS
+                                </p>
+                                <hr style={{ width: '9rem', height: '2px', backgroundColor: '#935619'}} />
+                                <p className="mb-1 size10" style={{color: 'transparent' }}> 
+                                    AGILEICT ORGANIZA EVENTOS DE RECLUTAMIENTO PARA TU PERFIL DESEADO
+                                </p>
+                            </Container>
                         </Stack>
                     </Col>
 
                     <Col sm={4}>
-                        <Stack direction='vertical' className='rounded-4' 
-                        onClick={() => handlePlanSelect('Plata')}
-                        style={{ cursor: 'pointer', backgroundColor: '#C0C0C0' }}>
-                            <h4 className="fw-bold">PLATA</h4>
-                            <p className="mb-0" style={{color: 'black' }}> 
-                            AgyleICT gestiona el reclutamiento <br />
-                            Branding en tu nombre para suscritos
-                            </p>
+                        <Stack direction='vertical' className='rounded-5 mt-4 mb-4 d-flex flex-column justify-content-center align-items-center'
+                                role="button" tabIndex={0} onClick={() => handlePlanSelect('Plata')} 
+                                style={{cursor: 'pointer', backgroundColor: '#C0C0C0', filter: formData.plan === 'Plata' ? 'drop-shadow(0 0 2em #646cffaa)' : 'none' }}>
+                            <Container className='mt-4 mb-4 d-flex flex-column justify-content-center align-items-center'>
+                                <h4 className="fw-bold colorPlata mb-1">PLATA</h4>
+                                <hr style={{ width: '9rem', height: '2px', backgroundColor: '#858585'}} />
+                                <p className="mb-1 size10" style={{color: 'black' }}> 
+                                    AGILEICT GESTIONA EL RECLUTAMIENTO DE TUS PROFESIONALES
+                                </p>
+                                <hr style={{ width: '9rem', height: '2px', backgroundColor: '#858585'}} />
+                                <p className="mb-1 size10" style={{color: 'black' }}> 
+                                    AGILEICT REALIZA BRANDING EN TU NOMBRE PARA LOS PARTICULARES SUSCRITOS
+                                </p>
+                                <hr style={{ width: '9rem', height: '2px', backgroundColor: '#858585'}} />
+                                <p className="mb-1 size10" style={{color: 'transparent' }}> 
+                                    AGILEICT ORGANIZA EVENTOS DE RECLUTAMIENTO PARA TU PERFIL DESEADO
+                                </p>
+                            </Container>
                         </Stack>
                     </Col>
 
                     <Col sm={4}>
-                        <Stack direction='vertical' className='rounded-4' 
-                        onClick={() => handlePlanSelect('Oro')}
-                        style={{ cursor: 'pointer', backgroundColor: '#EFB810'}}>
-                            <h4 className="fw-bold">ORO</h4>
-                            <p className="mb-0" style={{color: 'black' }}> 
-                            AgyleICT gestiona el reclutamiento <br />
-                            Branding en tu nombre para suscritos <br />
-                            Eventos de reclutamiento para tu perfil
-                            </p>
+                        <Stack direction='vertical' className='rounded-5 mt-4 mb-4 d-flex flex-column justify-content-center align-items-center'
+                                role="button" tabIndex={0} onClick={() => handlePlanSelect('Oro')} 
+                                style={{cursor: 'pointer', backgroundColor: '#EFB810', filter: formData.plan === 'Oro' ? 'drop-shadow(0 0 2em #646cffaa)' : 'none'}}>
+                            <Container className='mt-4 mb-4 d-flex flex-column justify-content-center align-items-center'>
+                                <h4 className="fw-bold colorOro mb-1">ORO</h4>
+                                <hr style={{ width: '9rem', height: '2px', backgroundColor: '#858585'}} />
+                                <p className="mb-1 size10" style={{color: 'black' }}> 
+                                    AGILEICT GESTIONA EL RECLUTAMIENTO DE TUS PROFESIONALES
+                                </p>
+                                <hr style={{ width: '9rem', height: '2px', backgroundColor: '#858585'}} />
+                                <p className="mb-1 size10" style={{color: 'black' }}> 
+                                    AGILEICT REALIZA BRANDING EN TU NOMBRE PARA LOS PARTICULARES SUSCRITOS
+                                </p>
+                                <hr style={{ width: '9rem', height: '2px', backgroundColor: '#858585'}} />
+                                <p className="mb-1 size10" style={{color: 'black' }}> 
+                                    AGILEICT ORGANIZA EVENTOS DE RECLUTAMIENTO PARA TU PERFIL DESEADO
+                                </p>
+                            </Container>
                         </Stack>
                     </Col>
                 </Row>
-                <button onClick={goToEmpresa} type="submit" className="btn btn-light rounded-pill px-4 fw-semibold">
+                <button type="submit" className="btn btn-light rounded-pill px-4 fw-semibold">
                         Registrarse
                 </button>
             </form>
