@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import agylelogo from './assets/agyleICT.png'
-import viteLogo from '/vite.svg'
+import DynamicInput from './textInput'
+import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 //002
 
 export default function LogInEmpresa(props){
@@ -19,27 +18,34 @@ export default function LogInEmpresa(props){
             </div>
 
             <div style={{backgroundColor: '#002C4B', width: '75%', height: '50%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center">
-                <h4 className='mb-4'>INICIA SESIÓN CON TU <br /> CORREO Y CONTRASEÑA</h4>
+                <h3 className='mb-4'>INICIA SESIÓN CON TU <br /> CORREO Y CONTRASEÑA</h3>
 
-                <div className='mb-5 d-flex'>
-                    <input
-                        type="email"
-                        placeholder="menganito.perez@gmail.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
+                <Row>
+                    <Col md={6}>
+                        <DynamicInput
+                            label="Correo"
+                            name="email"
+                            placeholder="rh@agyleict.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            style={{paddingRight: '2rem', paddingLeft: '2rem'}}
+                        />
+                    </Col>
+                    <Col md={6}>
+                        <DynamicInput
+                            label="Contraseña"
+                            name="contraseña"
+                            placeholder="********"
+                            value={email}
+                            onChange={(e) => setPassword(e.target.value)}
+                            style={{paddingRight: '2rem', paddingLeft: '2rem'}}
+                        />
+                    </Col>
+                </Row>
 
-                    <input
-                        type="password"
-                        placeholder="contraseña123"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
+                <h3 className='mb-4'>SI NO TIENES CUENTA REGÍSTRATE AQUÍ</h3>
 
-                <h4 className='mb-4'>SI NO TIENES CUENTA REGÍSTRATE AQUÍ</h4>
-
-                <button onClick={goToRegisterEmpresa} className='rounded-pill ms-3 me-3' style={{width: '104px', height: '40px', backgroundColor: '#fff', letterSpacing: '0.5px', color: '#002C4B !important'}}>REGÍSTRATE</button>
+                <button onClick={goToRegisterEmpresa} className='rounded-pill' style={{backgroundColor: '#fff', letterSpacing: '0.5px', color: '#002C4B !important'}}>REGÍSTRATE</button>
             </div>
         </div>
     )
