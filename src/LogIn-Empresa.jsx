@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import DynamicInput from './textInput'
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
-//002
+
 
 export default function LogInEmpresa(props){
     const [email, setEmail] = useState('');

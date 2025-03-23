@@ -202,3 +202,15 @@ input:not(:placeholder-shown) {
 .colorOro{
   color: #977409 !important;
 }
+
+.bgBronce{
+  background-color: #CD7F32 !important;
+}
+
+.bgPlata{
+  background-color: #C0C0C0 !important;
+}
+
+.bgOro{
+  background-color: #EFB810 !important;
+}
