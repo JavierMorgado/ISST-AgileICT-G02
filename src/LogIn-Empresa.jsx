@@ -39,7 +39,9 @@ export default function LogInEmpresa(props){
 
                 <h4 className='mb-4'>SI NO TIENES CUENTA REGÍSTRATE AQUÍ</h4>
 
-                <button onClick={goToRegisterEmpresa} className='rounded-pill ms-3 me-3' style={{width: '104px', height: '40px', backgroundColor: '#fff', letterSpacing: '0.5px', color: '#002C4B !important'}}>REGÍSTRATE</button>
+                <button onClick={goToRegisterEmpresa} className='rounded-pill ms-3 me-3' style={{width: '104px', height: '40px', backgroundColor: '#fff', letterSpacing: '0.5px', color: '#002C4B !important', textAlign: 'center'}}>
+                    REGÍSTRATE
+                </button>
             </div>
         </div>
     )

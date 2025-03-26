@@ -142,6 +142,24 @@ input{
   padding: 0.25rem 1rem;
 }
 
+label.text-uppercase {
+  color: white; /* Set the text color to white */
+}
+
+label.form-check-label {
+  color: white; /* Set the text color to white */
+}
+
+.custom-datepicker {
+  color: black; /* Asegura que el texto del valor seleccionado sea negro */
+}
+
+/* Opcional: Cambiar el color del placeholder */
+.custom-datepicker::placeholder {
+  color: black;
+  opacity: 1;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
