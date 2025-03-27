@@ -29,82 +29,79 @@ body {
   min-width: 320px !important;
   min-height: 100vh;
   font-size: 20px !important;
-  font-weight: 400!important;
+  font-weight: 400 !important;
   letter-spacing: 0.5px !important;
 }
 
 p {
   color: white;
   font-size: 16px !important;
-  font-weight: 400!important;
+  font-weight: 400 !important;
   letter-spacing: 0.5px !important;
   margin-top: revert-layer !important;
 }
 
-st{
+st {
   font-size: 32px !important;
   font-weight: 200;
 }
 
-h0{
+h0 {
   font-size: 64px !important;
-  font-weight: 700!important;
+  font-weight: 700 !important;
   letter-spacing: 0.5px !important;
 }
 
-h1{
+h1 {
   font-size: 46px !important;
-  font-weight: 700!important;
+  font-weight: 700 !important;
   letter-spacing: 9px !important;
 }
 
-h2{
+h2 {
   color: white !important;
   font-size: 20px !important;
-  font-weight: 700!important;
+  font-weight: 700 !important;
   letter-spacing: 7px !important;
 }
 
-h3{
+h3 {
   color: white !important;
   font-size: 20px !important;
-  font-weight: 400!important;
+  font-weight: 400 !important;
   letter-spacing: 4px !important;
 }
 
-h4{
+h4 {
   color: white !important;
   font-size: 13px !important;
-  font-weight: 700!important;
+  font-weight: 700 !important;
   letter-spacing: 7px !important;
 }
 
-h5{
+h5 {
   color: white !important;
   font-size: 32px !important;
-  font-weight: 700!important;
+  font-weight: 700 !important;
   letter-spacing: 9px !important;
 }
 
-h6{
+h6 {
   color: white !important;
   font-size: 20px !important;
-  font-weight: 700!important;
+  font-weight: 700 !important;
   letter-spacing: 7px !important;
 }
 
-h7{
+h7 {
   color: black !important;
   font-size: 20px !important;
-  font-weight: 700!important;
+  font-weight: 700 !important;
   letter-spacing: 7px !important;
 }
 
-
-
-
 button {
-  border-radius: 100px !important; 
+  border-radius: 100px !important;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 16px !important;
@@ -112,7 +109,7 @@ button {
   letter-spacing: 3px !important;
   text-transform: uppercase;
   font-family: inherit !important;
-  background-color: #002C4B;
+  background-color: #002c4b;
   cursor: pointer;
   transition: border-color 0.25s;
   color: black !important;
@@ -128,7 +125,11 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-input{
+button.botonopcion {
+  color: white !important;
+}
+
+input {
   color: white !important;
   font-size: 16px !important;
   font-weight: 400;
@@ -150,16 +151,6 @@ label.form-check-label {
   color: white; /* Set the text color to white */
 }
 
-.custom-datepicker {
-  color: black; /* Asegura que el texto del valor seleccionado sea negro */
-}
-
-/* Opcional: Cambiar el color del placeholder */
-.custom-datepicker::placeholder {
-  color: black;
-  opacity: 1;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -173,7 +164,7 @@ label.form-check-label {
   }
 }
 
-#root{
+#root {
   margin: 0 !important;
   padding: 0 !important;
 }
