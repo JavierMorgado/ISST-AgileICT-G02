@@ -1,7 +1,5 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
 import agylelogo from "./assets/agyleICT.png";
-import viteLogo from "/vite.svg";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -59,7 +57,7 @@ export default function Home(props) {
         className="d-flex flex-column justify-content-center align-items-center"
         style={{ marginTop: "9rem" }}
       >
-        <h0>Agile I C T</h0>
+        <h1 className='heroText'>Agile I C T</h1>
         <st>Hire Smart</st>
         <st>Hire Fast</st>
       </div>
