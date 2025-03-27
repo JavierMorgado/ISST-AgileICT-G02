@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import DynamicInput from './textInput'
+import { useState } from 'react';
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 
 

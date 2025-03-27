@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import DynamicInput from './textInput'
+import FormInput from './FormInput'
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 
 
@@ -22,7 +22,7 @@ export default function LogInEmpresa(props){
 
                 <Row>
                     <Col md={6}>
-                        <DynamicInput
+                        <FormInput
                             label="Correo"
                             name="email"
                             placeholder="rh@agyleict.com"
@@ -32,7 +32,7 @@ export default function LogInEmpresa(props){
                         />
                     </Col>
                     <Col md={6}>
-                        <DynamicInput
+                        <FormInput
                             label="Contraseña"
                             name="contraseña"
                             placeholder="********"

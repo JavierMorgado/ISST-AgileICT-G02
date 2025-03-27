@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import Home from './Home.jsx';
 import LogInEmpresa from './LogIn-Empresa.jsx';
 import LogInProf from './LogIn-Prof.jsx';
 import RegisterEmpresa from './Register-Empresa.jsx';
-import MiEmpresa from './MiEmpresa.jsx';
+import RegisterProf from './Register-Prof.jsx';
+import PerfilProf from './Perfil-Prof.jsx';
+import PerfilEmpresa from './Perfil-Empresa.jsx';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -22,7 +23,9 @@ function App() {
         <Route path="/login-empresa" element={<LogInEmpresa />} />
         <Route path="/login-profesional" element={<LogInProf />} />
         <Route path="/register-empresa" element={<RegisterEmpresa />} />
-        <Route path="/miEmpresa" element={<MiEmpresa />} />
+        <Route path="/register-profesional" element={<RegisterProf />} />
+        <Route path="/miPerfil" element={<PerfilProf />} />
+        <Route path="/miPerfilEmpresa" element={<PerfilEmpresa />} />
       </Routes>
     </BrowserRouter>
   );

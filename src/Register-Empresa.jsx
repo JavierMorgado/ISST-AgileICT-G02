@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
-import DynamicInput from './textInput';
+import FormInput from './FormInput';
 
 
 export default function RegisterEmpresa(props){
@@ -35,7 +35,7 @@ export default function RegisterEmpresa(props){
 
 
     function goToEmpresa(){
-        window.location.href = '/miEmpresa';
+        window.location.href = '/MiPerfilEmpresa';
     }
 
     return(
@@ -54,7 +54,7 @@ export default function RegisterEmpresa(props){
 
                 {/* FALTA CREAR IMG */}
 
-                <DynamicInput
+                <FormInput
                     label="Nombre"
                     name="nombre"
                     placeholder="AgyleICT"
@@ -62,7 +62,7 @@ export default function RegisterEmpresa(props){
                     onChange={handleChange}
                 />
 
-                <DynamicInput
+                <FormInput
                     label="Contraseña"
                     name="password"
                     placeholder="***********"
@@ -70,7 +70,7 @@ export default function RegisterEmpresa(props){
                     onChange={handleChange}
                 />
 
-                <DynamicInput
+                <FormInput
                     label="Correo"
                     name="email"
                     placeholder="rh@agyleict.com"

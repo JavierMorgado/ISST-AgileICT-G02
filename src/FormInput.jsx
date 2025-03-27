@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const DynamicInput = ({ label, name, placeholder, value, onChange }) => {
+export default function FormInput ({ label, name, placeholder, value, onChange }) {
   const [inputValue, setInputValue] = useState(value);
   const measureRef = useRef(null);
   const inputRef = useRef(null);
@@ -38,5 +38,3 @@ const DynamicInput = ({ label, name, placeholder, value, onChange }) => {
     </div>
   );
 };
-
-export default DynamicInput;
