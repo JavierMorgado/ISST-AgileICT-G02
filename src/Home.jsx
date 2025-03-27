@@ -58,8 +58,8 @@ export default function Home(props) {
         style={{ marginTop: "9rem" }}
       >
         <h1 className='heroText'>Agile I C T</h1>
-        <st>Hire Smart</st>
-        <st>Hire Fast</st>
+        <h4 className="st">Hire Smart</h4>
+        <h4 className="st">Hire Fast</h4>
       </div>
     </div>
   );

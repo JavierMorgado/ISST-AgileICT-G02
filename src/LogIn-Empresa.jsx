@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import FormInput from './FormInput'
+import { useState } from 'react';
+import FormInput from './FormInput.jsx';
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 
 

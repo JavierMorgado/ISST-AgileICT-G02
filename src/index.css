@@ -42,9 +42,10 @@ p {
   text-transform: uppercase;
 }
 
-st {
+.st {
   font-size: 32px !important;
-  font-weight: 200;
+  font-weight: 200 !important;
+  color: black !important;
 }
 
 .heroText{
