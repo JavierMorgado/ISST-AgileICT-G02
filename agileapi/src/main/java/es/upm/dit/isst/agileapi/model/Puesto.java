@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ public class Puesto {
     @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
     private String nombrePuesto;
     private String descripcionPuesto;
-    private String[] cualidadesPuesto;
+    private List<String> cualidadesPuesto;
     private String fechaIni;
     private String fechaFin;
     // private Double experiencia;
@@ -28,7 +29,7 @@ public class Puesto {
 
     public Puesto() {
     }
-    public Puesto(String nombrePuesto, String descripcionPuesto, String[] cualidadesPuesto, String fechaIni,
+    public Puesto(String nombrePuesto, String descripcionPuesto, List<String> cualidadesPuesto, String fechaIni,
             String fechaFin) {
         this.nombrePuesto = nombrePuesto;
         this.descripcionPuesto = descripcionPuesto;
@@ -55,10 +56,10 @@ public class Puesto {
     public void setDescripcionPuesto(String descripcionPuesto) {
         this.descripcionPuesto = descripcionPuesto;
     }
-    public String[] getCualidadesPuesto() {
+    public List<String> getCualidadesPuesto() {
         return cualidadesPuesto;
     }
-    public void setCualidadesPuesto(String[] cualidadesPuesto) {
+    public void setCualidadesPuesto(List<String> cualidadesPuesto) {
         this.cualidadesPuesto = cualidadesPuesto;
     }
     public String getFechaIni() {
@@ -105,7 +106,7 @@ public class Puesto {
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((nombrePuesto == null) ? 0 : nombrePuesto.hashCode());
         result = prime * result + ((descripcionPuesto == null) ? 0 : descripcionPuesto.hashCode());
-        result = prime * result + Arrays.hashCode(cualidadesPuesto);
+        result = prime * result + (cualidadesPuesto == null ? 0 : cualidadesPuesto.hashCode());
         result = prime * result + ((fechaIni == null) ? 0 : fechaIni.hashCode());
         result = prime * result + ((fechaFin == null) ? 0 : fechaFin.hashCode());
         result = prime * result + ((empresa == null) ? 0 : empresa.hashCode());
@@ -135,7 +136,7 @@ public class Puesto {
                 return false;
         } else if (!descripcionPuesto.equals(other.descripcionPuesto))
             return false;
-        if (!Arrays.equals(cualidadesPuesto, other.cualidadesPuesto))
+        if (!Objects.equals(cualidadesPuesto, other.cualidadesPuesto))
             return false;
         if (fechaIni == null) {
             if (other.fechaIni != null)
@@ -157,7 +158,7 @@ public class Puesto {
     @Override
     public String toString() {
         return "Puesto [id=" + id + ", nombrePuesto=" + nombrePuesto + ", descripcionPuesto=" + descripcionPuesto
-                + ", cualidadesPuesto=" + Arrays.toString(cualidadesPuesto) + ", fechaIni=" + fechaIni + ", fechaFin="
+                + ", cualidadesPuesto=" + Arrays.toString(cualidadesPuesto.toArray(new String[0])) + ", fechaIni=" + fechaIni + ", fechaFin="
                 + fechaFin + ", empresa=" + empresa + "]";
     }
 
