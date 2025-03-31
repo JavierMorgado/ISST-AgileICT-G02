@@ -22,6 +22,8 @@ import java.net.*;
 import java.util.*;
 import org.springframework.http.*;
 
+@RestController
+@RequestMapping("/api/agile")
 public class AgileController {
 
     private final OfertaRepository ofertaRepository;
@@ -89,14 +91,14 @@ public class AgileController {
         }
 
         // Validar si el puesto con ese ID ya existe
-        Optional<Puesto> existingPuesto = puestoRepository.findPuestoById(puesto.getId());
+        Optional<Puesto> existingPuesto = puestoRepository.findById(puesto.getId());
         if (existingPuesto.isPresent()) {
             log.warn("El puesto con ID {} ya existe", puesto.getId());
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
         // Guardar el puesto en la base de datos
-        Puesto savedPuesto = puestoRepository.savePuesto(puesto); // Asegúrate de que exista este método en tu repositorio
+        Puesto savedPuesto = puestoRepository.save(puesto); // Asegúrate de que exista este método en tu repositorio
         log.info("Puesto creado con ID {}: {}", savedPuesto.getId(), savedPuesto.getNombrePuesto());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPuesto);
     }   

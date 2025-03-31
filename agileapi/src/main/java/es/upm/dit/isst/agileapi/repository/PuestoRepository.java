@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface PuestoRepository extends CrudRepository<Puesto, Long> {
     // No need to add any methods here, as the default CRUD methods are sufficient.
     // You can add custom query methods if needed in the future.
-    Optional<Puesto> findPuestoById(Long id);
-    Puesto savePuesto(Puesto puesto);
+    //Optional<Puesto> findPuestoById(Long id);
+    //Puesto save(Puesto puesto);
 }
