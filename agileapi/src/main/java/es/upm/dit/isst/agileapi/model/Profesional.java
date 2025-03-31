@@ -23,7 +23,7 @@ public class Profesional {
     private String telefono;
     @JsonIgnore @Lob private byte[] cv;
     private String puesto;
-    private String[] cualidades;
+    private List<String> cualidades;
     private String fechaIni;
     private String fechaFin;
     @OneToMany(mappedBy = "profesional") List<@Valid Oferta> ofertas;
@@ -34,7 +34,7 @@ public class Profesional {
 
 
     public Profesional(String nombre, @Email String correo, String telefono, byte[] cv, String puesto,
-            String[] cualidades, String fechaIni, String fechaFin) {
+            List<String> cualidades, String fechaIni, String fechaFin) {
         this.nombre = nombre;
         this.correo = correo;
         this.telefono = telefono;
@@ -77,7 +77,7 @@ public class Profesional {
     }
 
 
-    public String[] getCualidades() {
+    public List<String> getCualidades() {
         return cualidades;
     }
 
@@ -142,7 +142,7 @@ public class Profesional {
     }
 
 
-    public void setCualidades(String[] cualidades) {
+    public void setCualidades(List<String> cualidades) {
         this.cualidades = cualidades;
     }
 
@@ -155,7 +155,7 @@ public class Profesional {
         result = prime * result + ((correo == null) ? 0 : correo.hashCode());
         result = prime * result + ((telefono == null) ? 0 : telefono.hashCode());
         result = prime * result + ((puesto == null) ? 0 : puesto.hashCode());
-        result = prime * result + Arrays.hashCode(cualidades);
+        result = prime * result + ((cualidades == null) ? 0 : cualidades.hashCode());
         result = prime * result + ((fechaIni == null) ? 0 : fechaIni.hashCode());
         result = prime * result + ((fechaFin == null) ? 0 : fechaFin.hashCode());
         return result;
@@ -191,7 +191,7 @@ public class Profesional {
                 return false;
         } else if (!puesto.equals(other.puesto))
             return false;
-        if (!Arrays.equals(cualidades, other.cualidades))
+        if (!cualidades.equals(other.cualidades))
             return false;
         if (fechaIni == null) {
             if (other.fechaIni != null)
@@ -210,7 +210,7 @@ public class Profesional {
     @Override
     public String toString() {
         return "Profesional [nombre=" + nombre + ", correo=" + correo + ", telefono=" + telefono + ", puesto=" + puesto
-                + ", cualidades=" + Arrays.toString(cualidades) + ", fechaInicio=" + fechaIni + ", fechaFin=" + fechaFin + "]";
+                + ", cualidades=" + Arrays.toString(cualidades.toArray()) + ", fechaInicio=" + fechaIni + ", fechaFin=" + fechaFin + "]";
     }
 
     
