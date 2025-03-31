@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 import FormInput from './FormInput';
+import axios from "axios";
 
 
 export default function RegisterEmpresa(props){
@@ -17,19 +18,38 @@ export default function RegisterEmpresa(props){
     };
 
     const handlePlanSelect = (plan) => {
+        console.log("Plan seleccionado:", plan);
         setFormData({ ...formData, plan });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if(!formData.nombre || !formData.email || !formData.password || !formData.plan){
             alert('Por favor, rellene todos los campos');
             console.log(formData.nombre, formData.email, formData.password, formData.plan);
             return;
         }
+
+        // Crear el objeto JSON para enviar
+        const dataToSend = {
+            nombre: formData.nombre,
+            email: formData.email,
+            password: formData.password,
+            suscripcion: formData.plan
+        };
+
+        try {
+            const response = await axios.post('http://localhost:8080/api/agile/empresas', dataToSend, {
+            });
+            console.log('Empresa registrada:', response.data);
+            goToEmpresa(); // Redirigir al perfil después del registro exitoso
+        } catch (error) {
+              console.error('Error al registrar el perfil:', error);
+              alert("Error al registrar el perfil. Inténtalo de nuevo.");
+        }
+
         //Aqui puedes enviar los datos al backend
         console.log('Datos enviados:', formData);
-        goToEmpresa();
     };
 
 

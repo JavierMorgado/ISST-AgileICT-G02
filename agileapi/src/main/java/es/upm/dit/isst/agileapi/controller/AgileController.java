@@ -22,6 +22,7 @@ import java.net.*;
 import java.util.*;
 import org.springframework.http.*;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/agile")
 public class AgileController {
@@ -71,7 +72,7 @@ public class AgileController {
         
         // Guardar la empresa en la base de datos
         Empresa savedEmpresa = empresaRepository.save(empresa);
-        log.info("Perfil de empresa creado: {}", savedEmpresa.getCorreo());
+        log.info("Perfil de empresa creado: {}", savedEmpresa.getEmail());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEmpresa);
     }
 
@@ -123,45 +124,6 @@ public class AgileController {
         log.info("Oferta creada con ID {}: {}", savedOferta.getId(), savedOferta.getPuesto().getNombrePuesto());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOferta);
     }
-    
-
-    @PutMapping(value = "/profesionales/{correo}/cv", consumes = "application/pdf")
-    @io.swagger.v3.oas.annotations.Operation(
-        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-        content = {
-            @Content(mediaType = "application/pdf",
-                schema = @Schema(type = "string", format = "binary")
-            )
-        }  
-        )
-    )
-    public ResponseEntity<?> subeCv(@PathVariable String correo,
-    @RequestBody byte[] fileContent) {
-        return profesionalRepository.findById(correo).map(profesional -> {
-            profesional.setCv(fileContent);
-            profesionalRepository.save(profesional);
-            return ResponseEntity.ok("Documento subido correctamente");
-        }).orElseThrow(
-            // Similar to orElse(ResponseEntity.notFound().build());
-            () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-            "Profesional no encontrado")
-        );
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

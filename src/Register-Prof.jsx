@@ -1,9 +1,7 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import agylelogo from "./assets/agyleICT.png";
-import viteLogo from "/vite.svg";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
 
 export default function RegisterProf(props) {
   const [formData, setFormData] = useState({
@@ -13,7 +11,6 @@ export default function RegisterProf(props) {
     movil: "",
     puesto: "",
     cualidades: "",
-    cv: null,
     fechaInicio: null,
     fechaFin: null,
     indefinidoInicio: false,
@@ -23,12 +20,8 @@ export default function RegisterProf(props) {
   const [cualidadesList, setCualidadesList] = useState([]);
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "cv") {
-      setFormData({ ...formData, [name]: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    const { name, value} = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleAddCualidad = (e) => {
@@ -51,22 +44,43 @@ export default function RegisterProf(props) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (
       !formData.nombre ||
       !formData.email ||
       !formData.password ||
       !formData.movil ||
-      !formData.puesto ||
-      !formData.cv
+      !formData.puesto
     ) {
       alert("Por favor, rellene todos los campos");
       return;
     }
 
+    // Crear el objeto JSON para enviar
+  const dataToSend = {
+    nombre: formData.nombre,
+    password: formData.password,
+    correo: formData.email,
+    telefono: formData.movil,
+    puesto: formData.puesto,
+    cualidades: cualidadesList, // Usar cualidadesList como array
+    fechaIni: formData.fechaInicio ? formData.fechaInicio.toISOString().split('T')[0] : null,
+    fechaFin: formData.fechaFin ? formData.fechaFin.toISOString().split('T')[0] : null,
+  };
+    try {
+      const response = await axios.post('http://localhost:8080/api/agile/profesionales', dataToSend, {
+      });
+      console.log('Profesional registrado:', response.data);
+      goToPerfil(); // Redirigir al perfil después del registro exitoso
+
+    } catch (error) {
+      console.error('Error al registrar el profesional:', error);
+      alert("Error al registrar el profesional. Inténtalo de nuevo.");
+    }
+
     //Aqui puedes enviar los datos al backend
-    console.log("Datos enviados:", formData);
+    console.log("Datos enviados:", dataToSend);
     alert("Registro exitoso");
   };
 
@@ -89,7 +103,7 @@ export default function RegisterProf(props) {
         style={{ backgroundColor: "#D83000", width: "50%" }}
       >
         <h5 className="text-uppercase mb-4">Datos personales</h5>
-        /* FALTA CREAR IMG */
+        {/* FALTA CREAR IMG */}
         <div className="mb-3 w-100">
           <h6 className="text-uppercase">Nombre</h6>
           <input
@@ -98,6 +112,16 @@ export default function RegisterProf(props) {
             value={formData.nombre}
             onChange={handleChange}
             placeholder="Ej. AgyleICT"
+          />
+        </div>
+        <div className="mb-3 w-100">
+          <h6 className="text-uppercase">Contraseña</h6>
+          <input
+            type="text"
+            name="password"
+            placeholder="***********"
+            value={formData.password}
+            onChange={handleChange}
           />
         </div>
         <div className="mb-3 w-100">
@@ -118,17 +142,6 @@ export default function RegisterProf(props) {
             value={formData.movil}
             onChange={handleChange}
             placeholder="91 654 55 45"
-          />
-        </div>
-        <div className="mb-3 w-100 text-center">
-          <h6 className="text-uppercase">TU CV</h6>
-          <input
-            type="file"
-            name="cv"
-            accept=".pdf"
-            onChange={handleChange}
-            className="form-control-file"
-            style={{ display: "inline-block", width: "auto" }}
           />
         </div>
         <h5 className="text-uppercase mb-4 mt-4">Datos profesionales</h5>
@@ -243,7 +256,7 @@ export default function RegisterProf(props) {
           </div>
         </div>
         <button
-          onClick={goToPerfil}
+          onClick={handleSubmit}
           type="submit"
           className="btn btn-light rounded-pill px-4 fw-semibold"
         >
