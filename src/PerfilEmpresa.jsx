@@ -1,12 +1,31 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
+import axios from 'axios';
 import agylelogo from './assets/agyleICT.png';
-
 import MainMenu from './MainMenu';
 import Vacante from './Vacante';
 import NuevaVacante from './NuevaVacante';
 
 export default function PerfilEmpresa(props){
+
+    const [empresaData, setEmpresaData] = useState({ nombre: "", suscripcion: "" });
+    
+    useEffect(() => {
+        const fetchEmpresaData = async () => {
+            try {
+            const response = await axios.get(`http://localhost:8080/api/agile/empresas/${props.empresa}`); // Replace {nombre} with the actual company name or parameter
+            setEmpresaData({
+                nombre: response.data.nombre,
+                suscripcion: response.data.suscripcion, // Assuming 'suscripcion' represents the plan
+            });
+            } catch (error) {
+            console.error("Error fetching company data:", error);
+            alert("Error al obtener los datos de la empresa.");
+            }
+        };
+
+        fetchEmpresaData();
+    }, []);
 
     function goToBranding(){
         window.location.href = '/mi-empresa/branding';
@@ -29,7 +48,7 @@ export default function PerfilEmpresa(props){
                         <Col md={4} className='d-flex justify-content-center'>
                             <Stack className='align-items-center justify-content-center'>
                                 <h3 className='text-uppercase'>Nombre</h3>
-                                <h6 className='text-uppercase fw-normal'>AgyleICT</h6>
+                                <h6 className='text-uppercase fw-normal'>{empresaData.nombre || "Cargando..."}</h6>
                             </Stack>
                         </Col>
                         <Col md={4}>
@@ -50,8 +69,8 @@ export default function PerfilEmpresa(props){
                         </Col>
                         <Col md={4} className='d-flex justify-content-center'>
                             <Stack className='align-items-center justify-content-center'>
-                                <h3 className='text-uppercase'>nivel</h3>
-                                <h6 className='text-uppercase fw-normal'>oro</h6>
+                                <h3 className='text-uppercase'>Suscripción</h3>
+                                <h6 className='text-uppercase fw-normal'>{empresaData.suscripcion || "Cargando..."}</h6>
                                 <Stack direction='horizontal' gap={3} className='align-items-center justify-content-center'>
                                     <button className="btn bgPlata rounded-pill px-4 fw-semibold" onClick={goToBranding}>
                                         BRANDING

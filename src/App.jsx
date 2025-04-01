@@ -11,6 +11,8 @@ import RegisterVacante from './RegisterVacante.jsx';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import MisOfertas from './MisOfertas.jsx';
@@ -26,8 +28,8 @@ function App() {
         <Route path="/login-profesional" element={<LogInProf />} />
         <Route path="/register-empresa" element={<RegisterEmpresa />} />
         <Route path="/register-profesional" element={<RegisterProf />} />
-        <Route path="/miPerfil" element={<PerfilProf />} />
-        <Route path="/miPerfilEmpresa" element={<PerfilEmpresa />} />
+        <Route path="/miPerfil" element={<PerfilProf profesional="profesional@example.com"/>} />
+        <Route path="/miPerfilEmpresa" element={<PerfilEmpresa empresa="AgyleICT" />} />
         <Route path="/misOfertas" element={<MisOfertas />} />
         <Route path="/mi-empresa/nueva-vacante" element={<RegisterVacante />} />
         
