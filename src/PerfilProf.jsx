@@ -85,7 +85,7 @@ export default function PerfilProf(props) {
         {/* CUALIDADES TÉCNICAS */}
         <div className="mb-3 w-100 text-center">
           <h5 className="mb-2">CUALIDADES TÉCNICAS</h5>
-          <h6 className="mb-4">C++</h6>
+          <h6 className="mb-4">{profesionalData.cualidades.join(", ")}</h6>
         </div>
 
         {/* DISPONIBILIDAD */}

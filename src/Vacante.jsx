@@ -9,12 +9,15 @@ export default function Vacante(props){
 
     return(
         <button onClick={goToVacante}>
-            <Stack className='align-items-center justify-content-center rounded-5' style={{backgroundColor: '#D83000'}}>
-                <div className='mt-2 mb-2 me-5 ms-5'>
-                    <h3 className='text-uppercase'>Título</h3>
-                    <p className='fw-normal' style={{textTransform: 'capitalize', lineHeight: '0.75'}}>Cualidades</p>
-                    <p className='fw-normal' style={{textTransform: 'capitalize', lineHeight: '0.75'}}>Experiencia</p>
-                    <p className='fw-normal' style={{textTransform: 'capitalize', lineHeight: '0.75'}}>Disponibilidad</p>
+            <Stack 
+                className='align-items-center justify-content-center rounded-5' 
+                style={{
+                    backgroundColor: '#D83000',
+                    maxWidth: '230px',
+                }}
+            >
+                <div className='mt-4 mb-4 pt-3 pb-3 me-5 ms-5'>
+                    <h3 className='text-uppercase'>{props.title}</h3>
                 </div>
             </Stack>
         </button>
