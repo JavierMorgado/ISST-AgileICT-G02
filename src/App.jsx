@@ -7,6 +7,7 @@ import RegisterEmpresa from './Register-Empresa.jsx';
 import RegisterProf from './Register-Prof.jsx';
 import PerfilProf from './Perfil-Prof.jsx';
 import PerfilEmpresa from './Perfil-Empresa.jsx';
+import FormVacante from './FormVacante.jsx';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/register-profesional" element={<RegisterProf />} />
         <Route path="/miPerfil" element={<PerfilProf />} />
         <Route path="/miPerfilEmpresa" element={<PerfilEmpresa />} />
+        <Route path="/form-vacante" element={<FormVacante />} />  
       </Routes>
     </BrowserRouter>
   );
