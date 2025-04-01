@@ -55,16 +55,16 @@ export default function RegisterEmpresa(props){
 
 
     function goToEmpresa(){
-        window.location.href = '/MiPerfilEmpresa';
+        window.location.href = '/miPerfilEmpresa';
     }
 
     return(
-        <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100 mt-5">
-            <h1>REGÍSTRATE COMO  <br /> EMPRESA</h1>
+        <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
+            <h1 className='mt-5'>REGÍSTRATE COMO  <br /> EMPRESA</h1>
 
             <form
                 onSubmit={handleSubmit}
-                className='btext-white rounded-5 mt-5 p-4 d-flex flex-column align-items-center'
+                className='btext-white rounded-5 mt-5 mb-5 p-4 d-flex flex-column align-items-center'
                 style={{backgroundColor: '#002C4B', width: '50%'}}
             >
                 
@@ -171,7 +171,7 @@ export default function RegisterEmpresa(props){
                     </Col>
                 </Row>
                 <button type="submit" className="btn btn-light rounded-pill px-4 fw-semibold">
-                        Registrarse
+                        REGISTRARSE
                 </button>
             </form>
             
