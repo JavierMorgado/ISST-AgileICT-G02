@@ -2,9 +2,13 @@ import { useState } from 'react'
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 import FormInput from './FormInput';
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import { registrarEmpresa } from './api/api.js';
 
 
 export default function RegisterEmpresa(props){
+    const navigate = useNavigate();
+    
     const [formData, setFormData] = useState({
         nombre: '',
         email: '',
@@ -37,12 +41,12 @@ export default function RegisterEmpresa(props){
             password: formData.password,
             suscripcion: formData.plan
         };
+        
 
         try {
-            const response = await axios.post('http://localhost:8080/api/agile/empresas', dataToSend, {
-            });
+            const response = await registrarEmpresa(dataToSend);
             console.log('Empresa registrada:', response.data);
-            goToEmpresa(); // Redirigir al perfil después del registro exitoso
+            navigate(`/miPerfilEmpresa/${dataToSend.nombre}`);
         } catch (error) {
               console.error('Error al registrar el perfil:', error);
               alert("Error al registrar el perfil. Inténtalo de nuevo.");
@@ -52,11 +56,6 @@ export default function RegisterEmpresa(props){
         console.log('Datos enviados:', formData);
     };
 
-
-
-    function goToEmpresa(){
-        window.location.href = '/miPerfilEmpresa';
-    }
 
     return(
         <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">

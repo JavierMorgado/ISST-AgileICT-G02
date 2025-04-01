@@ -85,21 +85,16 @@ public class AgileController {
 
     @PostMapping("/puestos")
     ResponseEntity<Puesto> createPuesto(@RequestBody Puesto puesto) {
-        // Validar si el ID del puesto ya existe
-        if (puesto.getId() == null) {
-            log.warn("El ID del puesto no puede ser nulo");
+        // Relacionar empresa por nombre
+        Optional<Empresa> empresaOpt = empresaRepository.findById(puesto.getEmpresa().getNombre());
+        if (empresaOpt.isEmpty()) {
+            log.warn("Empresa con nombre {} no encontrada", puesto.getEmpresa().getNombre());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        // Validar si el puesto con ese ID ya existe
-        Optional<Puesto> existingPuesto = puestoRepository.findById(puesto.getId());
-        if (existingPuesto.isPresent()) {
-            log.warn("El puesto con ID {} ya existe", puesto.getId());
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+        puesto.setEmpresa(empresaOpt.get());
 
-        // Guardar el puesto en la base de datos
-        Puesto savedPuesto = puestoRepository.save(puesto); // Asegúrate de que exista este método en tu repositorio
+        Puesto savedPuesto = puestoRepository.save(puesto);
         log.info("Puesto creado con ID {}: {}", savedPuesto.getId(), savedPuesto.getNombrePuesto());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPuesto);
     }   

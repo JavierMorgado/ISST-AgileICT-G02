@@ -3,6 +3,7 @@ package es.upm.dit.isst.agileapi.model;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
@@ -17,7 +18,7 @@ public class Empresa {
     @Email private String email;
     private String password;
     private String suscripcion;
-    @OneToMany(mappedBy = "empresa") List<@Valid Puesto> puestos;
+    @OneToMany(mappedBy = "empresa") @JsonIgnore List<@Valid Puesto> puestos;
 
 
     public Empresa() {

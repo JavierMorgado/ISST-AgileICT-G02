@@ -1,11 +1,15 @@
 import { useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom';
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 import FormInput from './FormInput';
 import axios from "axios";
 import DatePicker from "react-datepicker";
+import { crearPuesto, crearOferta, asignarMejorProfesional, obtenerPerfilEmpresa } from './api/api';
 
 
 export default function RegisterVacante(props){
+    const { nombre } = useParams();
+    const navigate = useNavigate();
     const [VacanteData, setVacanteData] = useState({
         id: '',
         descripcion_puesto: '',
@@ -35,10 +39,6 @@ export default function RegisterVacante(props){
         setCualidadesList(cualidadesList.filter((_, i) => i !== index));
       };
 
-    const handlePlanSelect = (plan) => {
-        console.log("Plan seleccionado:", plan);
-        setVacanteData({ ...VacanteData, plan });
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,35 +53,50 @@ export default function RegisterVacante(props){
             console.log(VacanteData);
             return;
         }
-
-        // Crear el objeto JSON para enviar
-        const dataToSend = {
-            nombrePuesto: VacanteData.nomber_puesto,
-            descripcionPuesto: VacanteData.descripcion_puesto,
-            cualidadesPuesto: cualidadesList, // Usar cualidadesList como array
-            fechaIni: VacanteData.fecha_ini,
-            fechaFin: VacanteData.fecha_fin,
-            empresa: null, // Este campo debe ser completado según la lógica de tu aplicación
-            ofertas: [], // Este campo debe ser completado según la lógica de tu aplicación
-        };
+       
 
         try {
-            const response = await axios.post('http://localhost:8080/api/agile/puesto', dataToSend, {});
-            console.log('Vacante registrada:', response.data);
-            goToEmpresa(); // Redirigir al perfil después del registro exitoso
+            const { data: empresa } = await obtenerPerfilEmpresa(nombre);
+            console.log('Empresa obtenida:', empresa);
+
+            // Crear el objeto JSON para enviar
+            const puestoToSend = {
+                nombrePuesto: VacanteData.nomber_puesto,
+                descripcionPuesto: VacanteData.descripcion_puesto,
+                cualidadesPuesto: cualidadesList, // Usar cualidadesList como array
+                fechaIni: VacanteData.fecha_ini.toISOString().split('T')[0], // Convertir a formato ISO (yyyy-MM-dd)
+                fechaFin: VacanteData.fecha_fin.toISOString().split('T')[0], // Convertir a formato ISO (yyyy-MM-dd
+                empresa: { nombre: empresa.nombre }, // Este campo debe ser completado según la lógica de tu aplicación
+                //ofertas: [], // Este campo debe ser completado según la lógica de tu aplicación
+            };
+            console.log('Puesto a enviar:', puestoToSend);
+
+            const { data: puestoCreado } = await crearPuesto(puestoToSend);
+            console.log('Vacante registrada:', puestoCreado);
+
+            const { data: profesional } = await asignarMejorProfesional(puestoCreado.id);
+            console.log('Profesional asignado:', profesional);
+
+            const ofertaToSend = {
+                id: puestoCreado.id,
+                estado: "SOLICITADA",
+                puesto: puestoCreado.id,
+                profesional: profesional.correo,
+            };
+
+            await crearOferta(ofertaToSend);
+            console.log('Oferta creada:', ofertaToSend);
+            navigate(`/miEmpresa/${nombre}`);
+
         } catch (error) {
             console.error('Error al registrar la vacante:', error);
             alert("Error al registrar la vacante. Inténtalo de nuevo.");
         }
 
-        console.log('Datos enviados:', dataToSend);
     };
 
 
 
-    function goToEmpresa(){
-        window.location.href = '/miPerfilEmpresa';
-    }
 
     return(
         <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
@@ -180,7 +195,7 @@ export default function RegisterVacante(props){
                 </Stack>
 
                 <button type="submit" className="btn btn-light rounded-pill px-4 fw-semibold">
-                        REGISTRARSE
+                        PUBLICAR
                 </button>
             </form>
             

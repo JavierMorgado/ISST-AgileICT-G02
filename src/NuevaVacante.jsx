@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 
-export default function NuevaVacante(props){
+export default function NuevaVacante({nombreEmpresa}){
+    const navigate = useNavigate();
 
     function goToNuevaVacante(){
-        window.location.href = '/mi-empresa/nueva-vacante';
+        navigate(`/miEmpresa/${nombreEmpresa}/nueva-vacante`)
     }
 
     return(

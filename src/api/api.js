@@ -14,4 +14,17 @@ export const obtenerOfertasAsignadas = (correo) =>
 // export const aceptarOferta = (idOferta, correo) =>
 //   api.post(`/ofertas/${idOferta}/aceptar`, { correo });
 
+// EMPRESAS
+export const registrarEmpresa = (datos) => api.post('/empresas', datos);
+export const obtenerPerfilEmpresa = (nombre) =>
+  api.get(`/empresas/${nombre}`);
+export const obtenerPuestosDeEmpresa = (nombre) =>
+  api.get(`/empresa/${nombre}/puestos`);
+export const crearPuesto = (puesto) => api.post('/puestos', puesto);
+
+// OFERTAS
+export const crearOferta = (oferta) => api.post('/ofertas', oferta);
+export const asignarMejorProfesional = (puestoId) =>
+  api.get(`/ofertas/asignar/${puestoId}`); // suponiendo que haces esto después del POST
+
 export default api;
