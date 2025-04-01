@@ -8,12 +8,6 @@ import NuevaVacante from './NuevaVacante';
 
 export default function PerfilEmpresa(props){
 
-    function goToVacante(){
-        window.location.href = '/mi-empresa/vacante';
-    }
-    function goToNuevaVacante(){
-        window.location.href = '/mi-empresa/nueva-vacante';
-    }
     function goToBranding(){
         window.location.href = '/mi-empresa/branding';
     }

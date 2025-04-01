@@ -4,7 +4,7 @@ import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 export default function NuevaVacante(props){
 
     function goToNuevaVacante(){
-        window.location.href = '/nueva-vacante';
+        window.location.href = '/mi-empresa/nueva-vacante';
     }
 
     return(
