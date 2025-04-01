@@ -7,12 +7,13 @@ import RegisterEmpresa from './Register-Empresa.jsx';
 import RegisterProf from './Register-Prof.jsx';
 import PerfilEmpresa from './PerfilEmpresa.jsx';
 import PerfilProf from './PerfilProf.jsx';
+import MisOfertas from './MisOfertas.jsx';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import MisOfertas from './MisOfertas.jsx';
+
 
 function App() {
   const [count, setCount] = useState(0);
@@ -25,9 +26,9 @@ function App() {
         <Route path="/login-profesional" element={<LogInProf />} />
         <Route path="/register-empresa" element={<RegisterEmpresa />} />
         <Route path="/register-profesional" element={<RegisterProf />} />
-        <Route path="/miPerfil" element={<PerfilProf />} />
+        <Route path="/miPerfil/:correo" element={<PerfilProf />} />
         <Route path="/miPerfilEmpresa" element={<PerfilEmpresa />} />
-        <Route path="/misOfertas" element={<MisOfertas />} />
+        <Route path="/misOfertas/:correo" element={<MisOfertas />} />
       </Routes>
     </BrowserRouter>
   );

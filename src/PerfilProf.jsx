@@ -1,9 +1,41 @@
-import { useState } from "react";
+import React from "react";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { obtenerPerfilProfesional } from "./api/api";
 
 export default function PerfilProf(props) {
+  const navigate = useNavigate();
+  const { correo } = useParams();
+  const [perfil, setPerfil] = useState(null);
+
+  useEffect(() => {
+    const fetchPerfil = async () => {
+      try {
+        const { data } = await obtenerPerfilProfesional(correo);
+        setPerfil(data);
+        console.log(data);
+        console.log(perfil);
+      } catch (error) {
+        console.error('Error al cargar perfil:', error);
+      }
+    };
+    fetchPerfil();
+  }, [correo]);
+
 
   function goToOfertas() {
-    window.location.href = "/misOfertas";
+    // Redirige a misOfertas pasando el correo como prop
+    navigate(`/misOfertas/${encodeURIComponent(correo)}`);
+    //window.location.href = "/misOfertas";
+  }
+
+  // Si el perfil aún no se ha cargado, muestra un mensaje de carga o un spinner
+  if (!perfil) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <h2>Cargando perfil...</h2>
+      </div>
+    );
   }
 
   return (
@@ -41,13 +73,13 @@ export default function PerfilProf(props) {
         {/* NOMBRE */}
         <div className="mb-3 w-100 text-center">
           <h5 className="mb-2">NOMBRE</h5>
-          <h6 className="mb-4">Menganito</h6>
+          <h6 className="mb-4">{perfil.nombre}</h6>
         </div>
 
         {/* PUESTO */}
         <div className="mb-3 w-100 text-center">
           <h5 className="mb-2">PUESTO</h5>
-          <h6 className="mb-4">Jefe de Producto</h6>
+          <h6 className="mb-4">{perfil.puesto}</h6>
         </div>
 
         {/* CUALIDADES TÉCNICAS */}
@@ -59,7 +91,7 @@ export default function PerfilProf(props) {
         {/* DISPONIBILIDAD */}
         <div className="mb-3 w-100 text-center">
           <h5 className="mb-2">DISPONIBILIDAD</h5>
-          <h6 className="mb-4">10/10/2025 - 10/10/2026</h6>
+          <h6 className="mb-4">{perfil.fechaIni} - {perfil.fechaFin}</h6>
         </div>
       </div>
     </div>

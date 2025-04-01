@@ -132,7 +132,7 @@ public class AgileController {
 
 /////////////////////////////CONTINUARÁ...........//////////////////////////////
     // Obtener todas las ofertas de un profesional
-    @GetMapping("/profesional/{correo}/ofertas")
+    @GetMapping("/profesionales/{correo}/ofertas")
     public List<Oferta> getOfertasByProfesional(@PathVariable String correo) {
         // Buscar el profesional por correo
         Optional<Profesional> profesionalOpt = profesionalRepository.findById(correo);

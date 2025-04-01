@@ -2,8 +2,11 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { registrarProfesional } from "./api/api";
 
 export default function RegisterProf(props) {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -24,6 +27,49 @@ export default function RegisterProf(props) {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      !formData.nombre ||
+      !formData.email ||
+      !formData.password ||
+      !formData.movil ||
+      !formData.puesto
+    ) {
+      alert("Por favor, rellene todos los campos");
+      return;
+    }
+    // Crear el objeto JSON para enviar
+    const dataToSend = {
+      nombre: formData.nombre,
+      password: formData.password,
+      correo: formData.email,
+      telefono: formData.movil,
+      puesto: formData.puesto,
+      cualidades: cualidadesList, // Usar cualidadesList como array
+      fechaIni: formData.fechaInicio ? formData.fechaInicio.toISOString().split('T')[0] : null,
+      fechaFin: formData.fechaFin ? formData.fechaFin.toISOString().split('T')[0] : null,
+    };
+    try {
+      const response = await registrarProfesional(dataToSend);
+      console.log('Profesional registrado:', response.data);
+
+      navigate(`/miPerfil/${encodeURIComponent(dataToSend.correo)}`);
+      //goToPerfil(); // Redirigir al perfil después del registro exitoso
+
+    } catch (error) {
+      console.error('Error al registrar el profesional:', error);
+      alert("Error al registrar el profesional. Inténtalo de nuevo.");
+    }
+
+    console.log("Datos enviados:", dataToSend);
+    //alert("Registro exitoso");
+  };
+
+  // function goToPerfil() {
+  //   window.location.href = "/miPerfil";
+  // }
+
   const handleAddCualidad = (e) => {
     e.preventDefault();
     if (formData.cualidades.trim() !== "") {
@@ -43,50 +89,6 @@ export default function RegisterProf(props) {
       [field === "indefinidoInicio" ? "fechaInicio" : "fechaFin"]: null, // Clear the date if marked as "Indefinido"
     }));
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (
-      !formData.nombre ||
-      !formData.email ||
-      !formData.password ||
-      !formData.movil ||
-      !formData.puesto
-    ) {
-      alert("Por favor, rellene todos los campos");
-      return;
-    }
-
-    // Crear el objeto JSON para enviar
-  const dataToSend = {
-    nombre: formData.nombre,
-    password: formData.password,
-    correo: formData.email,
-    telefono: formData.movil,
-    puesto: formData.puesto,
-    cualidades: cualidadesList, // Usar cualidadesList como array
-    fechaIni: formData.fechaInicio ? formData.fechaInicio.toISOString().split('T')[0] : null,
-    fechaFin: formData.fechaFin ? formData.fechaFin.toISOString().split('T')[0] : null,
-  };
-    try {
-      const response = await axios.post('http://localhost:8080/api/agile/profesionales', dataToSend, {
-      });
-      console.log('Profesional registrado:', response.data);
-      goToPerfil(); // Redirigir al perfil después del registro exitoso
-
-    } catch (error) {
-      console.error('Error al registrar el profesional:', error);
-      alert("Error al registrar el profesional. Inténtalo de nuevo.");
-    }
-
-    //Aqui puedes enviar los datos al backend
-    console.log("Datos enviados:", dataToSend);
-    alert("Registro exitoso");
-  };
-
-  function goToPerfil() {
-    window.location.href = "/miPerfil";
-  }
 
   return (
     <div
