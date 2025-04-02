@@ -3,6 +3,7 @@ package es.upm.dit.isst.agileapi.model;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
@@ -14,19 +15,19 @@ import jakarta.validation.constraints.Email;
 @Entity
 public class Empresa {
     @Id private String nombre;
-    @Email private String correo;
-    private String telefono;
+    @Email private String email;
+    private String password;
     private String suscripcion;
-    @OneToMany(mappedBy = "empresa") List<@Valid Puesto> puestos;
+    @OneToMany(mappedBy = "empresa") @JsonIgnore List<@Valid Puesto> puestos;
 
 
     public Empresa() {
     }
 
-    public Empresa(String nombre, String correo, String telefono, String suscripcion) {
+    public Empresa(String nombre, String email, String password, String suscripcion) {
         this.nombre = nombre;
-        this.correo = correo;
-        this.telefono = telefono;
+        this.email = email;
+        this.password = password;
         this.suscripcion = suscripcion;
     }
     public String getNombre() {
@@ -35,17 +36,17 @@ public class Empresa {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public void setEmail(String email) {
+        this.email = email;
     }
-    public String getTelefono() {
-        return telefono;
+    public String getPassword() {
+        return password;
     }
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setPassword(String password) {
+        this.password = password;
     }
     public String getSuscripcion() {
         return suscripcion;
@@ -77,8 +78,8 @@ public class Empresa {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
-        result = prime * result + ((correo == null) ? 0 : correo.hashCode());
-        result = prime * result + ((telefono == null) ? 0 : telefono.hashCode());
+        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((password == null) ? 0 : password.hashCode());
         result = prime * result + ((suscripcion == null) ? 0 : suscripcion.hashCode());
         return result;
     }
@@ -97,15 +98,15 @@ public class Empresa {
                 return false;
         } else if (!nombre.equals(other.nombre))
             return false;
-        if (correo == null) {
-            if (other.correo != null)
+        if (email == null) {
+            if (other.email != null)
                 return false;
-        } else if (!correo.equals(other.correo))
+        } else if (!email.equals(other.email))
             return false;
-        if (telefono == null) {
-            if (other.telefono != null)
+        if (password == null) {
+            if (other.password != null)
                 return false;
-        } else if (!telefono.equals(other.telefono))
+        } else if (!password.equals(other.password))
             return false;
         if (suscripcion == null) {
             if (other.suscripcion != null)
@@ -117,7 +118,7 @@ public class Empresa {
 
     @Override
     public String toString() {
-        return "Empresa [nombre=" + nombre + ", correo=" + correo + ", telefono=" + telefono + ", suscripcion="
+        return "Empresa [nombre=" + nombre + ", email=" + email + ", password=" + password + ", suscripcion="
                 + suscripcion + "]";
     }
     

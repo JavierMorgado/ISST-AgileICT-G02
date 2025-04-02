@@ -1,25 +1,49 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom';
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
+import axios from 'axios';
 import agylelogo from './assets/agyleICT.png';
-
 import MainMenu from './MainMenu';
-import NuevaVacante from './NuevaVacante';
 import Vacante from './Vacante';
+import NuevaVacante from './NuevaVacante';
+import { obtenerPerfilEmpresa, obtenerPuestosDeEmpresa } from './api/api.js';
 
 export default function PerfilEmpresa(props){
+    const { nombre } = useParams();
+    const navigate = useNavigate();
 
-    function goToVacante(){
-        window.location.href = '/mi-empresa/vacante';
-    }
-    function goToNuevaVacante(){
-        window.location.href = '/mi-empresa/nueva-vacante';
-    }
+    const [empresa, setEmpresa] = useState(null);
+    const [puestos, setPuestos] = useState([]);
+    const [loading, setLoading] = useState(true);
+    
+    useEffect(() => {
+        const fetchEmpresaData = async () => {
+            try {
+                console.log("nombre de la empresa: ", nombre);
+                const resEmpresa = await obtenerPerfilEmpresa(nombre);
+                const resPuestos = await obtenerPuestosDeEmpresa(nombre);
+                setEmpresa(resEmpresa.data);
+                setPuestos(resPuestos.data);
+
+            } catch (error) {
+            console.error("Error fetching company data:", error);
+            alert("Error al obtener los datos de la empresa.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchEmpresaData();
+    }, [nombre]);
+
     function goToBranding(){
         window.location.href = '/mi-empresa/branding';
     }
     function goToEventos(){
         window.location.href = '/mi-empresa/eventos';
     }
+
+    if (loading) return <p>Cargando perfil...</p>;
 
     return(
         <div>
@@ -35,7 +59,7 @@ export default function PerfilEmpresa(props){
                         <Col md={4} className='d-flex justify-content-center'>
                             <Stack className='align-items-center justify-content-center'>
                                 <h3 className='text-uppercase'>Nombre</h3>
-                                <h6 className='text-uppercase fw-normal'>AgyleICT</h6>
+                                <h6 className='text-uppercase fw-normal'>{empresa.nombre || "Cargando..."}</h6>
                             </Stack>
                         </Col>
                         <Col md={4}>
@@ -56,8 +80,8 @@ export default function PerfilEmpresa(props){
                         </Col>
                         <Col md={4} className='d-flex justify-content-center'>
                             <Stack className='align-items-center justify-content-center'>
-                                <h3 className='text-uppercase'>nivel</h3>
-                                <h6 className='text-uppercase fw-normal'>oro</h6>
+                                <h3 className='text-uppercase'>Suscripción</h3>
+                                <h6 className='text-uppercase fw-normal'>{empresa.suscripcion || "Cargando..."}</h6>
                                 <Stack direction='horizontal' gap={3} className='align-items-center justify-content-center'>
                                     <button className="btn bgPlata rounded-pill px-4 fw-semibold" onClick={goToBranding}>
                                         BRANDING
@@ -73,9 +97,10 @@ export default function PerfilEmpresa(props){
                     <h2 className='mt-4 mb-4'>MIS VACANTES</h2>
 
                     <Stack direction='horizontal' gap={3} className='align-items-center justify-content-center'>
-                        <Vacante title="Jefe de Producto"></Vacante>
-                        <Vacante title="Jefe de Producto"></Vacante>
-                        <NuevaVacante></NuevaVacante>
+                        {puestos.map((puesto) => (
+                            <Vacante key={puesto.id} title={puesto.nombre}></Vacante>
+                        ))}
+                        <NuevaVacante nombreEmpresa={nombre}></NuevaVacante>
                     </Stack>
 
                 </div>

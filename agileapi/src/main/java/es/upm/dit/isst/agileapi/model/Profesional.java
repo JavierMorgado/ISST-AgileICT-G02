@@ -21,7 +21,6 @@ public class Profesional {
     @Id @Email private String correo;
     private String nombre;
     private String telefono;
-    @JsonIgnore @Lob private byte[] cv;
     private String puesto;
     private List<String> cualidades;
     private String fechaIni;
@@ -33,12 +32,11 @@ public class Profesional {
     }
 
 
-    public Profesional(String nombre, @Email String correo, String telefono, byte[] cv, String puesto,
+    public Profesional(String nombre, @Email String correo, String telefono, String puesto,
             List<String> cualidades, String fechaIni, String fechaFin) {
         this.nombre = nombre;
         this.correo = correo;
         this.telefono = telefono;
-        this.cv = cv;
         this.puesto = puesto;
         this.cualidades = cualidades;
         this.fechaIni = fechaIni;
@@ -59,17 +57,6 @@ public class Profesional {
     public String getTelefono() {
         return telefono;
     }
-
-
-    public byte[] getCv() {
-        return cv;
-    }
-
-    @JsonGetter("cv")
-    public URI getDireccionCv() throws URISyntaxException {
-        return new URI("./cv");
-    }
-
 
 
     public String getPuesto() {
@@ -130,12 +117,7 @@ public class Profesional {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
-
-    @JsonProperty
-    public void setCv(byte[] cv) {
-        this.cv = cv;
-    }
-
+    
 
     public void setPuesto(String puesto) {
         this.puesto = puesto;

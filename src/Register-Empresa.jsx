@@ -1,9 +1,14 @@
 import { useState } from 'react'
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 import FormInput from './FormInput';
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import { registrarEmpresa } from './api/api.js';
 
 
 export default function RegisterEmpresa(props){
+    const navigate = useNavigate();
+    
     const [formData, setFormData] = useState({
         nombre: '',
         email: '',
@@ -17,26 +22,40 @@ export default function RegisterEmpresa(props){
     };
 
     const handlePlanSelect = (plan) => {
+        console.log("Plan seleccionado:", plan);
         setFormData({ ...formData, plan });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if(!formData.nombre || !formData.email || !formData.password || !formData.plan){
             alert('Por favor, rellene todos los campos');
             console.log(formData.nombre, formData.email, formData.password, formData.plan);
             return;
         }
+
+        // Crear el objeto JSON para enviar
+        const dataToSend = {
+            nombre: formData.nombre,
+            email: formData.email,
+            password: formData.password,
+            suscripcion: formData.plan
+        };
+        
+
+        try {
+            const response = await registrarEmpresa(dataToSend);
+            console.log('Empresa registrada:', response.data);
+            navigate(`/miPerfilEmpresa/${dataToSend.nombre}`);
+        } catch (error) {
+              console.error('Error al registrar el perfil:', error);
+              alert("Error al registrar el perfil. Inténtalo de nuevo.");
+        }
+
         //Aqui puedes enviar los datos al backend
         console.log('Datos enviados:', formData);
-        goToEmpresa();
     };
 
-
-
-    function goToEmpresa(){
-        window.location.href = '/MiPerfilEmpresa';
-    }
 
     return(
         <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">

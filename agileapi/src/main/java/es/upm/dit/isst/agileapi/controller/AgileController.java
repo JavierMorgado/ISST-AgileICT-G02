@@ -22,6 +22,7 @@ import java.net.*;
 import java.util.*;
 import org.springframework.http.*;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/agile")
 public class AgileController {
@@ -71,7 +72,7 @@ public class AgileController {
         
         // Guardar la empresa en la base de datos
         Empresa savedEmpresa = empresaRepository.save(empresa);
-        log.info("Perfil de empresa creado: {}", savedEmpresa.getCorreo());
+        log.info("Perfil de empresa creado: {}", savedEmpresa.getEmail());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEmpresa);
     }
 
@@ -84,21 +85,16 @@ public class AgileController {
 
     @PostMapping("/puestos")
     ResponseEntity<Puesto> createPuesto(@RequestBody Puesto puesto) {
-        // Validar si el ID del puesto ya existe
-        if (puesto.getId() == null) {
-            log.warn("El ID del puesto no puede ser nulo");
+        // Relacionar empresa por nombre
+        Optional<Empresa> empresaOpt = empresaRepository.findById(puesto.getEmpresa().getNombre());
+        if (empresaOpt.isEmpty()) {
+            log.warn("Empresa con nombre {} no encontrada", puesto.getEmpresa().getNombre());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        // Validar si el puesto con ese ID ya existe
-        Optional<Puesto> existingPuesto = puestoRepository.findById(puesto.getId());
-        if (existingPuesto.isPresent()) {
-            log.warn("El puesto con ID {} ya existe", puesto.getId());
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+        puesto.setEmpresa(empresaOpt.get());
 
-        // Guardar el puesto en la base de datos
-        Puesto savedPuesto = puestoRepository.save(puesto); // Asegúrate de que exista este método en tu repositorio
+        Puesto savedPuesto = puestoRepository.save(puesto);
         log.info("Puesto creado con ID {}: {}", savedPuesto.getId(), savedPuesto.getNombrePuesto());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPuesto);
     }   
@@ -123,45 +119,6 @@ public class AgileController {
         log.info("Oferta creada con ID {}: {}", savedOferta.getId(), savedOferta.getPuesto().getNombrePuesto());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOferta);
     }
-    
-
-    @PutMapping(value = "/profesionales/{correo}/cv", consumes = "application/pdf")
-    @io.swagger.v3.oas.annotations.Operation(
-        requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-        content = {
-            @Content(mediaType = "application/pdf",
-                schema = @Schema(type = "string", format = "binary")
-            )
-        }  
-        )
-    )
-    public ResponseEntity<?> subeCv(@PathVariable String correo,
-    @RequestBody byte[] fileContent) {
-        return profesionalRepository.findById(correo).map(profesional -> {
-            profesional.setCv(fileContent);
-            profesionalRepository.save(profesional);
-            return ResponseEntity.ok("Documento subido correctamente");
-        }).orElseThrow(
-            // Similar to orElse(ResponseEntity.notFound().build());
-            () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-            "Profesional no encontrado")
-        );
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -170,7 +127,7 @@ public class AgileController {
 
 /////////////////////////////CONTINUARÁ...........//////////////////////////////
     // Obtener todas las ofertas de un profesional
-    @GetMapping("/profesional/{correo}/ofertas")
+    @GetMapping("/profesionales/{correo}/ofertas")
     public List<Oferta> getOfertasByProfesional(@PathVariable String correo) {
         // Buscar el profesional por correo
         Optional<Profesional> profesionalOpt = profesionalRepository.findById(correo);
