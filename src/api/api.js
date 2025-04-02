@@ -25,6 +25,6 @@ export const crearPuesto = (puesto) => api.post('/puestos', puesto);
 // OFERTAS
 export const crearOferta = (oferta) => api.post('/ofertas', oferta);
 export const asignarMejorProfesional = (puestoId) =>
-  api.get(`/ofertas/asignar/${puestoId}`); // suponiendo que haces esto después del POST
+  api.get(`/oferta/${puestoId}/mejor-profesional`); // suponiendo que haces esto después del POST
 
 export default api;

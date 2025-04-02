@@ -84,7 +84,7 @@ public class AgileController {
     }
 
     @PostMapping("/puestos")
-    ResponseEntity<Puesto> createPuesto(@RequestBody Puesto puesto) {
+    public ResponseEntity<Map<String, Object>> createPuesto(@RequestBody Puesto puesto) {
         // Relacionar empresa por nombre
         Optional<Empresa> empresaOpt = empresaRepository.findById(puesto.getEmpresa().getNombre());
         if (empresaOpt.isEmpty()) {
@@ -96,7 +96,17 @@ public class AgileController {
 
         Puesto savedPuesto = puestoRepository.save(puesto);
         log.info("Puesto creado con ID {}: {}", savedPuesto.getId(), savedPuesto.getNombrePuesto());
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedPuesto);
+         
+        // Crear respuesta segura
+         Map<String, Object> response = new HashMap<>();
+         response.put("id", savedPuesto.getId());
+         response.put("nombrePuesto", savedPuesto.getNombrePuesto());
+         response.put("descripcionPuesto", savedPuesto.getDescripcionPuesto());
+         response.put("fechaIni", savedPuesto.getFechaIni());
+         response.put("fechaFin", savedPuesto.getFechaFin());
+ 
+         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+     
     }   
 
     @PostMapping("/ofertas")
