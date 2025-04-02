@@ -249,7 +249,7 @@ export default function RegisterProf(props) {
                 <label
                   className="form-check-label"
                   htmlFor="indefinidoFin"
-                  style={{ paddingLeft: "10px" }}
+                  style={{ paddingLeft: "10px", maxWidth: "5px" }}
                 >
                   Indefinido
                 </label>
