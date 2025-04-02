@@ -135,7 +135,9 @@ input {
   text-transform: uppercase;
   border: none;
   border-bottom: 1px solid white;
+  box-sizing: content-box;
   padding: 10px 20px;
+  min-width: 50px;
 }
 
 input:focus {

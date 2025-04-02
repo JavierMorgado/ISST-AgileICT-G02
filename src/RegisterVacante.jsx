@@ -124,14 +124,6 @@ export default function RegisterVacante(props){
                     onChange={handleChange}
                 />
 
-                <FormInput
-                    label="Cualidades del Puesto"
-                    name="cualidades_puesto"
-                    placeholder="Cualidades del Puesto"
-                    value={VacanteData.cualidades_puesto}
-                    onChange={handleChange}
-                />
-
                 <div className="d-flex justify-content-between mb-5">
                     {/* Fecha de Inicio */}
                     <div className="me-3 flex-grow-1 d-flex flex-column align-items-center">
@@ -194,8 +186,11 @@ export default function RegisterVacante(props){
                     </Stack>
                 </Stack>
 
-                <button type="submit" className="btn btn-light rounded-pill px-4 fw-semibold">
+                <button type="submit" className="btn btn-light rounded-pill px-4 fw-semibold me-3 mb-3">
                         PUBLICAR
+                </button>
+                <button  onClick={() => navigate(`/miPerfilEmpresa/${nombre}`)} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
+                        VOLVER A MI PERFIL
                 </button>
             </form>
             
