@@ -17,7 +17,9 @@ import jakarta.validation.Valid;
 
 @Entity
 public class Puesto {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
+    @Id 
+    @GeneratedValue(strategy = GenerationType.AUTO) 
+    private Long id;
     private String nombrePuesto;
     private String descripcionPuesto;
     private List<String> cualidadesPuesto;

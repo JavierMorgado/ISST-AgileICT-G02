@@ -226,3 +226,7 @@ label.form-check-label {
 .vw-100{
   overflow-x: hidden;
 }
+
+.background-transparent{
+  background-color: transparent !important;
+}

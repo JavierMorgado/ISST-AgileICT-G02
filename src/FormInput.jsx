@@ -33,6 +33,7 @@ export default function FormInput ({ label, name, placeholder, value, onChange }
           value={inputValue}
           onChange={handleChange}
           placeholder={placeholder}
+          autoComplete="off"
         />
       </div>
     </div>

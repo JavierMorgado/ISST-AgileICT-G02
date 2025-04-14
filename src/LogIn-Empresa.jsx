@@ -1,15 +1,33 @@
 import { useState } from 'react';
 import FormInput from './FormInput.jsx';
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { obtenerPerfilEmpresa } from './api/api.js';
 
 
 export default function LogInEmpresa(props){
-    const [email, setEmail] = useState('');
+    const navigate = useNavigate();
+    const [Nombre, setNombre] = useState('');
     const [password, setPassword] = useState('');
 
     function goToRegisterEmpresa(){
         window.location.href = '/register-empresa';
     }
+
+    function gotoEmpresa(){
+        window.location.href = '/miPerfilEmpresa/AgyleICT';
+    }
+
+    const handleLogin = async () => {
+        try {
+          const { data } = await obtenerPerfilEmpresa(Nombre);
+          console.log('Empresa encontrada:', data);
+          navigate(`/miPerfilEmpresa/${data.Nombre}`);
+        } catch (error) {
+          console.error('Error al iniciar sesión:', error);
+          alert('Empresa no encontrada');
+        }
+      };
 
     return(
         <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
@@ -17,18 +35,19 @@ export default function LogInEmpresa(props){
                 <h1>INICIO DE SESIÓN PARA EMPRESAS</h1>
             </div>
 
-            <div style={{backgroundColor: '#002C4B', width: '75%', height: '50%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-5">
+            <div style={{backgroundColor: '#002C4B', width: '75%', height: '70%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-5">
                 <h3 className='mb-4'>INICIA SESIÓN CON TU <br /> CORREO Y CONTRASEÑA</h3>
 
-                <Row>
+                <form onSubmit={handleLogin} className='d-flex flex-row'>
                     <Col md={6}>
                         <FormInput
-                            label="Correo"
-                            name="email"
+                            label="Empresa"
+                            name="nombre"
                             placeholder="rh@agyleict.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={Nombre}
+                            onChange={(e) => setNombre(e.target.value)}
                             style={{paddingRight: '2rem', paddingLeft: '2rem'}}
+                            autoComplete="off"
                         />
                     </Col>
                     <Col md={6}>
@@ -36,12 +55,17 @@ export default function LogInEmpresa(props){
                             label="Contraseña"
                             name="contraseña"
                             placeholder="********"
-                            value={email}
+                            value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             style={{paddingRight: '2rem', paddingLeft: '2rem'}}
+                            autoComplete="off"
                         />
                     </Col>
-                </Row>
+                    
+                    <button  onClick={handleLogin} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
+                            Iniciar sesión
+                    </button>
+                </form>
 
                 <h3 className='mb-4'>SI NO TIENES CUENTA REGÍSTRATE AQUÍ</h3>
 

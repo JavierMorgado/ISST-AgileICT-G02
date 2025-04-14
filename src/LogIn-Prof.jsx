@@ -31,6 +31,7 @@ export default function LogInProf(props) {
             placeholder="menganito.perez@gmail.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            autoComplete="off"
           />
 
           <input
@@ -38,6 +39,7 @@ export default function LogInProf(props) {
             placeholder="contraseña123"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="off"
           />
         </div>
 
