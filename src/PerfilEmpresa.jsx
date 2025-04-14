@@ -49,7 +49,7 @@ export default function PerfilEmpresa(props){
         <div>
             {/*<MainMenu className */}
 
-            <div className="d-flex flex-column justify-content-st</div>art align-items-center vh-100 vw-100">
+            <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
                 <div className='d-flex justify-content-end align-items-center pt-3 me-3 w-50 mt-5'>
                     <h1>MI PERFIL DE EMPRESA</h1>
                 </div>
@@ -97,14 +97,18 @@ export default function PerfilEmpresa(props){
                     <h2 className='mt-4 mb-4'>MIS VACANTES</h2>
 
                     <Stack direction='horizontal' gap={3} className='align-items-center justify-content-center'>
-                        {puestos.map((puesto) => (
-                            <Vacante key={puesto.id} title={puesto.nombre}></Vacante>
+                        {console.log("Puestos: ", puestos)}
+                        {puestos.map((puesto, index) => (
+                            <Vacante 
+                                key={puesto.id || `puesto-${index}`} 
+                                title={puesto.nombre || "Sin nombre"} // Ensure a fallback if puesto.nombre is undefined
+                            ></Vacante>
                         ))}
-                        <NuevaVacante nombreEmpresa={nombre}></NuevaVacante>
+                        <NuevaVacante key="nueva-vacante" nombreEmpresa={nombre}></NuevaVacante>
                     </Stack>
 
                 </div>
             </div>
-        </div>
+        </div> 
     )
 }

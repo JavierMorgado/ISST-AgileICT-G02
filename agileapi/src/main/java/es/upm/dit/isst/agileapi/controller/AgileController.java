@@ -164,22 +164,22 @@ public class AgileController {
      * @param nombre Nombre de la empresa   
      */
     @GetMapping("/empresa/{nombre}/puestos")
-    public List<Puesto> getPuestosByEmpresa(@PathVariable String nombre) {
+    public Long[] getPuestosByEmpresa(@PathVariable String nombre) {
         // Buscar la empresa por nombre
         Optional<Empresa> empresaOpt = empresaRepository.findById(nombre);
         if (empresaOpt.isEmpty()) {
             log.warn("Empresa con nombre {} no encontrada", nombre);
-            return Collections.emptyList(); // O lanzar una excepción si prefieres
+            return new Long[0]; // O lanzar una excepción si prefieres
         }
 
         Empresa empresa = empresaOpt.get();
 
         // Obtener los puestos asociados a la empresa
-        List<Puesto> puestos = empresa.getPuestos();
-        if (puestos.isEmpty()) {
+        Long[] puestos = empresa.getIdsPuestos();
+        if (puestos.length == 0) {
             log.info("No se encontraron puestos asociados a la empresa con nombre {}", nombre);
         } else {
-            log.info("Se encontraron {} puestos asociados a la empresa con nombre {}", puestos.size(), nombre);
+            log.info("Se encontraron {} puestos asociados a la empresa con nombre {}", puestos.length, nombre);
         }
 
         return puestos;

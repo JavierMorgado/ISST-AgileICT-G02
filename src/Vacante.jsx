@@ -22,6 +22,4 @@ export default function Vacante(props){
             </Stack>
         </button>
     )
-        
-
 }
