@@ -59,12 +59,21 @@ public class Empresa {
     }
 
     //REVISAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    @JsonGetter("puestos")
+    @JsonGetter("idpuestos")
     public Long[] getIdsPuestos() {
         if (puestos != null) {
             return puestos.stream().map(Puesto::getId).toArray(Long[]::new);
         } else {
             return new Long[0];
+        }
+    }
+
+    @JsonGetter("nombrespuestos")
+    public String[] getNombrePuestos() {
+        if (puestos != null) {
+            return puestos.stream().map(Puesto::getNombrePuesto).toArray(String[]::new);
+        } else {
+            return new String[0];
         }
     }
 

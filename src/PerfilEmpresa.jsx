@@ -98,10 +98,11 @@ export default function PerfilEmpresa(props){
 
                     <Stack direction='horizontal' gap={3} className='align-items-center justify-content-center'>
                         {console.log("Puestos: ", puestos)}
+                        {console.log("Puestos: ", puestos.nombre)}
                         {puestos.map((puesto, index) => (
                             <Vacante 
                                 key={puesto.id || `puesto-${index}`} 
-                                title={puesto.nombre || "Sin nombre"} // Ensure a fallback if puesto.nombre is undefined
+                                title={puesto.nombrePuesto || "Sin nombre"} // Ensure a fallback if puesto.nombre is undefined
                             ></Vacante>
                         ))}
                         <NuevaVacante key="nueva-vacante" nombreEmpresa={nombre}></NuevaVacante>
