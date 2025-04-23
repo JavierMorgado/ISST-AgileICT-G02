@@ -109,6 +109,18 @@ public class AgileController {
      
     }   
 
+    @GetMapping("/puestos/{id}")
+    public ResponseEntity<Puesto> getPuestoById(@PathVariable Long id) {
+        Optional<Puesto> puestoOpt = puestoRepository.findById(id);
+        log.info("HE LLEGADO HASTA AQUÍ");
+        if (puestoOpt.isEmpty()) {
+            log.warn("Puesto con ID {} no encontrado", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        log.info("Puesto encontrado con ID {}: {}", id, puestoOpt.get().getNombrePuesto());
+        return ResponseEntity.ok(puestoOpt.get());
+    }
+
     @PostMapping("/ofertas")
     ResponseEntity<Oferta> createOferta(@RequestBody Oferta oferta) {
         // Validar si la oferta con ese ID ya existe

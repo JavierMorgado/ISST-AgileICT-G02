@@ -21,6 +21,8 @@ export const obtenerPerfilEmpresa = (nombre) =>
 export const obtenerPuestosDeEmpresa = (nombre) =>
   api.get(`/empresa/${nombre}/puestos`);
 export const crearPuesto = (puesto) => api.post('/puestos', puesto);
+export const obtenerPuestoById = (puestoId) =>
+  api.get(`/puestos/${puestoId}`);
 
 // OFERTAS
 export const crearOferta = (oferta) => api.post('/ofertas', oferta);

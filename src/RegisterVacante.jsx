@@ -31,7 +31,7 @@ export default function RegisterVacante(props){
         e.preventDefault();
         if (VacanteData.cualidades.trim() !== "") {
           setCualidadesList([...cualidadesList, VacanteData.cualidades.trim()]);
-          setFormData({ ...VacanteData, cualidades: "" }); // Clear the input field
+          //setFormData({ ...VacanteData, cualidades: "" }); // Clear the input field
         }
       };
     

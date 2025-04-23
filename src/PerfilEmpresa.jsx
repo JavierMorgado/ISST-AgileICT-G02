@@ -21,13 +21,14 @@ export default function PerfilEmpresa(props){
             try {
                 console.log("nombre de la empresa: ", nombre);
                 const resEmpresa = await obtenerPerfilEmpresa(nombre);
+                console.log("resEmpresa: ", resEmpresa.data);
                 const resPuestos = await obtenerPuestosDeEmpresa(nombre);
+                console.log("resPuestos: ", resPuestos.data);
                 setEmpresa(resEmpresa.data);
                 setPuestos(resPuestos.data);
-
             } catch (error) {
-            console.error("Error fetching company data:", error);
-            alert("Error al obtener los datos de la empresa.");
+                console.error("Error fetching company data:", error);
+                alert("Error al obtener los datos de la empresa.");
             } finally {
                 setLoading(false);
             }
@@ -98,12 +99,15 @@ export default function PerfilEmpresa(props){
 
                     <Stack direction='horizontal' gap={3} className='align-items-center justify-content-center'>
                         {console.log("Puestos: ", puestos)}
-                        {puestos.map((puesto, index) => (
-                            <Vacante 
-                                key={puesto.id || `puesto-${index}`} 
-                                title={puesto.nombre || "Sin nombre"} // Ensure a fallback if puesto.nombre is undefined
-                            ></Vacante>
-                        ))}
+                        {puestos.map((puesto, index) => {
+                            console.log("Iterating puesto: ", puesto); 
+                            return (
+                                <Vacante 
+                                    key={puesto || `puesto-${index}`} 
+                                    puestoId={puesto || 1001} 
+                                ></Vacante>
+                            );
+                        })}
                         <NuevaVacante key="nueva-vacante" nombreEmpresa={nombre}></NuevaVacante>
                     </Stack>
 
