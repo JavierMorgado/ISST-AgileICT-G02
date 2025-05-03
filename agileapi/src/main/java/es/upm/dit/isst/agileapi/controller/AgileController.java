@@ -112,7 +112,6 @@ public class AgileController {
     @GetMapping("/puestos/{id}")
     public ResponseEntity<Puesto> getPuestoById(@PathVariable Long id) {
         Optional<Puesto> puestoOpt = puestoRepository.findById(id);
-        log.info("HE LLEGADO HASTA AQUÍ");
         if (puestoOpt.isEmpty()) {
             log.warn("Puesto con ID {} no encontrado", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -123,19 +122,6 @@ public class AgileController {
 
     @PostMapping("/ofertas")
     ResponseEntity<Oferta> createOferta(@RequestBody Oferta oferta) {
-        // Validar si la oferta con ese ID ya existe
-        if (oferta.getId() == null) {
-            log.warn("El ID de la oferta no puede ser nulo");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        // Validar si la oferta con ese ID ya existe
-        Optional<Oferta> existingOferta = ofertaRepository.findById(oferta.getId());
-        if (existingOferta.isPresent()) {
-            log.warn("La oferta con ID {} ya existe", oferta.getId());
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-
         // Guardar la oferta en la base de datos
         Oferta savedOferta = ofertaRepository.save(oferta);
         log.info("Oferta creada con ID {}: {}", savedOferta.getId(), savedOferta.getPuesto().getNombrePuesto());
@@ -198,33 +184,47 @@ public class AgileController {
     }
 
     // Obtener el mejor profesional para una oferta
-    @GetMapping("/oferta/{id}/mejor-profesional")
+    @GetMapping("/puesto/{id}/mejor-profesional")
     public Profesional getMejorProfesional(@PathVariable Long id) {
-        // Buscar la oferta por ID
-        Optional<Oferta> ofertaOpt = ofertaRepository.findById(id);
-        if (ofertaOpt.isEmpty()) {
-            log.warn("Oferta con ID {} no encontrada", id);
-            return null; // O lanzar una excepción si prefieres
-        }
-
-        Oferta oferta = ofertaOpt.get();
-
-        // Obtener el puesto asociado a la oferta
-        Puesto puesto = oferta.getPuesto();
-        if (puesto == null) {
-            log.warn("La oferta con ID {} no tiene un puesto asociado", id);
+        Optional<Puesto> puestoOpt = puestoRepository.findById(id);
+        if (puestoOpt.isEmpty()) {
+            log.warn("Puesto con ID {} no encontrado", id);
             return null;
         }
-
+        Puesto puesto = puestoOpt.get();
+        log.info("Puesto encontrado con ID {}: {}", id, puesto.getNombrePuesto());
+        
         // Obtener todos los profesionales
         List<Profesional> profesionales = (List<Profesional>) profesionalRepository.findAll();
-
+        log.info("Número total de profesionales encontrados: {}", profesionales.size());
+        
         // Filtrar y encontrar el profesional más acorde
         Profesional mejorProfesional = profesionales.stream()
-            .filter(profesional -> profesional.getPuesto().equalsIgnoreCase(oferta.getPuesto().getNombrePuesto()))
-            .filter(profesional -> profesional.getCualidades().containsAll(puesto.getCualidadesPuesto()))
+        .filter(profesional -> {
+                log.info("Evaluando profesional con correo: {}", profesional.getCorreo());
+                log.info("Nombre del puesto requerido: {}", puesto.getNombrePuesto());
+                log.info("Puesto del profesional: {}", profesional.getPuesto());
+                return profesional.getPuesto().equalsIgnoreCase(puesto.getNombrePuesto());
+            })
             .filter(profesional -> {
-                // Comprobar si las fechas coinciden
+                log.info("Cualidades requeridas para el puesto: {}", puesto.getCualidadesPuesto());
+                log.info("Cualidades del profesional {}: {}", profesional.getCorreo(), profesional.getCualidades());
+
+                // Normalizar las cualidades a minúsculas para comparación
+                List<String> cualidadesPuesto = puesto.getCualidadesPuesto().stream()
+                    .map(String::toLowerCase)
+                    .toList();
+                List<String> cualidadesProfesional = profesional.getCualidades().stream()
+                    .map(String::toLowerCase)
+                    .toList();
+
+                boolean cumpleCualidades = cualidadesProfesional.containsAll(cualidadesPuesto);
+                log.info("El profesional {} cumple con las cualidades requeridas: {}", profesional.getCorreo(), cumpleCualidades);
+                return cumpleCualidades;
+            })
+            .filter(profesional -> {
+                log.info("Fechas requeridas para el puesto: Inicio = {}, Fin = {}", puesto.getFechaIni(), puesto.getFechaFin());
+                log.info("Fechas del profesional {}: Inicio = {}, Fin = {}", profesional.getCorreo(), profesional.getFechaIni(), profesional.getFechaFin());
                 return (profesional.getFechaIni().compareTo(puesto.getFechaIni()) <= 0 &&
                         profesional.getFechaFin().compareTo(puesto.getFechaFin()) >= 0);
             })
@@ -235,7 +235,6 @@ public class AgileController {
             log.info("No se encontró un profesional adecuado para la oferta con ID {}", id);
         } else {
             log.info("Profesional encontrado: {}", mejorProfesional.getCorreo());
-            oferta.setEstado(Estado.SOLICITADA);
         }
 
         return mejorProfesional;

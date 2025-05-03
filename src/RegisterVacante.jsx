@@ -73,21 +73,12 @@ export default function RegisterVacante(props){
 
             const { data: puestoCreado } = await crearPuesto(puestoToSend);
             console.log('Vacante registrada:', puestoCreado);
-            alert("Tu nueva vacante ha sido registrada con éxito.");
 
-            // const { data: profesional } = await asignarMejorProfesional(puestoCreado.id);
-            // console.log('Profesional asignado:', profesional);
+            const { data: profesional } = await asignarMejorProfesional(puestoCreado.id);
+            console.log('Profesional asignado:', profesional);
 
-            // const ofertaToSend = {
-            //     id: puestoCreado.id,
-            //     estado: "SOLICITADA",
-            //     puesto: puestoCreado.id,
-            //     profesional: profesional.correo,
-            // };
-
-            // await crearOferta(ofertaToSend);
-            // console.log('Oferta creada:', ofertaToSend);
-            // navigate(`/miPerfilEmpresa/${nombre}`);
+            const { data: oferta} = await crearOferta({estado: "SOLICITADA", puesto: puestoCreado, profesional: profesional});
+            console.log('Oferta creada:', oferta);
 
         } catch (error) {
             console.error('Error al registrar la vacante:', error);

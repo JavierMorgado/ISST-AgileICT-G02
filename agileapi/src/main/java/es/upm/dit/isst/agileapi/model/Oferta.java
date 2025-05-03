@@ -1,15 +1,17 @@
 package es.upm.dit.isst.agileapi.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.EnumType;
 
 @Entity
 public class Oferta {
     @Id @GeneratedValue(strategy = GenerationType.AUTO) private Long id;
-    private Estado estado;
+    @Enumerated(EnumType.STRING)private Estado estado;
     @ManyToOne private Puesto puesto;
     @ManyToOne private Profesional profesional;
 

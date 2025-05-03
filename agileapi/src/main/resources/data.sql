@@ -7,10 +7,10 @@ ARRAY['Java', 'Spring', 'React'], '2025-01-01', '2025-12-31');
 INSERT INTO puesto (id, nombre_puesto, descripcion_puesto, cualidades_puesto, fecha_ini, fecha_fin, empresa_nombre)
 VALUES (
   1001,
-  'Desarrollador Backend',
+  'Desarrollador Full Stack',
   'Responsable del desarrollo de APIs REST usando Spring Boot',
-  '["Java", "Spring", "SQL", "Docker"]',
-  '2025-04-01',
+  ARRAY['Spring', 'Java', 'React'],
+  '2025-01-01',
   '2025-12-31',
   'AgyleICT'
 );
