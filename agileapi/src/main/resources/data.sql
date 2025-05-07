@@ -22,3 +22,11 @@ VALUES (
   'profesional@example.com',
   'SOLICITADA'
 );
+
+INSERT INTO oferta (id, puesto_id, profesional_correo, estado)
+VALUES (
+  1002,
+  1001,
+  'profesional@example.com',
+  'ACEPTADA'
+);

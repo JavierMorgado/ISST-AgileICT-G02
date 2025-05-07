@@ -5,6 +5,7 @@ import { obtenerPuestoById } from './api/api.js';
 
 export default function Vacante(props){
     const [puesto, setPuesto] = useState(null);
+    const [estadoPuesto, setEstadoPuesto] = useState(null);
     const puestoId = props.puestoId;
     const nombreEmpresa = useParams();
 
@@ -41,6 +42,7 @@ export default function Vacante(props){
                         {puesto ? puesto.nombrePuesto : "Cargando..."} {/* Add fallback for null puesto */}
                     </h3>
                 </div>
+                <h3>{estadoPuesto}</h3>
             </Stack>
         </button>
     )

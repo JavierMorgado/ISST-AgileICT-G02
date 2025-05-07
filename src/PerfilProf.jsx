@@ -25,7 +25,7 @@ export default function PerfilProf(props) {
 
   function goToOfertas() {
     // Redirige a misOfertas pasando el correo como prop
-    navigate(`/misOfertas/${encodeURIComponent(correo)}`);
+    navigate(`/miPerfil/misOfertas/${encodeURIComponent(correo)}`);
     //window.location.href = "/misOfertas";
   }
 

@@ -9,10 +9,6 @@ const api = axios.create({
 export const registrarProfesional = (datos) => api.post('/profesionales', datos);
 export const obtenerPerfilProfesional = (correo) =>
   api.get(`/profesionales/${encodeURIComponent(correo)}`);
-export const obtenerOfertasAsignadas = (correo) =>
-  api.get(`/profesionales/${encodeURIComponent(correo)}/ofertas`);
-export const aceptarOferta = (idOferta, estado, correo) =>
-  api.patch(`/ofertas/${idOferta}`, { estado: estado, correo });
 
 
 // EMPRESAS
@@ -31,5 +27,12 @@ export const asignarMejorProfesional = (puestoId) =>
 
 // OFERTAS
 export const crearOferta = (oferta) => api.post('/ofertas', oferta);
+export const obtenerOfertasAsignadas = (correo) =>
+  api.get(`/profesionales/${encodeURIComponent(correo)}/ofertas`);
+export const cambiarEstadoOferta = (idOferta, estado) =>
+  api.patch(`/ofertas/${idOferta}/estado?estado=${encodeURIComponent(estado)}`);
+export const obtenerEstadoOferta = (idOferta) =>
+  api.get(`/ofertas/${idOferta}/estado`);
+
 
 export default api;

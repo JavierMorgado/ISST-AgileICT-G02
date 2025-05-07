@@ -159,7 +159,11 @@ public class AgileController {
         List<Oferta> ofertasList = new ArrayList<>();
         for (Long ofertaId : ofertas) {
             Optional<Oferta> ofertaOpt = ofertaRepository.findById(ofertaId);
-            ofertaOpt.ifPresent(ofertasList::add);
+            if (ofertaOpt.get().getEstado() == Estado.SOLICITADA) {
+                ofertaOpt.ifPresent(ofertasList::add);
+            } else {
+                log.info("Oferta no solicitada encontrada con ID {}: {}", ofertaId, ofertaOpt.get().getPuesto().getNombrePuesto());
+            }
         }
         if (ofertasList.isEmpty()) {
             log.info("No se encontraron ofertas válidas asociadas al profesional con correo {}", correo);
@@ -252,4 +256,40 @@ public class AgileController {
         return mejorProfesional;
     }
 
+    @PatchMapping("/ofertas/{id}/estado")
+    public ResponseEntity<Oferta> actualizarOferta(@PathVariable Long id, @RequestParam String estado) {
+        if ("aceptada".equalsIgnoreCase(estado)) {
+            return actualizarEstadoOferta(id, Estado.ACEPTADA);
+        } else if ("rechazada".equalsIgnoreCase(estado)) {
+            return actualizarEstadoOferta(id, Estado.RECHAZADA);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private ResponseEntity<Oferta> actualizarEstadoOferta(Long id, Estado nuevoEstado) {
+        // Obtener la oferta existente
+        Optional<Oferta> ofertaOpt = ofertaRepository.findById(id);
+        if (ofertaOpt.isEmpty()) {
+            log.warn("Oferta con ID {} no encontrada", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Oferta oferta = ofertaOpt.get();
+        
+        // Verificar si la transición de estado es válida
+        if (!oferta.getEstado().canTransitionTo(nuevoEstado)) {
+            log.warn("Transición de estado no permitida: {} -> {}", oferta.getEstado(), nuevoEstado);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        
+        // Actualizar el estado
+        oferta.setEstado(nuevoEstado);
+        
+        // Guardar la oferta actualizada
+        Oferta updatedOferta = ofertaRepository.save(oferta);
+        log.info("Estado de oferta con ID {} actualizado a: {}", id, nuevoEstado);
+        
+        return ResponseEntity.ok(updatedOferta);
+    }
+    
 }
