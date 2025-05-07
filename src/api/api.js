@@ -11,8 +11,9 @@ export const obtenerPerfilProfesional = (correo) =>
   api.get(`/profesionales/${encodeURIComponent(correo)}`);
 export const obtenerOfertasAsignadas = (correo) =>
   api.get(`/profesionales/${encodeURIComponent(correo)}/ofertas`);
-// export const aceptarOferta = (idOferta, correo) =>
-//   api.post(`/ofertas/${idOferta}/aceptar`, { correo });
+export const aceptarOferta = (idOferta, estado, correo) =>
+  api.patch(`/ofertas/${idOferta}`, { estado: estado, correo });
+
 
 // EMPRESAS
 export const registrarEmpresa = (datos) => api.post('/empresas', datos);

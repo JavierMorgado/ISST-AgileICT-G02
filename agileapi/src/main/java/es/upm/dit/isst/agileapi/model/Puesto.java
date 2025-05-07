@@ -90,7 +90,9 @@ public class Puesto {
     @JsonGetter("ofertas")
     public String[] getEmailsOfertas() {
         if (ofertas != null) {
-            return ofertas.stream().map(Oferta::getProfesional).toArray(String[]::new);
+            return ofertas.stream()
+                          .map(oferta -> oferta.getProfesional().getCorreo()) // Asegúrate de que getCorreo() existe en Profesional
+                          .toArray(String[]::new);
         } else {
             return new String[0];
         }

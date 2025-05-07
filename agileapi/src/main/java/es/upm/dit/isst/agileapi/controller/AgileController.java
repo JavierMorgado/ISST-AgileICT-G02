@@ -16,6 +16,8 @@ import es.upm.dit.isst.agileapi.repository.PuestoRepository;
 import org.slf4j.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
 
 import java.net.*;
@@ -141,20 +143,30 @@ public class AgileController {
         Optional<Profesional> profesionalOpt = profesionalRepository.findById(correo);
         if (profesionalOpt.isEmpty()) {
             log.warn("Profesional con correo {} no encontrado", correo);
-            return Collections.emptyList(); // O lanzar una excepción si prefieres
+            return null; // O lanzar una excepción si prefieres
         }
 
         Profesional profesional = profesionalOpt.get();
 
         // Obtener las ofertas asociadas al profesional
-        List<Oferta> ofertas = profesional.getOfertas();
-        if (ofertas.isEmpty()) {
+        Long[] ofertas = profesional.getEmailsOfertas();
+        if (ofertas.length == 0) {
             log.info("No se encontraron ofertas asociadas al profesional con correo {}", correo);
         } else {
-            log.info("Se encontraron {} ofertas asociadas al profesional con correo {}", ofertas.size(), correo);
+            log.info("Se encontraron {} ofertas asociadas al profesional con correo {}", ofertas.length, correo);
         }
 
-        return ofertas;
+        List<Oferta> ofertasList = new ArrayList<>();
+        for (Long ofertaId : ofertas) {
+            Optional<Oferta> ofertaOpt = ofertaRepository.findById(ofertaId);
+            ofertaOpt.ifPresent(ofertasList::add);
+        }
+        if (ofertasList.isEmpty()) {
+            log.info("No se encontraron ofertas válidas asociadas al profesional con correo {}", correo);
+            return null; // O lanzar una excepción si prefieres
+        }
+
+        return ofertasList;
     }
 
     /**
@@ -239,4 +251,5 @@ public class AgileController {
 
         return mejorProfesional;
     }
+
 }

@@ -13,7 +13,7 @@ export default function MisOfertas() {
           try {
             const { data } = await obtenerOfertasAsignadas(correo);
             setOfertas(data);
-            console.log(ofertas);
+            console.log("las ofertas:" + data);
           } catch (error) {
             console.error('Error al cargar ofertas:', error);
           }
@@ -40,33 +40,28 @@ export default function MisOfertas() {
     if (!ofertas) {
         return (
         <div className="d-flex justify-content-center align-items-center vh-100">
-            <h2>Cargando ofertas...</h2>
+            <h2>No tienes ofertas de momento :(</h2>
         </div>
         );
     }
 
     return (
-        
         <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
         <div className="d-flex justify-content-end align-items-center pt-3 me-3 w-50 mt-5">
             <h1>MIS OFERTAS</h1>
         </div>
 
         {ofertas.length === 0 ? (
-            // <div className="d-flex justify-content-end align-items-center pt-3 me-3 w-50 mt-5">
-            //     <h2>No tienes ofertas</h2>
-            // </div>
             <p>no tienes ofertas</p>
         ) : (
             ofertas.map((oferta) => (
                 <div
-                key={oferta.id}
-                style={{
-                    backgroundColor: "#002C4B",
-                    width: "75%",
-                    height: "50%",
-                }}
-                className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-5"
+                    key={oferta.id}
+                    style={{
+                        backgroundColor: "#002C4B",
+                        width: "75%",
+                    }}
+                    className="rounded-5 d-flex justify-content-center align-items-center mt-5"
                 >
                 <h5 style={{ color: "white" }}>{oferta.puesto.empresa.nombre}</h5>
                 <p style={{ color: "white" }}>{oferta.puesto.nombre}</p>
@@ -74,23 +69,22 @@ export default function MisOfertas() {
                 <p style={{ color: "white" }}>
                     {oferta.puesto.fechaIni} - {oferta.puesto.fechaFin}
                 </p>
-                <div className="d-flex justify-content-end mt-3">
+                <div className="d-flex justify-content-end">
                     <button
-                    className="btn btn-success me-2"
-                    onClick={() => handleAceptar(oferta.id)}
+                        className="btn background-white me-2"
+                        onClick={() => handleAceptar(oferta.id)}
                     >
-                    Aceptar
+                        <span className="material-symbols-outlined color-green">check</span>
                     </button>
                     <button
-                    className="btn btn-danger"
+                    className="btn background-white"
                     onClick={() => handleRechazar(oferta.id)}
                     >
-                    Rechazar
+                        <span className="material-symbols-outlined color-red">close</span>
                     </button>
                 </div>
                 </div>
             ))
-        
         )}
         </div>
     );

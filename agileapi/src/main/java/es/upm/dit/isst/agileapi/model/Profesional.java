@@ -19,6 +19,7 @@ import jakarta.validation.constraints.Email;
 @Entity
 public class Profesional {
     @Id @Email private String correo;
+    private String password;
     private String nombre;
     private String telefono;
     private String puesto;
@@ -32,10 +33,11 @@ public class Profesional {
     }
 
 
-    public Profesional(String nombre, @Email String correo, String telefono, String puesto,
+    public Profesional(@Email String correo, String password, String nombre, String telefono, String puesto,
             List<String> cualidades, String fechaIni, String fechaFin) {
-        this.nombre = nombre;
-        this.correo = correo;
+                this.nombre = correo;
+                this.password = password;
+                this.correo = nombre;
         this.telefono = telefono;
         this.puesto = puesto;
         this.cualidades = cualidades;
@@ -48,6 +50,9 @@ public class Profesional {
         return nombre;
     }
 
+    public String getPassword() {
+        return password;
+    }
 
     public String getCorreo() {
         return correo;
@@ -91,11 +96,11 @@ public class Profesional {
 
     //REVISAAAAAAAAAAAAAAAAAAAAAAAAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @JsonGetter("ofertas")
-    public String[] getEmailsOfertas() {
+    public Long[] getEmailsOfertas() {
         if (ofertas != null) {
-            return ofertas.stream().map(Oferta::getProfesional).toArray(String[]::new);
+            return ofertas.stream().map(Oferta::getId).toArray(Long[]::new);
         } else {
-            return new String[0];
+            return new Long[0];
         }
     }
 
@@ -113,6 +118,9 @@ public class Profesional {
         this.correo = correo;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
@@ -133,8 +141,9 @@ public class Profesional {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
         result = prime * result + ((correo == null) ? 0 : correo.hashCode());
+        result = prime * result + ((password == null) ? 0 : password.hashCode());
+        result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
         result = prime * result + ((telefono == null) ? 0 : telefono.hashCode());
         result = prime * result + ((puesto == null) ? 0 : puesto.hashCode());
         result = prime * result + ((cualidades == null) ? 0 : cualidades.hashCode());
@@ -162,6 +171,11 @@ public class Profesional {
             if (other.correo != null)
                 return false;
         } else if (!correo.equals(other.correo))
+            return false;
+        if (password == null) {
+            if (other.password != null)
+                return false;
+        } else if (!password.equals(other.password))
             return false;
         if (telefono == null) {
             if (other.telefono != null)
@@ -191,7 +205,7 @@ public class Profesional {
 
     @Override
     public String toString() {
-        return "Profesional [nombre=" + nombre + ", correo=" + correo + ", telefono=" + telefono + ", puesto=" + puesto
+        return "Profesional [correo=" + correo + ", password=" + password + "nombre=" + nombre + ", telefono=" + telefono + ", puesto=" + puesto
                 + ", cualidades=" + Arrays.toString(cualidades.toArray()) + ", fechaInicio=" + fechaIni + ", fechaFin=" + fechaFin + "]";
     }
 

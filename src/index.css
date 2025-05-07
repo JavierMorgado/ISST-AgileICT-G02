@@ -230,3 +230,15 @@ label.form-check-label {
 .background-transparent{
   background-color: transparent !important;
 }
+
+.background-white{
+  background-color: white !important;
+}
+
+.color-green{
+  color: #34c759 !important;
+}
+
+.color-red{
+  color: #ff3b30 !important;
+}
