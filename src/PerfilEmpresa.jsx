@@ -51,7 +51,7 @@ export default function PerfilEmpresa(props){
             {/*<MainMenu className */}
 
             <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
-                <div className='d-flex justify-content-end align-items-center pt-3 me-3 w-50 mt-5'>
+                <div className='d-flex justify-content-end align-items-center pt-3 mt-5'>
                     <h1>MI PERFIL DE EMPRESA</h1>
                 </div>
 
@@ -98,7 +98,6 @@ export default function PerfilEmpresa(props){
                     <h2 className='mt-4 mb-4'>MIS VACANTES</h2>
 
                     <Stack direction='horizontal' gap={3} className='align-items-center justify-content-center'>
-                        {console.log("Puestos: ", puestos)}
                         {puestos.map((puesto, index) => {
                             console.log("Iterating puesto: ", puesto); 
                             return (
@@ -110,6 +109,41 @@ export default function PerfilEmpresa(props){
                         })}
                         <NuevaVacante key="nueva-vacante" nombreEmpresa={nombre}></NuevaVacante>
                     </Stack>
+                    <p className='mt-5'>Estado de las vacantes</p>
+                    <div className='mt-1 d-flex justify-content-center align-items-center'>
+                        <div 
+                            style={{
+                                width: '20px',
+                                height: '20px',
+                                backgroundColor: 'orange',
+                                borderRadius: '50%',
+                                marginRight: '5px',
+                            }}
+                        ></div>
+                        <div className='white' style={{fontWeight:'100'}}>Pendiente</div>
+                        <div 
+                            style={{
+                                width: '20px',
+                                height: '20px',
+                                backgroundColor: '#ff3b30',
+                                borderRadius: '50%',
+                                marginLeft: '10px',
+                                marginRight: '5px',
+                            }}
+                        ></div>
+                        <div className='white' style={{fontWeight:'100'}}>Rechazada</div>
+                        <div 
+                            style={{
+                                width: '20px',
+                                height: '20px',
+                                backgroundColor: '#34c759',
+                                borderRadius: '50%',
+                                marginLeft: '10px',
+                                marginRight: '5px',
+                            }}
+                        ></div>
+                        <div className='white' style={{fontWeight:'100'}}>Aceptada</div>
+                    </div>
 
                 </div>
             </div>

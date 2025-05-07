@@ -292,4 +292,36 @@ public class AgileController {
         return ResponseEntity.ok(updatedOferta);
     }
     
+    @GetMapping("/puestos/{puestoId}/estado")
+    public ResponseEntity<List<Map<String, Object>>> getEstadosOfertasByPuestoId(@PathVariable Long puestoId) {
+        // Buscar el puesto por ID
+        Optional<Puesto> puestoOpt = puestoRepository.findById(puestoId);
+        if (puestoOpt.isEmpty()) {
+            log.warn("Puesto con ID {} no encontrado", puestoId);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        Puesto puesto = puestoOpt.get();
+        List<Oferta> ofertas = puesto.getOfertas();
+        
+        if (ofertas == null || ofertas.isEmpty()) {
+            log.info("No se encontraron ofertas asociadas al puesto con ID {}", puestoId);
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        }
+        
+        // Crear una lista de respuestas con información relevante
+        List<Map<String, Object>> response = new ArrayList<>();
+        for (Oferta oferta : ofertas) {
+            Map<String, Object> ofertaInfo = new HashMap<>();
+            ofertaInfo.put("ofertaId", oferta.getId());
+            ofertaInfo.put("estado", oferta.getEstado().toString());
+            ofertaInfo.put("profesionalCorreo", oferta.getProfesional() != null ? 
+                            oferta.getProfesional().getCorreo() : null);
+            
+            response.add(ofertaInfo);
+        }
+        
+        log.info("Se encontraron {} ofertas para el puesto con ID {}", ofertas.size(), puestoId);
+        return ResponseEntity.ok(response);
+    }
 }

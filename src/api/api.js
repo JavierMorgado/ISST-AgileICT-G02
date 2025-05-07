@@ -24,6 +24,8 @@ export const obtenerPuestoById = (puestoId) =>
 //PUESTOS
 export const asignarMejorProfesional = (puestoId) =>
   api.get(`/puesto/${puestoId}/mejor-profesional`); // suponiendo que haces esto después del POST
+export const obtenerOfertadePuesto = (puestoId) =>
+  api.get(`/puestos/${puestoId}/estado`);
 
 // OFERTAS
 export const crearOferta = (oferta) => api.post('/ofertas', oferta);

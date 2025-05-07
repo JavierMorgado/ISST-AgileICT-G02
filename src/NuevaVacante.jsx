@@ -11,7 +11,7 @@ export default function NuevaVacante({nombreEmpresa}){
 
     return(
         <button onClick={goToNuevaVacante} className='background-transparent' id={`nueva-vacante-${nombreEmpresa}`}>
-            <Stack className='align-items-center justify-content-center rounded-5' style={{backgroundColor: '#D83000'}}>
+            <Stack className='align-items-center justify-content-center rounded-5' style={{backgroundColor: '#D83000', height: '8rem', width: '20rem'}}>
                 <div className='mt-4 mb-4 me-5 ms-5'>
                     <h3 className='text-uppercase'>Nueva <br /> Vacante <br /><h1 className='fw-normal'  style={{ lineHeight: '0.75' }}>+</h1></h3>
                 </div>
