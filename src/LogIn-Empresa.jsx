@@ -22,7 +22,7 @@ export default function LogInEmpresa(props){
         try {
           const { data } = await obtenerPerfilEmpresa(Nombre);
           console.log('Empresa encontrada:', data);
-          navigate(`/miPerfilEmpresa/${data.Nombre}`);
+          navigate(`/miPerfilEmpresa/${data.nombre}`);
         } catch (error) {
           console.error('Error al iniciar sesión:', error);
           alert('Empresa no encontrada');
