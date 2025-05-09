@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { obtenerPuestoById, obtenerOfertadePuesto } from './api/api.js';
 import { set } from 'date-fns';
 
@@ -8,7 +8,7 @@ export default function Vacante(props){
     const [puesto, setPuesto] = useState(null);
     const [estadoPuesto, setEstadoPuesto] = useState(null);
     const puestoId = props.puestoId;
-    const nombreEmpresa = useParams();
+    const { nombre } = useParams();
 
     useEffect(() => {
         const fetchPuestoData = async () => {
@@ -48,8 +48,10 @@ export default function Vacante(props){
         fetchPuestoData();
     }, [puestoId]); // Ensure puestoId is included in dependencies
 
+    const navigate = useNavigate();
+
     function goToVacante(){
-        window.location.href = '/mi-empresa/vacante';
+        navigate(`/miEmpresa/${nombre}/puestos/${puestoId}`)
     }
 
     return(

@@ -193,6 +193,10 @@ label.form-check-label {
   color: white !important;
 }
 
+.black{
+  color: black !important;
+}
+
 .size10{
   font-size: 10px !important;
   letter-spacing: 3px !important;
@@ -241,4 +245,8 @@ label.form-check-label {
 
 .color-red{
   color: #ff3b30 !important;
+}
+
+.caps{
+  text-transform: uppercase !important;
 }

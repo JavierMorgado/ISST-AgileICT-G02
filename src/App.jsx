@@ -9,6 +9,8 @@ import PerfilEmpresa from './PerfilEmpresa.jsx';
 import PerfilProf from './PerfilProf.jsx';
 import RegisterVacante from './RegisterVacante.jsx';
 import MisOfertas from './MisOfertas.jsx';
+import InVacante from './inVacante.jsx';
+import PerfilPuestoProfesional from './PerfilPuestoProfesional.jsx';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -30,9 +32,11 @@ function App() {
         <Route path="/register-empresa" element={<RegisterEmpresa />} />
         <Route path="/register-profesional" element={<RegisterProf />} />
         <Route path="/miPerfil/:correo" element={<PerfilProf />} />
-        <Route path="/miPerfilEmpresa/:nombre" element={<PerfilEmpresa />} />
         <Route path="/miPerfil/misOfertas/:correo" element={<MisOfertas />} />
+        <Route path="/miEmpresa/:nombre" element={<PerfilEmpresa />} />
         <Route path="/miEmpresa/:nombre/nueva-vacante" element={<RegisterVacante />} />
+        <Route path="/miEmpresa/:nombre/puestos/:puestoId" element={<InVacante />} />
+        <Route path="/miEmpresa/:nombre/puestos/:puestoId/profesional" element={<PerfilPuestoProfesional />} />
       </Routes>
     </BrowserRouter>
   );

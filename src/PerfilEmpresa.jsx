@@ -103,7 +103,7 @@ export default function PerfilEmpresa(props){
                             return (
                                 <Vacante 
                                     key={puesto || `puesto-${index}`} 
-                                    puestoId={puesto || 1002} 
+                                    puestoId={puesto || 1002}
                                 ></Vacante>
                             );
                         })}

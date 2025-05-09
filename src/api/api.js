@@ -17,15 +17,19 @@ export const obtenerPerfilEmpresa = (nombre) =>
   api.get(`/empresas/${nombre}`);
 export const obtenerPuestosDeEmpresa = (nombre) =>
   api.get(`/empresa/${nombre}/puestos`);
+
+//PUESTOS
 export const crearPuesto = (puesto) => api.post('/puestos', puesto);
 export const obtenerPuestoById = (puestoId) =>
   api.get(`/puestos/${puestoId}`);
-
-//PUESTOS
 export const asignarMejorProfesional = (puestoId) =>
   api.get(`/puesto/${puestoId}/mejor-profesional`); // suponiendo que haces esto después del POST
 export const obtenerOfertadePuesto = (puestoId) =>
   api.get(`/puestos/${puestoId}/estado`);
+export const deletePuesto = (puestoId) =>
+  api.delete(`/puestos/${puestoId}`);
+export const getProfesionalPuesto = (puestoId) =>
+  api.get(`/puestos/${puestoId}/profesional`);
 
 // OFERTAS
 export const crearOferta = (oferta) => api.post('/ofertas', oferta);

@@ -181,7 +181,7 @@ export default function RegisterVacante(props){
                 <button type="submit" className="btn btn-light rounded-pill px-4 fw-semibold me-3 mb-3">
                         PUBLICAR
                 </button>
-                <button  onClick={() => navigate(`/miPerfilEmpresa/${nombre}`)} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
+                <button  onClick={() => navigate(`/miEmpresa/${nombre}`)} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
                         VOLVER A MI PERFIL
                 </button>
             </form>

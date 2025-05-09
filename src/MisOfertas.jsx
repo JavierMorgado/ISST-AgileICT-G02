@@ -38,11 +38,6 @@ export default function MisOfertas() {
         }
     };
 
-    
-
-    function goToPerfil(){
-        Navigate(`/miPerfil/${encodeURIComponent(correo)}`);
-    }
 
     // Si las ofertas aún no se han cargado, muestra un mensaje de carga o un spinner
     if (ofertas === null) {
@@ -54,9 +49,9 @@ export default function MisOfertas() {
     }
 
     return (
-        <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
+        <div className="d-flex flex-column justify-content-start align-items-center mb-5">
         <div className="d-flex justify-content-end align-items-center pt-3 mt-5">
-            <h1>MIS OFERTAS</h1>
+            <h1 className='black'>MIS OFERTAS</h1>
         </div>
 
         {ofertas.length === 0 ? (
@@ -71,12 +66,13 @@ export default function MisOfertas() {
                     className="rounded-5 d-flex justify-content-center align-items-center mt-5 ps-5 pe-5 pt-3 pb-3"
                 >
                 <div className='d-flex flex-column justify-content-center align-items-start me-5'>
-                    <h3 style={{ color: "white" }}>{oferta.puesto.empresa.nombre}</h3>
-                    <p style={{ color: "white" }}>{oferta.puesto.nombrePuesto}</p>
-                    <p style={{ color: "white" }}>{oferta.puesto.descripcionPuesto}</p>
-                    <p style={{ color: "white" }}>
-                        {oferta.puesto.fechaIni} - {oferta.puesto.fechaFin}
-                    </p>
+                    <div style={{ color: "white", fontWeight: '500', fontSize: '30px' }}>{oferta.puesto.empresa.nombre}</div>
+                    <div style={{ color: "white", fontWeight: '100', fontSize: '18px' }}>{oferta.puesto.nombrePuesto}</div>
+                    <div style={{ color: "white", fontWeight: '100', fontSize: '18px' }}>{oferta.puesto.descripcionPuesto}</div>
+                    <div style={{fontWeight: '100', fontSize: '18px' }} className='d-flex'>{oferta.puesto ? oferta.puesto.cualidadesPuesto.map((cualidad, index) => (
+                            <div key={index} className='bg-white rounded-5 ps-2 pe-2 me-1 ms-1'>{cualidad}</div>
+                        )) : "cargando..."}</div>
+                    <div style={{ color: "white", fontWeight: '100', fontSize: '18px' }}>{oferta.puesto.fechaIni} - {oferta.puesto.fechaFin}</div>
                 </div>
                 <div className="d-flex justify-content-end">
                     <button
@@ -96,11 +92,6 @@ export default function MisOfertas() {
             ))
             
         )}
-        <div>
-            <button  onClick={() => navigate(`/miPerfil/${correo}`)} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
-                VOLVER A MI PERFIL
-            </button>
-        </div>
         </div>
     );
 }

@@ -15,14 +15,14 @@ export default function LogInEmpresa(props){
     }
 
     function gotoEmpresa(){
-        window.location.href = '/miPerfilEmpresa/AgyleICT';
+        window.location.href = '/miEmpresa/AgyleICT';
     }
 
     const handleLogin = async () => {
         try {
           const { data } = await obtenerPerfilEmpresa(Nombre);
           console.log('Empresa encontrada:', data);
-          navigate(`/miPerfilEmpresa/${data.Nombre}`);
+          navigate(`/miEmpresa/${data.Nombre}`);
         } catch (error) {
           console.error('Error al iniciar sesión:', error);
           alert('Empresa no encontrada');

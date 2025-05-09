@@ -1,18 +1,18 @@
 import React from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { obtenerPerfilProfesional } from "./api/api";
-import MisOfertas from "./MisOfertas";
+import { getProfesionalPuesto } from "./api/api";
 
-export default function PerfilProf(props) {
+export default function PerfilPuestoProfesional(props) {
   const navigate = useNavigate();
-  const { correo } = useParams();
+  const { puestoId } = useParams();
+  const { nombre } = useParams();
   const [perfil, setPerfil] = useState(null);
 
   useEffect(() => {
     const fetchPerfil = async () => {
       try {
-        const { data } = await obtenerPerfilProfesional(correo);
+        const { data } = await getProfesionalPuesto(puestoId);
         setPerfil(data);
         console.log(data);
         console.log(perfil);
@@ -21,7 +21,12 @@ export default function PerfilProf(props) {
       }
     };
     fetchPerfil();
-  }, [correo]);
+  }, [puestoId]);
+
+
+  function goToPerfil(){
+      navigate(`/miEmpresa/${nombre}`)
+  }
 
   // Si el perfil aún no se ha cargado, muestra un mensaje de carga o un spinner
   if (!perfil) {
@@ -35,7 +40,7 @@ export default function PerfilProf(props) {
   return (
     <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
       <div className='d-flex align-items-center pt-3 mt-5 mb-5'>
-          <h1>MI PERFIL</h1>
+          <h1>TU NUEVO PROFESIONAL</h1>
       </div>
 
       <div
@@ -77,9 +82,12 @@ export default function PerfilProf(props) {
               </div>
           )}
         </div>
-
+    
+        <button  onClick={goToPerfil} type="button" className="btn btn-light rounded-pill px-4 fw-semibold mb-5">
+              VOLVER A MI PERFIL
+        </button>
       </div>
-      <MisOfertas></MisOfertas>
+
     </div>
   );
 }

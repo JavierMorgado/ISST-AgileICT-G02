@@ -122,12 +122,73 @@ public class AgileController {
         return ResponseEntity.ok(puestoOpt.get());
     }
 
+    @GetMapping("/puestos/{id}/profesional")
+    public ResponseEntity<Profesional> getProfesionalByPuestoId(@PathVariable Long id) {
+        // Buscar el puesto por ID
+        Optional<Puesto> puestoOpt = puestoRepository.findById(id);
+        if (puestoOpt.isEmpty()) {
+            log.warn("Puesto con ID {} no encontrado", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        Puesto puesto = puestoOpt.get();
+        List<Oferta> ofertas = puesto.getOfertas();
+        
+        // Verificar si hay ofertas asociadas al puesto
+        if (ofertas == null || ofertas.isEmpty()) {
+            log.info("No se encontraron ofertas asociadas al puesto con ID {}", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        // Buscar la primera oferta que tenga un profesional asignado y estado ACEPTADA
+        Optional<Oferta> ofertaConProfesional = ofertas.stream()
+                .filter(oferta -> oferta.getProfesional() != null && 
+                                Estado.ACEPTADA.equals(oferta.getEstado()))
+                .findFirst();
+        
+        if (ofertaConProfesional.isEmpty()) {
+            log.info("No se encontró ninguna oferta con profesional asignado y estado ACEPTADA para el puesto con ID {}", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        
+        Profesional profesional = ofertaConProfesional.get().getProfesional();
+        log.info("Profesional encontrado para el puesto con ID {}: {}", id, profesional.getCorreo());
+        
+        return ResponseEntity.ok(profesional);
+    }
+
     @PostMapping("/ofertas")
     ResponseEntity<Oferta> createOferta(@RequestBody Oferta oferta) {
         // Guardar la oferta en la base de datos
         Oferta savedOferta = ofertaRepository.save(oferta);
         log.info("Oferta creada con ID {}: {}", savedOferta.getId(), savedOferta.getPuesto().getNombrePuesto());
         return ResponseEntity.status(HttpStatus.CREATED).body(savedOferta);
+    }
+
+    @DeleteMapping("/puestos/{id}")
+    public ResponseEntity<Void> deletePuesto(@PathVariable Long id) {
+        Optional<Puesto> puestoOpt = puestoRepository.findById(id);
+        if (puestoOpt.isEmpty()) {
+            log.warn("Puesto con ID {} no encontrado", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Puesto puesto = puestoOpt.get();
+        
+        // Obtener todas las ofertas asociadas al puesto
+        List<Oferta> ofertas = puesto.getOfertas();
+        
+        // Eliminar todas las ofertas asociadas
+        if (ofertas != null && !ofertas.isEmpty()) {
+            log.info("Eliminando la oferta asociada al puesto con ID {}", id);
+            ofertaRepository.deleteAll(ofertas);
+        }
+
+        // Ahora podemos eliminar el puesto
+        puestoRepository.delete(puesto);
+        log.info("Puesto con ID {} eliminado", id);
+
+        return ResponseEntity.noContent().build();
     }
 
 
