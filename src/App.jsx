@@ -32,11 +32,11 @@ function App() {
         <Route path="/register-empresa" element={<RegisterEmpresa />} />
         <Route path="/register-profesional" element={<RegisterProf />} />
         <Route path="/miPerfil/:correo" element={<PerfilProf />} />
+        <Route path="/miEmpresa/:email" element={<PerfilEmpresa />} />
         <Route path="/miPerfil/misOfertas/:correo" element={<MisOfertas />} />
-        <Route path="/miEmpresa/:nombre" element={<PerfilEmpresa />} />
-        <Route path="/miEmpresa/:nombre/nueva-vacante" element={<RegisterVacante />} />
-        <Route path="/miEmpresa/:nombre/puestos/:puestoId" element={<InVacante />} />
-        <Route path="/miEmpresa/:nombre/puestos/:puestoId/profesional" element={<PerfilPuestoProfesional />} />
+        <Route path="/miEmpresa/:email/nueva-vacante" element={<RegisterVacante />} />
+        <Route path="/miEmpresa/:email/puestos/:puestoId" element={<InVacante />} />
+        <Route path="/miEmpresa/:email/puestos/:puestoId/profesional" element={<PerfilPuestoProfesional />} />
       </Routes>
     </BrowserRouter>
   );

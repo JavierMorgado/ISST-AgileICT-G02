@@ -13,12 +13,10 @@ export const obtenerPerfilProfesional = (correo) =>
 
 // EMPRESAS
 export const registrarEmpresa = (datos) => api.post('/empresas', datos);
-export const obtenerPerfilEmpresa = (nombre) =>
-  api.get(`/empresas/${nombre}`);
-export const obtenerPuestosDeEmpresa = (nombre) =>
-  api.get(`/empresa/${nombre}/puestos`);
-
-//PUESTOS
+export const obtenerPerfilEmpresa = (correo) =>
+  api.get(`/empresas/${encodeURIComponent(correo)}`);
+export const obtenerPuestosDeEmpresa = (correo) =>
+  api.get(`/empresas/${encodeURIComponent(correo)}/puestos`);
 export const crearPuesto = (puesto) => api.post('/puestos', puesto);
 export const obtenerPuestoById = (puestoId) =>
   api.get(`/puestos/${puestoId}`);

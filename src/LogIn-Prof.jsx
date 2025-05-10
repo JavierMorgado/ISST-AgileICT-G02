@@ -1,15 +1,26 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import agylelogo from "./assets/agyleICT.png";
-import viteLogo from "/vite.svg";
+import { useNavigate } from "react-router-dom";
+import { obtenerPerfilProfesional } from "./api/api";
 
 export default function LogInProf(props) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   function goToRegisterProf() {
-    window.location.href = "/register-profesional";
+    navigate("/register-profesional");
   }
+
+  const handleLogin = async () => {
+    try {
+      const { data } = await obtenerPerfilProfesional(email);
+      console.log('Profesional encontrado:', data);
+      navigate(`/miPerfil/${encodeURIComponent(data.correo)}`);
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      alert('Usuario no encontrado');
+    }
+  };
 
   return (
     <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
@@ -41,6 +52,10 @@ export default function LogInProf(props) {
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="off"
           />
+
+          <button  onClick={handleLogin} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
+            Iniciar sesión
+          </button>
         </div>
 
         <h4 className="mb-4">SI NO TIENES CUENTA REGÍSTRATE AQUÍ</h4>

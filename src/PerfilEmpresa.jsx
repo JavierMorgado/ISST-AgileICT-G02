@@ -9,7 +9,7 @@ import NuevaVacante from './NuevaVacante';
 import { obtenerPerfilEmpresa, obtenerPuestosDeEmpresa } from './api/api.js';
 
 export default function PerfilEmpresa(props){
-    const { nombre } = useParams();
+    const { email } = useParams();
     const navigate = useNavigate();
 
     const [empresa, setEmpresa] = useState(null);
@@ -19,10 +19,10 @@ export default function PerfilEmpresa(props){
     useEffect(() => {
         const fetchEmpresaData = async () => {
             try {
-                console.log("nombre de la empresa: ", nombre);
-                const resEmpresa = await obtenerPerfilEmpresa(nombre);
+                console.log("email de la empresa: ", email);
+                const resEmpresa = await obtenerPerfilEmpresa(email);
                 console.log("resEmpresa: ", resEmpresa.data);
-                const resPuestos = await obtenerPuestosDeEmpresa(nombre);
+                const resPuestos = await obtenerPuestosDeEmpresa(email);
                 console.log("resPuestos: ", resPuestos.data);
                 setEmpresa(resEmpresa.data);
                 setPuestos(resPuestos.data);
@@ -35,7 +35,7 @@ export default function PerfilEmpresa(props){
         };
 
         fetchEmpresaData();
-    }, [nombre]);
+    }, [email]);
 
     function goToBranding(){
         window.location.href = '/mi-empresa/branding';
@@ -107,7 +107,7 @@ export default function PerfilEmpresa(props){
                                 ></Vacante>
                             );
                         })}
-                        <NuevaVacante key="nueva-vacante" nombreEmpresa={nombre}></NuevaVacante>
+                        <NuevaVacante key="nueva-vacante" emailEmpresa={email}></NuevaVacante>
                     </Stack>
                     <p className='mt-5'>Estado de las vacantes</p>
                     <div className='mt-1 d-flex justify-content-center align-items-center'>

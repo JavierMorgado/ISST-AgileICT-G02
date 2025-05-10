@@ -7,7 +7,7 @@ import { obtenerPerfilEmpresa } from './api/api.js';
 
 export default function LogInEmpresa(props){
     const navigate = useNavigate();
-    const [Nombre, setNombre] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     function goToRegisterEmpresa(){
@@ -20,7 +20,7 @@ export default function LogInEmpresa(props){
 
     const handleLogin = async () => {
         try {
-          const { data } = await obtenerPerfilEmpresa(Nombre);
+          const { data } = await obtenerPerfilEmpresa(email);
           console.log('Empresa encontrada:', data);
           navigate(`/miEmpresa/${data.Nombre}`);
         } catch (error) {
@@ -44,8 +44,8 @@ export default function LogInEmpresa(props){
                             label="Empresa"
                             name="nombre"
                             placeholder="rh@agyleict.com"
-                            value={Nombre}
-                            onChange={(e) => setNombre(e.target.value)}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             style={{paddingRight: '2rem', paddingLeft: '2rem'}}
                             autoComplete="off"
                         />
