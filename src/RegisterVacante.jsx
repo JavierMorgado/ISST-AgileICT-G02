@@ -117,37 +117,71 @@ export default function RegisterVacante(props){
                 />
 
                 <div className="d-flex justify-content-between mb-5">
-                    {/* Fecha de Inicio */}
-                    <div className="me-3 flex-grow-1 d-flex flex-column align-items-center">
-                        <label className="text-uppercase">Fecha de Inicio</label>
-                        <DatePicker
-                        selected={VacanteData.fecha_ini}
-                        onChange={(date) =>
-                            setVacanteData({ ...VacanteData, fecha_ini: date })
-                        }
-                        placeholderText="Selecciona una fecha"
-                        dateFormat="dd/MM/yyyy"
-                        style={{ color: "black" }}
-                        />
+                    
+                    <div className='d-flex flex-column align-items-center justify-content-between'>
+                        {/* Fecha de Inicio */}
+                        <div className="me-3 flex-grow-1 d-flex flex-column align-items-center">
+                            <label className="text-uppercase">Fecha de Inicio</label>
+                            <DatePicker
+                            selected={VacanteData.fecha_ini}
+                            onChange={(date) =>
+                                setVacanteData({ ...VacanteData, fecha_ini: date })
+                            }
+                            placeholderText="Selecciona una fecha"
+                            dateFormat="dd/MM/yyyy"
+                            style={{ color: "black" }}
+                            />
+                        </div>
+
+                        <div className="d-flex flex-row justify-content-center align-items-center">
+                            <h6>INDEFINIDO</h6>
+                            <div className="form-switch mt-2" style={{ marginBottom: "1rem" }}>
+                                <input
+                                    type="switch"
+                                    className="form-check-input"
+                                    id="indefinidoFin"
+                                    checked={VacanteData.indefinidoFin}
+                                    onChange={() => handleIndefinidoChange("indefinidoFin")}
+                                    style={{ transform: "scale(0.8)" }}
+                                />
+                            </div>
+                        </div>
                     </div>
+
         
-                    {/* Fecha de Fin */}
-                    <div className="flex-grow-1 d-flex flex-column align-items-center">
-                        <label className="text-uppercase">Fecha de Fin</label>
-                        <DatePicker
-                        selected={VacanteData.fecha_fin}
-                        onChange={(date) =>
-                            setVacanteData({ ...VacanteData, fecha_fin: date })
-                        }
-                        placeholderText="Selecciona una fecha"
-                        dateFormat="dd/MM/yyyy"
-                        style={{ color: "black" }}
-                        />
+                    <div className='d-flex flex-column align-items-center'>
+                        {/* Fecha de Fin */}
+                        <div className="flex-grow-1 d-flex flex-column align-items-center">
+                            <label className="text-uppercase">Fecha de Fin</label>
+                            <DatePicker
+                            selected={VacanteData.fecha_fin}
+                            onChange={(date) =>
+                                setVacanteData({ ...VacanteData, fecha_fin: date })
+                            }
+                            placeholderText="Selecciona una fecha"
+                            dateFormat="dd/MM/yyyy"
+                            style={{ color: "black" }}
+                            />
+                        </div>
+                        
+                        <div className="d-flex flex-row justify-content-center align-items-center">
+                            <h6>INDEFINIDO</h6>
+                            <div className="form-switch mt-2" style={{ marginBottom: "1rem" }}>
+                                <input
+                                    type="switch"
+                                    className="form-check-input"
+                                    id="indefinidoFin"
+                                    checked={VacanteData.indefinidoFin}
+                                    onChange={() => handleIndefinidoChange("indefinidoFin")}
+                                    style={{ transform: "scale(0.8)" }}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <Stack className="mb-3 align-items-center">
-                    <Stack direction='vertical' align-items='center' gap={2}>
+                <div className="mb-3 align-items-center">
+                    <div className="d-flex flex-column align-items-center">
                         <FormInput
                             label="Cualidades Técnicas"
                             name="cualidades"
@@ -155,6 +189,18 @@ export default function RegisterVacante(props){
                             value={VacanteData.cualidades}
                             onChange={handleChange}
                         />
+
+                        {cualidadesList.map((cualidad, index) => (
+                            <div
+                                key={index}
+                                className="btn btn-light rounded-pill px-3 py-1 mb-2"
+                                style={{ border: "1px solid #ccc", cursor: "pointer", marginTop: "5px" }}
+                                onClick={() => handleRemoveCualidad(index)}
+                                title="Haz clic para eliminar"
+                            >
+                                {cualidad}
+                            </div>
+                        ))}
 
                         <button
                             onClick={handleAddCualidad}
@@ -164,21 +210,10 @@ export default function RegisterVacante(props){
                             Añadir
                         </button>
 
-                        {cualidadesList.map((cualidad, index) => (
-                            <div
-                                key={index}
-                                className="btn btn-light rounded-pill px-3 py-1"
-                                style={{ border: "1px solid #ccc", cursor: "pointer", marginTop: "5px" }}
-                                onClick={() => handleRemoveCualidad(index)}
-                                title="Haz clic para eliminar"
-                            >
-                                {cualidad}
-                            </div>
-                        ))}
-                    </Stack>
-                </Stack>
+                    </div>
+                </div>
 
-                <button type="submit" className="btn btn-light rounded-pill px-4 fw-semibold me-3 mb-3">
+                <button type="submit" className="btn btn-light rounded-pill px-4 fw-semibold mb-3">
                         PUBLICAR
                 </button>
                 <button  onClick={() => navigate(`/miEmpresa/${nombre}`)} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">

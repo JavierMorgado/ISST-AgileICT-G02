@@ -63,7 +63,7 @@ export default function RegisterEmpresa(props){
 
             <form
                 onSubmit={handleSubmit}
-                className='btext-white rounded-5 mt-5 mb-5 p-4 d-flex flex-column align-items-center'
+                className='btext-white rounded-5 mt-5 mb-5 p-4 d-flex flex-column align-items-center mb-5'
                 style={{backgroundColor: '#002C4B', width: '50%'}}
             >
                 

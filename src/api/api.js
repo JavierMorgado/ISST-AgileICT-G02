@@ -30,7 +30,8 @@ export const deletePuesto = (puestoId) =>
   api.delete(`/puestos/${puestoId}`);
 export const getProfesionalPuesto = (puestoId) =>
   api.get(`/puestos/${puestoId}/profesional`);
-
+export const editPuestoById = (puestoId, puesto) =>
+  api.put(`/puestos/${puestoId}`, puesto);
 // OFERTAS
 export const crearOferta = (oferta) => api.post('/ofertas', oferta);
 export const obtenerOfertasAsignadas = (correo) =>

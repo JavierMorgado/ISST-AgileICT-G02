@@ -6,7 +6,7 @@ import agylelogo from './assets/agyleICT.png';
 import MainMenu from './MainMenu';
 import Vacante from './Vacante';
 import NuevaVacante from './NuevaVacante';
-import {obtenerPuestoById, obtenerOfertadePuesto} from './api/api.js';
+import {obtenerPuestoById, obtenerOfertadePuesto, editPuestoById} from './api/api.js';
 
 export default function inVacante(props){
     const navigate = useNavigate();
@@ -88,12 +88,13 @@ export default function inVacante(props){
                     <h1>{puesto ? puesto.nombrePuesto : "Cargando..."}</h1>
                 </div>
 
-                <div style={{backgroundColor: '#002C4B', width: '75%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-5">
+                <div style={{backgroundColor: '#002C4B', width: '75%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
                     <button onClick={deletePuestoById}>
                         <span className="material-symbols-outlined white">
                             delete
                         </span>
                     </button>
+
                     <h4 className='caps'>Descripción del puesto:</h4>
                     <div className='white mb-5'>{puesto ? puesto.descripcionPuesto :"cargando..." }</div>
                     

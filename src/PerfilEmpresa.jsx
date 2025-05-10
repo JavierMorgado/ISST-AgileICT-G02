@@ -55,7 +55,7 @@ export default function PerfilEmpresa(props){
                     <h1>MI PERFIL DE EMPRESA</h1>
                 </div>
 
-                <div style={{backgroundColor: '#002C4B', width: '75%', height: '65%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-5">
+                <div style={{backgroundColor: '#002C4B', width: '75%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5 pt-3 pb-3">
                     <Row style={{width: '100%'}}>
                         <Col md={4} className='d-flex justify-content-center'>
                             <Stack className='align-items-center justify-content-center'>

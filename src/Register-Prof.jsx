@@ -4,6 +4,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { registrarProfesional } from "./api/api";
+import FormInput from './FormInput';
+
 
 export default function RegisterProf(props) {
   const navigate = useNavigate();
@@ -101,133 +103,133 @@ export default function RegisterProf(props) {
 
       <form
         onSubmit={handleSubmit}
-        className="btext-white rounded-4 mt-4 p-4 d-flex flex-column align-items-center"
+        className="btext-white rounded-4 mt-4 p-4 d-flex flex-column align-items-center mb-5"
         style={{ backgroundColor: "#D83000", width: "50%" }}
       >
         <h5 className="text-uppercase mb-4">Datos personales</h5>
-        {/* FALTA CREAR IMG */}
-        <div className="mb-3 w-100">
-          <h6 className="text-uppercase">Nombre</h6>
-          <input
-            type="text"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-            placeholder="Ej. AgyleICT"
-          />
-        </div>
-        <div className="mb-3 w-100">
-          <h6 className="text-uppercase">Contraseña</h6>
-          <input
-            type="text"
-            name="password"
-            placeholder="***********"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="mb-3 w-100">
-          <h6 className="text-uppercase">Correo</h6>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="rh@agyleict.com"
-          />
-        </div>
-        <div className="mb-4 w-100">
-          <h6 className="text-uppercase">Móvil</h6>
-          <input
-            type="text"
-            name="movil"
-            value={formData.movil}
-            onChange={handleChange}
-            placeholder="91 654 55 45"
-          />
-        </div>
-        <h5 className="text-uppercase mb-4 mt-4">Datos profesionales</h5>
-        <div className="mb-3 w-100">
-          <h6 className="text-uppercase">Puesto</h6>
-          <input
-            type="text"
-            name="puesto"
-            value={formData.puesto}
-            onChange={handleChange}
-            placeholder="Ej. Jefe de Producto"
-          />
-        </div>
-        <div className="mb-3 w-100">
-          <h6 className="text-uppercase">Cualidades Técnicas</h6>
-          <div className="d-flex">
+          <div className="mb-3 w-100">
+            <h6 className="text-uppercase">Nombre</h6>
             <input
               type="text"
-              name="cualidades"
-              value={formData.cualidades}
+              name="nombre"
+              value={formData.nombre}
               onChange={handleChange}
-              placeholder="Ej. C++"
-              className="flex-grow-1"
+              placeholder="Ej. AgyleICT"
             />
+          </div>
+          <div className="mb-3 w-100">
+            <h6 className="text-uppercase">Contraseña</h6>
+            <input
+              type="text"
+              name="password"
+              placeholder="***********"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-3 w-100">
+            <h6 className="text-uppercase">Correo</h6>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="rh@agyleict.com"
+            />
+          </div>
+          <div className="mb-4 w-100">
+            <h6 className="text-uppercase">Móvil</h6>
+            <input
+              type="text"
+              name="movil"
+              value={formData.movil}
+              onChange={handleChange}
+              placeholder="91 654 55 45"
+            />
+          </div>
 
-            <button
-              onClick={handleAddCualidad}
-              className="btn btn-light ms-2"
-              type="button"
-            >
-              Añadir
-            </button>
-          </div>
-          <div className="mt-3">
-            {cualidadesList.map((cualidad, index) => (
-              <div
-                key={index}
-                className="d-inline-block bg-light text-dark rounded-pill px-3 py-1 me-2 mb-2"
-                style={{ border: "1px solid #ccc", cursor: "pointer" }}
-                onClick={() => handleRemoveCualidad(index)}
-                title="Haz clic para eliminar"
-              >
-                {cualidad}
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="mb-3 w-100">
-          <h6 className="text-uppercase">Disponibilidad</h6>
-          <div className="d-flex justify-content-between">
-            {/* Fecha de Inicio */}
-            <div className="me-3 flex-grow-1 d-flex flex-column align-items-center">
-              <label className="text-uppercase">Fecha de Inicio</label>
-              <DatePicker
-                selected={formData.fechaInicio}
-                onChange={(date) =>
-                  setFormData({ ...formData, fechaInicio: date })
-                }
-                placeholderText="Selecciona una fecha"
-                disabled={formData.indefinidoInicio}
-                dateFormat="dd/MM/yyyy"
-                style={{ color: "black" }}
-              />
-              <div className="form-check mt-2">
+          <h5 className="text-uppercase mb-4 mt-4">Datos profesionales</h5>
+          
+          
+          <div className="mb-5 align-items-center">
+              <div className="d-flex flex-column align-items-center">
+                <h6>Nombre del puesto</h6>
                 <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="indefinidoInicio"
-                  checked={formData.indefinidoInicio}
-                  onChange={() => handleIndefinidoChange("indefinidoInicio")}
+                  type="text"
+                  name="puesto"
+                  value={formData.puesto}
+                  onChange={handleChange}
+                  placeholder="EJ. DESARROLLADOR FULL STACK"
+                  className="mb-3"
                 />
-                <label
-                  className="form-check-label"
-                  htmlFor="indefinidoFin"
-                  style={{ paddingLeft: "10px" }}
+
+                <h6>Cualdiades</h6>
+                <input
+                  type="text"
+                  name="cualidades"
+                  value={formData.cualidades}
+                  onChange={handleChange}
+                  placeholder="JAVA"
+                  className="mb-3"
+                />
+
+                {cualidadesList.map((cualidad, index) => (
+                    <div
+                      key={index}
+                      className="btn btn-light rounded-pill px-3 py-1 mb-2"
+                      style={{ border: "1px solid #ccc", cursor: "pointer", marginTop: "5px" }}
+                      onClick={() => handleRemoveCualidad(index)}
+                      title="Haz clic para eliminar"
+                    >
+                      {cualidad}
+                    </div>
+                ))}
+
+                <button
+                    onClick={handleAddCualidad}
+                    className="btn btn-light"
+                    type="button"
                 >
-                  Indefinido
-                </label>
+                    Añadir
+                </button>
+
+              </div>
+          </div>
+
+          <div className="mb-3 w-100">
+            <h5 className="text-uppercase mb-3">Disponibilidad</h5>
+            <div className="d-flex justify-content-between">
+
+              <div className="flex-grow-1 d-flex flex-column align-items-center">
+                <h6 className="text-uppercase">Fecha de Inicio</h6>
+                <DatePicker
+                  selected={formData.fechaInicio}
+                  onChange={(date) =>
+                    setFormData({ ...formData, fechaInicio: date })
+                  }
+                  placeholderText="Selecciona una fecha"
+                  disabled={formData.indefinidoInicio}
+                  dateFormat="dd/MM/yyyy"
+                  style={{ color: "black" }}
+                />
+                <div className="d-flex flex-row justify-content-center align-items-center">
+                <h6>INDEFINIDO</h6>
+                <div className="form-switch mt-2" style={{ marginBottom: "1rem", maxWidth: "50px" }}>
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="indefinidoInicio"
+                    checked={formData.indefinidoInicio}
+                    onChange={() => handleIndefinidoChange("indefinidoInicio")}
+                    style={{ transform: "scale(0.8)" }}
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Fecha de Fin */}
+              {/* Fecha de Fin */}
             <div className="flex-grow-1 d-flex flex-column align-items-center">
-              <label className="text-uppercase">Fecha de Fin</label>
+              <h6 className="text-uppercase">Fecha de Fin</h6>
               <DatePicker
                 selected={formData.fechaFin}
                 onChange={(date) =>
@@ -238,21 +240,18 @@ export default function RegisterProf(props) {
                 dateFormat="dd/MM/yyyy"
                 style={{ color: "black" }}
               />
-              <div className="form-check mt-2">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="indefinidoFin"
-                  checked={formData.indefinidoFin}
-                  onChange={() => handleIndefinidoChange("indefinidoFin")}
-                />
-                <label
-                  className="form-check-label"
-                  htmlFor="indefinidoFin"
-                  style={{ paddingLeft: "10px", maxWidth: "5px" }}
-                >
-                  Indefinido
-                </label>
+              <div className="d-flex flex-row justify-content-center align-items-center">
+                <h6>INDEFINIDO</h6>
+                <div className="form-switch mt-2" style={{ marginBottom: "1rem" }}>
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="indefinidoFin"
+                    checked={formData.indefinidoFin}
+                    onChange={() => handleIndefinidoChange("indefinidoFin")}
+                    style={{ transform: "scale(0.8)" }}
+                    />
+                </div>
               </div>
             </div>
           </div>
@@ -262,7 +261,7 @@ export default function RegisterProf(props) {
           type="submit"
           className="btn btn-light rounded-pill px-4 fw-semibold"
         >
-          Registrarse
+          REGISTRARSE
         </button>
       </form>
     </div>

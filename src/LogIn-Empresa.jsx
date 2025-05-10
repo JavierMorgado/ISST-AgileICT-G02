@@ -35,10 +35,10 @@ export default function LogInEmpresa(props){
                 <h1>INICIO DE SESIÓN PARA EMPRESAS</h1>
             </div>
 
-            <div style={{backgroundColor: '#002C4B', width: '75%', height: '70%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-5">
+            <div style={{backgroundColor: '#002C4B', width: '75%', height: '70%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
                 <h3 className='mb-4'>INICIA SESIÓN CON TU <br /> CORREO Y CONTRASEÑA</h3>
 
-                <form onSubmit={handleLogin} className='d-flex flex-row'>
+                <form onSubmit={handleLogin} className='d-flex flex-row align-items-center'>
                     <Col md={6}>
                         <FormInput
                             label="Empresa"
@@ -62,8 +62,19 @@ export default function LogInEmpresa(props){
                         />
                     </Col>
                     
-                    <button  onClick={handleLogin} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
-                            Iniciar sesión
+                    <button  
+                        onClick={handleLogin} 
+                        type="button" 
+                        className="text-nowrap mb-5" 
+                        style={{
+                            backgroundColor: '#fff', 
+                            letterSpacing: '0.5px', 
+                            color: '#002C4B !important', 
+                            height: 'fit-content', 
+                            padding: '0.5rem 1rem'
+                        }}
+                    >
+                        INICIAR SESIÓN
                     </button>
                 </form>
 
