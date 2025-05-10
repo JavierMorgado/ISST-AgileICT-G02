@@ -6,16 +6,23 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import { crearPuesto, crearOferta, asignarMejorProfesional, obtenerPerfilEmpresa } from './api/api';
 
+const formatDate = (date) => {
+    if (!date) return '';
+    // Asegurarse de que estamos trabajando con la fecha local
+    const d = new Date(date);
+    d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+    return d.toISOString().split('T')[0];
+};
 
 export default function RegisterVacante(props){
-    const { nombre } = useParams();
+    const { email } = useParams();
     const navigate = useNavigate();
     const [VacanteData, setVacanteData] = useState({
         id: '',
         descripcion_puesto: '',
-        empresa_nombre: '',
-        fecha_ini: '',
-        fecha_fin: '',
+        empresa_email: '',
+        fecha_ini: null,
+        fecha_fin: null,
         nomber_puesto: '',
         cualidades_puesto: '',
     })
@@ -50,24 +57,21 @@ export default function RegisterVacante(props){
             cualidadesList.length === 0
         ) {
             alert('Por favor, rellene todos los campos');
-            console.log(VacanteData);
             return;
         }
        
-
         try {
-            const { data: empresa } = await obtenerPerfilEmpresa(nombre);
+            const { data: empresa } = await obtenerPerfilEmpresa(email);
             console.log('Empresa obtenida:', empresa);
 
             // Crear el objeto JSON para enviar
             const puestoToSend = {
                 nombrePuesto: VacanteData.nomber_puesto,
                 descripcionPuesto: VacanteData.descripcion_puesto,
-                cualidadesPuesto: cualidadesList, // Usar cualidadesList como array
-                fechaIni: VacanteData.fecha_ini.toISOString().split('T')[0], // Convertir a formato ISO (yyyy-MM-dd)
-                fechaFin: VacanteData.fecha_fin.toISOString().split('T')[0], // Convertir a formato ISO (yyyy-MM-dd
-                empresa: { nombre: empresa.nombre }, // Este campo debe ser completado según la lógica de tu aplicación
-                //ofertas: [], // Este campo debe ser completado según la lógica de tu aplicación
+                cualidadesPuesto: cualidadesList,
+                fechaIni: VacanteData.fecha_ini.toISOString().split('T')[0],
+                fechaFin: VacanteData.fecha_fin.toISOString().split('T')[0],
+                empresa: { email: empresa.email },
             };
             console.log('Puesto a enviar:', puestoToSend);
 
@@ -77,14 +81,35 @@ export default function RegisterVacante(props){
             const { data: profesional } = await asignarMejorProfesional(puestoCreado.id);
             console.log('Profesional asignado:', profesional);
 
-            const { data: oferta} = await crearOferta({estado: "SOLICITADA", puesto: puestoCreado, profesional: profesional});
+            if (!profesional) {
+                alert("Vacante pendiente de asignación.");
+                navigate(`/miPerfilEmpresa/${encodeURIComponent(email)}`);
+                return;
+            }
+
+            const { data: oferta } = await crearOferta({
+                estado: "SOLICITADA", 
+                puesto: {id: puestoCreado.id}, 
+                profesional: {correo: profesional.correo}
+            });
             console.log('Oferta creada:', oferta);
+
+            alert("Vacante creada");
+            navigate(`/miPerfilEmpresa/${encodeURIComponent(email)}`);
 
         } catch (error) {
             console.error('Error al registrar la vacante:', error);
-            alert("Error al registrar la vacante. Inténtalo de nuevo.");
+            if (error.response) {
+                // El servidor respondió con un estado fuera del rango 2xx
+                alert(`Error del servidor: ${error.response.data.message || 'Error desconocido'}`);
+            } else if (error.request) {
+                // La petición fue hecha pero no se recibió respuesta
+                alert("Error de conexión con el servidor. Por favor, verifica tu conexión a internet.");
+            } else {
+                // Algo sucedió al configurar la petición
+                alert("Error al procesar la solicitud. Por favor, inténtalo de nuevo.");
+            }
         }
-
     };
 
 
@@ -181,7 +206,7 @@ export default function RegisterVacante(props){
                 <button type="submit" className="btn btn-light rounded-pill px-4 fw-semibold me-3 mb-3">
                         PUBLICAR
                 </button>
-                <button  onClick={() => navigate(`/miPerfilEmpresa/${nombre}`)} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
+                <button  onClick={() => navigate(`/miPerfilEmpresa/${encodeURIComponent(email)}`)} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
                         VOLVER A MI PERFIL
                 </button>
             </form>

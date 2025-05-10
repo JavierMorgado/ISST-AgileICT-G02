@@ -14,8 +14,8 @@ import jakarta.validation.constraints.Email;
 
 @Entity
 public class Empresa {
-    @Id private String nombre;
-    @Email private String email;
+    @Id @Email private String email;
+    private String nombre;
     private String password;
     private String suscripcion;
     @OneToMany(mappedBy = "empresa") @JsonIgnore List<@Valid Puesto> puestos;
@@ -24,9 +24,9 @@ public class Empresa {
     public Empresa() {
     }
 
-    public Empresa(String nombre, String email, String password, String suscripcion) {
-        this.nombre = nombre;
+    public Empresa(String email, String nombre, String password, String suscripcion) {
         this.email = email;
+        this.nombre = nombre;
         this.password = password;
         this.suscripcion = suscripcion;
     }
@@ -58,7 +58,7 @@ public class Empresa {
         return puestos;
     }
 
-    //REVISAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //REVISAR!!!
     @JsonGetter("puestos")
     public Long[] getIdsPuestos() {
         if (puestos != null) {
@@ -118,7 +118,7 @@ public class Empresa {
 
     @Override
     public String toString() {
-        return "Empresa [nombre=" + nombre + ", email=" + email + ", password=" + password + ", suscripcion="
+        return "Empresa [email=" + email + ", nombre=" + nombre + ", password=" + password + ", suscripcion="
                 + suscripcion + "]";
     }
     

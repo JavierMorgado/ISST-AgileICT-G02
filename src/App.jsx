@@ -30,9 +30,9 @@ function App() {
         <Route path="/register-empresa" element={<RegisterEmpresa />} />
         <Route path="/register-profesional" element={<RegisterProf />} />
         <Route path="/miPerfil/:correo" element={<PerfilProf />} />
-        <Route path="/miPerfilEmpresa/:nombre" element={<PerfilEmpresa />} />
+        <Route path="/miPerfilEmpresa/:email" element={<PerfilEmpresa />} />
         <Route path="/miPerfil/misOfertas/:correo" element={<MisOfertas />} />
-        <Route path="/miEmpresa/:nombre/nueva-vacante" element={<RegisterVacante />} />
+        <Route path="/miEmpresa/:email/nueva-vacante" element={<RegisterVacante />} />
       </Routes>
     </BrowserRouter>
   );

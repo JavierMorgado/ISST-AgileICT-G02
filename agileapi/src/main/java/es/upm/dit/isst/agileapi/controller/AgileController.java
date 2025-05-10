@@ -67,8 +67,8 @@ public class AgileController {
     
     @PostMapping("/empresas")
     ResponseEntity<Empresa> createEmpresa(@RequestBody Empresa empresa) {
-        // Validar si la empresa con ese nombre ya existe
-        if (empresaRepository.findById(empresa.getNombre()).isPresent()) {
+        // Validar si la empresa con ese correo ya existe
+        if (empresaRepository.findById(empresa.getEmail()).isPresent()) {
             return new ResponseEntity<Empresa>(HttpStatus.CONFLICT);
         }
         
@@ -78,9 +78,9 @@ public class AgileController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEmpresa);
     }
 
-    @GetMapping("/empresas/{nombre}")
-    ResponseEntity<Empresa> readOneEmpresa(@PathVariable String nombre) {
-        return empresaRepository.findById(nombre).map(empresa ->
+    @GetMapping("/empresas/{correo}")
+    ResponseEntity<Empresa> readOneEmpresa(@PathVariable String correo) {
+        return empresaRepository.findById(correo).map(empresa ->
             ResponseEntity.ok().body(empresa)
         ).orElse(new ResponseEntity<Empresa>(HttpStatus.NOT_FOUND));
     }
@@ -88,9 +88,9 @@ public class AgileController {
     @PostMapping("/puestos")
     public ResponseEntity<Map<String, Object>> createPuesto(@RequestBody Puesto puesto) {
         // Relacionar empresa por nombre
-        Optional<Empresa> empresaOpt = empresaRepository.findById(puesto.getEmpresa().getNombre());
+        Optional<Empresa> empresaOpt = empresaRepository.findById(puesto.getEmpresa().getEmail());
         if (empresaOpt.isEmpty()) {
-            log.warn("Empresa con nombre {} no encontrada", puesto.getEmpresa().getNombre());
+            log.warn("Empresa con email {} no encontrada", puesto.getEmpresa().getEmail());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -177,12 +177,12 @@ public class AgileController {
      * * Obtener todos los puestos de una empresa por su nombre.
      * @param nombre Nombre de la empresa   
      */
-    @GetMapping("/empresa/{nombre}/puestos")
-    public Long[] getPuestosByEmpresa(@PathVariable String nombre) {
+    @GetMapping("/empresas/{correo}/puestos")
+    public Long[] getPuestosByEmpresa(@PathVariable String correo) {
         // Buscar la empresa por nombre
-        Optional<Empresa> empresaOpt = empresaRepository.findById(nombre);
+        Optional<Empresa> empresaOpt = empresaRepository.findById(correo);
         if (empresaOpt.isEmpty()) {
-            log.warn("Empresa con nombre {} no encontrada", nombre);
+            log.warn("Empresa con email {} no encontrada", correo);
             return new Long[0]; // O lanzar una excepción si prefieres
         }
 
@@ -191,9 +191,9 @@ public class AgileController {
         // Obtener los puestos asociados a la empresa
         Long[] puestos = empresa.getIdsPuestos();
         if (puestos.length == 0) {
-            log.info("No se encontraron puestos asociados a la empresa con nombre {}", nombre);
+            log.info("No se encontraron puestos asociados a la empresa con email {}", correo);
         } else {
-            log.info("Se encontraron {} puestos asociados a la empresa con nombre {}", puestos.length, nombre);
+            log.info("Se encontraron {} puestos asociados a la empresa con email {}", puestos.length, correo);
         }
 
         return puestos;

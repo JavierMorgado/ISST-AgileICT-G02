@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -25,12 +27,12 @@ public class Puesto {
     private List<String> cualidadesPuesto;
     private String fechaIni;
     private String fechaFin;
-    // private Double experiencia;
     @ManyToOne private Empresa empresa;
-    @OneToMany(mappedBy = "puesto") List<@Valid Oferta> ofertas;
+    @OneToMany(mappedBy = "puesto") private List<@Valid Oferta> ofertas;
 
     public Puesto() {
     }
+    
     public Puesto(String nombrePuesto, String descripcionPuesto, List<String> cualidadesPuesto, String fechaIni,
             String fechaFin) {
         this.nombrePuesto = nombrePuesto;
@@ -86,12 +88,11 @@ public class Puesto {
         return ofertas;
     }
 
-    //REVISAAAAAAAAAAAAAAAAAAAAAAAAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @JsonGetter("ofertas")
     public String[] getEmailsOfertas() {
         if (ofertas != null) {
             return ofertas.stream()
-                          .map(oferta -> oferta.getProfesional().getCorreo()) // Asegúrate de que getCorreo() existe en Profesional
+                          .map(oferta -> oferta.getProfesional().getCorreo()) 
                           .toArray(String[]::new);
         } else {
             return new String[0];

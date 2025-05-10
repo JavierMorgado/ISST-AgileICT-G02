@@ -7,7 +7,7 @@ ARRAY['Java', 'Spring', 'React'], '2025-01-01', '2025-12-31');
 
 
 
-INSERT INTO puesto (id, nombre_puesto, descripcion_puesto, cualidades_puesto, fecha_ini, fecha_fin, empresa_nombre)
+INSERT INTO puesto (id, nombre_puesto, descripcion_puesto, cualidades_puesto, fecha_ini, fecha_fin, empresa_email)
 VALUES (
   1001,
   'Desarrollador Full Stack',
@@ -15,7 +15,7 @@ VALUES (
   ARRAY['Spring', 'Java', 'React'],
   '2025-01-01',
   '2025-12-31',
-  'AgyleICT'
+  'hr@agyleict.com'
 );
 
 INSERT INTO oferta (id, puesto_id, profesional_correo, estado)

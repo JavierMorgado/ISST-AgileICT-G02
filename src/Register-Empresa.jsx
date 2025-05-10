@@ -46,7 +46,7 @@ export default function RegisterEmpresa(props){
         try {
             const response = await registrarEmpresa(dataToSend);
             console.log('Empresa registrada:', response.data);
-            navigate(`/miPerfilEmpresa/${dataToSend.nombre}`);
+            navigate(`/miPerfilEmpresa/${encodeURIComponent(dataToSend.email)}`);
         } catch (error) {
               console.error('Error al registrar el perfil:', error);
               alert("Error al registrar el perfil. Inténtalo de nuevo.");
