@@ -25,28 +25,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-        .csrf(csrf -> {
-            csrf.disable();
-        })
+        .csrf(csrf -> csrf.disable())
+        .headers(headers -> headers.frameOptions(FrameOptionsConfig::disable))
         .authorizeHttpRequests(auth -> {
             auth.requestMatchers("/h2-console/**").permitAll();
             auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll();
             auth.requestMatchers("/api/**").permitAll(); // Regla general para todas las rutas bajo /api
             auth.requestMatchers("/login-empresa", "/login-profesional").permitAll();
             auth.requestMatchers("/miPerfil/**").hasRole("PROFESIONAL");
-            auth.requestMatchers("/miPerfilEmpresa/**", "/miEmpresa/**").hasRole("EMPRESA");
+            auth.requestMatchers("/miEmpresa/**", "/miEmpresa/**").hasRole("EMPRESA");
             auth.requestMatchers("/todos").authenticated();
             auth.requestMatchers("/").permitAll();
         })
+        .formLogin(Customizer.withDefaults())
         .logout(logout -> {
             logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
-            logout.logoutSuccessUrl("/login-empresa").permitAll();
+            logout.logoutSuccessUrl("/").permitAll();
         })
         //.cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()));
         .cors(cors ->
             cors.configurationSource(corsConfigurationSource()));
 
-        http.headers(headers -> headers.frameOptions(FrameOptionsConfig::disable));
         return 
 http.build
 ();
@@ -54,15 +53,11 @@ http.build
 
     @Bean
     public UserDetailsService jdbcUserDetailsService(DataSource dataSource) {
+        String usersByUsernameQuery = "select username, password, enabled from users where username = ?"; // Es un ejemplo
+        String authoritiesByUsernameQuery = "SELECT username, authority FROM authorities WHERE username = ?";
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-
-        // Modificar la consulta dependiendo del tipo de usuario (profesional o empresa)
-        String query = "select username, password, enabled from usuarios where username = ?"; // Es un ejemplo
-        // Si es un profesional, utiliza una tabla profesional
-        // Si es una empresa, utiliza la tabla empresas
-        users.setUsersByUsernameQuery(query);
-        users.setAuthoritiesByUsernameQuery("select username, authority from authorities where username = ?");
-
+        users.setUsersByUsernameQuery(usersByUsernameQuery);
+        users.setAuthoritiesByUsernameQuery(authoritiesByUsernameQuery);
         return users;
     };
 

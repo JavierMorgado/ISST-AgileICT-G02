@@ -83,7 +83,7 @@ export default function RegisterVacante(props){
 
             if (!profesional) {
                 alert("Vacante pendiente de asignación.");
-                navigate(`/miPerfilEmpresa/${encodeURIComponent(email)}`);
+                navigate(`/miEmpresa/${encodeURIComponent(email)}`);
                 return;
             }
 
@@ -95,7 +95,7 @@ export default function RegisterVacante(props){
             console.log('Oferta creada:', oferta);
 
             alert("Vacante creada");
-            navigate(`/miPerfilEmpresa/${encodeURIComponent(email)}`);
+            navigate(`/miEmpresa/${encodeURIComponent(email)}`);
 
         } catch (error) {
             console.error('Error al registrar la vacante:', error);

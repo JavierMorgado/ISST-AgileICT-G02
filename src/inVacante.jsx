@@ -15,7 +15,7 @@ export default function inVacante(props){
     const [colorEstado, setcolorEstado] = useState(null);
     const [estado, setEstado] = useState(null);
     
-    const { nombre } = useParams();
+    const { email} = useParams();
     const { puestoId } = useParams();
 
     useEffect(() => {
@@ -74,11 +74,11 @@ export default function inVacante(props){
     }
 
     function goToPerfil(){
-        navigate(`/miEmpresa/${nombre}`)
+        navigate(`/miEmpresa/${encodeURIComponent(email)}`)
     }
 
     function goToProfesional(){
-        navigate(`/miEmpresa/${nombre}/puestos/${puestoId}/profesional`)
+        navigate(`/miEmpresa/${encodeURIComponent(email)}/puestos/${puestoId}/profesional`)
     }
 
     return(
@@ -131,7 +131,7 @@ export default function inVacante(props){
                         </button>
                     )}
 
-                    <button  onClick={() => navigate(`/miEmpresa/${nombre}`)} type="button" className="btn btn-light rounded-pill px-4 fw-semibold mb-5">
+                    <button  onClick={() => navigate(`/miEmpresa/${encodeURIComponent(email)}`)} type="button" className="btn btn-light rounded-pill px-4 fw-semibold mb-5">
                             VOLVER A MI PERFIL
                     </button>
                 </div>

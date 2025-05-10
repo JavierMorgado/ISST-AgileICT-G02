@@ -1,9 +1,16 @@
 INSERT INTO EMPRESA (NOMBRE, EMAIL, PASSWORD, SUSCRIPCION) VALUES ('AgyleICT', 'hr@agyleict.com', '1234', 'Oro');
 INSERT INTO EMPRESA (NOMBRE, EMAIL, PASSWORD, SUSCRIPCION) VALUES ('TechSolutions', 'contact@techsolutions.com', 'abcd', 'Plata');
+INSERT INTO USERS (USERNAME, PASSWORD, ENABLED) VALUES ('hr@agyleict.com', '1234', true);
+insert into authorities(username, authority) values ('hr@agyleict.com', 'ROLE_EMPRESA');
+INSERT INTO USERS (USERNAME, PASSWORD, ENABLED) VALUES ('contact@techsolutions.com', 'abcd', true);
+insert into authorities(username, authority) values ('contact@techsolutions.com', 'ROLE_EMPRESA');
+
 
 INSERT INTO PROFESIONAL (CORREO, NOMBRE, TELEFONO, PUESTO, CUALIDADES, FECHA_INI, FECHA_FIN) 
 VALUES ('profesional@example.com', 'Juan González', '666123456', 'Desarrollador Full Stack', 
 ARRAY['Java', 'Spring', 'React'], '2025-01-01', '2025-12-31');
+INSERT INTO USERS (USERNAME, PASSWORD, ENABLED) VALUES ('profesional@example.com', '1234', true);
+insert into authorities(username, authority) values ('profesional@example.com', 'ROLE_PROFESIONAL');
 
 
 
@@ -18,7 +25,7 @@ VALUES (
   '2025-12-31',
   'hr@agyleict.com'
 );
-INSERT INTO puesto (id, nombre_puesto, descripcion_puesto, cualidades_puesto, fecha_ini, fecha_fin, empresa_nombre)
+INSERT INTO puesto (id, nombre_puesto, descripcion_puesto, cualidades_puesto, fecha_ini, fecha_fin, empresa_email)
 VALUES (
   1003,
   'Desarrollador Full Stack',
@@ -26,9 +33,9 @@ VALUES (
   ARRAY['Spring', 'Java', 'React'],
   '2025-01-01',
   '2025-12-31',
-  'AgyleICT'
+  'hr@agyleict.com'
 );
-INSERT INTO puesto (id, nombre_puesto, descripcion_puesto, cualidades_puesto, fecha_ini, fecha_fin, empresa_nombre)
+INSERT INTO puesto (id, nombre_puesto, descripcion_puesto, cualidades_puesto, fecha_ini, fecha_fin, empresa_email)
 VALUES (
   1002,
   'Desarrollador Full Stack',
@@ -36,7 +43,7 @@ VALUES (
   ARRAY['Java', 'Spring', 'React'],
   '2025-01-01',
   '2025-12-31',
-  'TechSolutions'
+  'contact@techsolutions.com'
 );
 
 INSERT INTO oferta (id, puesto_id, profesional_correo, estado)

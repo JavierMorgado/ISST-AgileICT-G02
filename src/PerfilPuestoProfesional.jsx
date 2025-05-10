@@ -6,7 +6,7 @@ import { getProfesionalPuesto } from "./api/api";
 export default function PerfilPuestoProfesional(props) {
   const navigate = useNavigate();
   const { puestoId } = useParams();
-  const { nombre } = useParams();
+  const { email} = useParams();
   const [perfil, setPerfil] = useState(null);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function PerfilPuestoProfesional(props) {
 
 
   function goToPerfil(){
-      navigate(`/miEmpresa/${nombre}`)
+      navigate(`/miEmpresa/${encodeURIComponent(email)}`)
   }
 
   // Si el perfil aún no se ha cargado, muestra un mensaje de carga o un spinner

@@ -8,7 +8,7 @@ export default function Vacante(props){
     const [puesto, setPuesto] = useState(null);
     const [estadoPuesto, setEstadoPuesto] = useState(null);
     const puestoId = props.puestoId;
-    const { nombre } = useParams();
+    const { email} = useParams();
 
     useEffect(() => {
         const fetchPuestoData = async () => {
@@ -51,7 +51,7 @@ export default function Vacante(props){
     const navigate = useNavigate();
 
     function goToVacante(){
-        navigate(`/miEmpresa/${nombre}/puestos/${puestoId}`)
+        navigate(`/miEmpresa/${encodeURIComponent(email)}/puestos/${puestoId}`)
     }
 
     return(
