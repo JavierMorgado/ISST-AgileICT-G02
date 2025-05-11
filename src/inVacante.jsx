@@ -7,9 +7,13 @@ import MainMenu from './MainMenu';
 import Vacante from './Vacante';
 import NuevaVacante from './NuevaVacante';
 import {obtenerPuestoById, obtenerOfertadePuesto, editPuestoById} from './api/api.js';
+import { useAuth } from "./AuthContext";
+
 
 export default function inVacante(props){
     const navigate = useNavigate();
+    const { auth } = useAuth();
+
 
     const [puesto, setPuesto] = useState(null);
     const [colorEstado, setcolorEstado] = useState(null);
@@ -22,7 +26,7 @@ export default function inVacante(props){
             const fetchPuestoData = async () => {
                 try {
                     console.log("ID DEL PUESTO:", puestoId);
-                    const resPuesto = await obtenerPuestoById(puestoId);
+                    const resPuesto = await obtenerPuestoById(puestoId, auth);
                     setPuesto(resPuesto.data);
                 } catch (error) {
                     console.error("Error fetching puesto data:", error);
@@ -31,7 +35,7 @@ export default function inVacante(props){
             };
             const fetchEstadoPuesto = async () => {
                 try {
-                    const resOferta = await obtenerOfertadePuesto(puestoId);
+                    const resOferta = await obtenerOfertadePuesto(puestoId, auth);
                     console.log("resEstado: ", resOferta.data);
     
                     // Accede al primer elemento del array
@@ -63,7 +67,7 @@ export default function inVacante(props){
 
     const deletePuestoById = async () => {
         try {
-            await deletePuesto(puestoId);
+            await deletePuesto(puestoId, auth);
             console.log("Puesto eliminado con éxito.");
             alert("Puesto eliminado con éxito.");
             goToPerfil();

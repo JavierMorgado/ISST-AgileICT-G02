@@ -2,17 +2,19 @@ import React from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getProfesionalPuesto } from "./api/api";
+import { useAuth } from "./AuthContext";
 
 export default function PerfilPuestoProfesional(props) {
   const navigate = useNavigate();
   const { puestoId } = useParams();
   const { email} = useParams();
   const [perfil, setPerfil] = useState(null);
+  const { auth } = useAuth();
 
   useEffect(() => {
     const fetchPerfil = async () => {
       try {
-        const { data } = await getProfesionalPuesto(puestoId);
+        const { data } = await getProfesionalPuesto(puestoId, auth);
         setPerfil(data);
         console.log(data);
         console.log(perfil);

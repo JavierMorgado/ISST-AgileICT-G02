@@ -4,10 +4,12 @@ import FormInput from './FormInput';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { registrarEmpresa } from './api/api.js';
+import { useAuth } from "./AuthContext";
 
 
 export default function RegisterEmpresa(props){
     const navigate = useNavigate();
+    const { setAuth } = useAuth();
     
     const [formData, setFormData] = useState({
         nombre: '',
@@ -46,7 +48,18 @@ export default function RegisterEmpresa(props){
         try {
             const response = await registrarEmpresa(dataToSend);
             console.log('Empresa registrada:', response.data);
-            navigate(`/miEmpresa/${encodeURIComponent(dataToSend.email)}`);
+            
+            const res = await axios.get(`http://localhost:8080/api/agile/empresas/${encodeURIComponent(formData.email)}`, {
+                auth: {
+                username: formData.email,
+                password: formData.password,
+                }
+            });
+            setAuth({ username: formData.email, password: formData.password });
+
+            console.log("Empresa cargada:", res.data);
+            navigate(`/miEmpresa/${encodeURIComponent(formData.email)}`);
+
         } catch (error) {
               console.error('Error al registrar el perfil:', error);
               alert("Error al registrar el perfil. Inténtalo de nuevo.");

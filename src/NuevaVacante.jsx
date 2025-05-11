@@ -5,6 +5,7 @@ import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 export default function NuevaVacante({emailEmpresa}){
     const navigate = useNavigate();
 
+
     function goToNuevaVacante(){
         navigate(`/miEmpresa/${encodeURIComponent(emailEmpresa)}/nueva-vacante`)
     }

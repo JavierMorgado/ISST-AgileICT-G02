@@ -7,10 +7,14 @@ import MainMenu from './MainMenu';
 import Vacante from './Vacante';
 import NuevaVacante from './NuevaVacante';
 import { obtenerPerfilEmpresa, obtenerPuestosDeEmpresa } from './api/api.js';
+import { useAuth } from "./AuthContext";
 
 export default function PerfilEmpresa(props){
     const { email } = useParams();
-    const navigate = useNavigate();
+    const navigate = useNavigate();   
+    const { auth } = useAuth();
+    const { setAuth } = useAuth();
+
 
     const [empresa, setEmpresa] = useState(null);
     const [puestos, setPuestos] = useState([]);
@@ -20,9 +24,9 @@ export default function PerfilEmpresa(props){
         const fetchEmpresaData = async () => {
             try {
                 console.log("email de la empresa: ", email);
-                const resEmpresa = await obtenerPerfilEmpresa(email);
+                const resEmpresa = await obtenerPerfilEmpresa(email, auth);
                 console.log("resEmpresa: ", resEmpresa.data);
-                const resPuestos = await obtenerPuestosDeEmpresa(email);
+                const resPuestos = await obtenerPuestosDeEmpresa(email, auth);
                 console.log("resPuestos: ", resPuestos.data);
                 setEmpresa(resEmpresa.data);
                 setPuestos(resPuestos.data);
@@ -36,6 +40,11 @@ export default function PerfilEmpresa(props){
 
         fetchEmpresaData();
     }, [email]);
+
+    const handleLogout = () => {
+        setAuth(null); // Esto borra también sessionStorage gracias al useEffect en AuthContext.jsx
+        navigate("/"); // O redirige donde quieras
+    };
 
     function goToBranding(){
         window.location.href = '/mi-empresa/branding';
@@ -53,6 +62,14 @@ export default function PerfilEmpresa(props){
             <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
                 <div className='d-flex justify-content-end align-items-center pt-3 mt-5'>
                     <h1>MI PERFIL DE EMPRESA</h1>
+                </div>
+
+                <div>
+                    {auth && (
+                    <button onClick={handleLogout}>
+                    Cerrar sesión
+                    </button>
+                    )}
                 </div>
 
                 <div style={{backgroundColor: '#002C4B', width: '75%'}} className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5 pt-3 pb-3">

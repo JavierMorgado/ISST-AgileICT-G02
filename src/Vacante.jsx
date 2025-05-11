@@ -3,18 +3,22 @@ import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import { obtenerPuestoById, obtenerOfertadePuesto } from './api/api.js';
 import { set } from 'date-fns';
+import { useLocation } from 'react-router-dom';
+import { useAuth } from "./AuthContext";
+
 
 export default function Vacante(props){
     const [puesto, setPuesto] = useState(null);
     const [estadoPuesto, setEstadoPuesto] = useState(null);
     const puestoId = props.puestoId;
     const { email} = useParams();
-
+    const location = useLocation();
+const { auth } = useAuth();
     useEffect(() => {
         const fetchPuestoData = async () => {
             try {
                 console.log("ID DEL PUESTO:", puestoId);
-                const resPuesto = await obtenerPuestoById(puestoId);
+                const resPuesto = await obtenerPuestoById(puestoId, auth);
                 setPuesto(resPuesto.data);
             } catch (error) {
                 console.error("Error fetching puesto data:", error);
@@ -23,7 +27,7 @@ export default function Vacante(props){
         };
         const fetchEstadoPuesto = async () => {
             try {
-                const resOferta = await obtenerOfertadePuesto(puestoId);
+                const resOferta = await obtenerOfertadePuesto(puestoId, auth);
                 console.log("resEstado: ", resOferta.data);
 
                 // Accede al primer elemento del array
@@ -51,7 +55,9 @@ export default function Vacante(props){
     const navigate = useNavigate();
 
     function goToVacante(){
-        navigate(`/miEmpresa/${encodeURIComponent(email)}/puestos/${puestoId}`)
+        navigate(`/miEmpresa/${encodeURIComponent(email)}/puestos/${puestoId}`, {
+            state: { auth: auth }
+        })
     }
 
     return(

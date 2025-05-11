@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { obtenerPerfilProfesional } from "./api/api";
+import axios from "axios";
+
 
 export default function LogInProf(props) {
   const navigate = useNavigate();
@@ -10,6 +12,46 @@ export default function LogInProf(props) {
   function goToRegisterProf() {
     navigate("/register-profesional");
   }
+
+  
+
+  const autenticarUsuario = async (correo, password) => {
+  try {
+    await axios.post(
+      "http://localhost:8080/login",
+      new URLSearchParams({
+        username: correo,
+        password: password
+      }),
+      {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        withCredentials: true
+      }
+    );
+    return true;
+  } catch (error) {
+    console.error("Error de autenticación:", error);
+    return false;
+  }
+};
+
+
+const manejoLogin = async () => {
+  const ok = await autenticarUsuario(email, password);
+  if (!ok) {
+    alert("Usuario o contraseña incorrectos");
+    return;
+  }
+
+  try {
+    const { data } = await obtenerPerfilProfesional(email);
+    navigate(`/miPerfil/${encodeURIComponent(data.correo)}`);
+  } catch (error) {
+    console.error("Error al cargar perfil:", error);
+    alert("Error al obtener el perfil.");
+  }
+};
+
 
   const handleLogin = async () => {
     try {
@@ -53,7 +95,7 @@ export default function LogInProf(props) {
             autoComplete="off"
           />
 
-          <button  onClick={handleLogin} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
+          <button  onClick={manejoLogin} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
             Iniciar sesión
           </button>
         </div>

@@ -5,10 +5,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { registrarProfesional } from "./api/api";
 import FormInput from './FormInput';
-
+import { useAuth } from "./AuthContext";
 
 export default function RegisterProf(props) {
   const navigate = useNavigate();
+  const { setAuth } = useAuth();
+  const { auth } = useAuth();
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -56,8 +58,16 @@ export default function RegisterProf(props) {
       const response = await registrarProfesional(dataToSend);
       console.log('Profesional registrado:', response.data);
 
-      navigate(`/miPerfil/${encodeURIComponent(dataToSend.correo)}`);
-      //goToPerfil(); // Redirigir al perfil después del registro exitoso
+      const res = await axios.get(`http://localhost:8080/api/agile/profesionales/${encodeURIComponent(formData.email)}`, {
+        auth: {
+          username: formData.email,
+          password: formData.password,
+        }
+      });
+      setAuth({ username: formData.email, password: formData.password });
+
+      console.log("Perfil cargado:", res.data);
+      navigate(`/miPerfil/${encodeURIComponent(formData.email)}`);
 
     } catch (error) {
       console.error('Error al registrar el profesional:', error);
@@ -65,12 +75,8 @@ export default function RegisterProf(props) {
     }
 
     console.log("Datos enviados:", dataToSend);
-    //alert("Registro exitoso");
   };
 
-  // function goToPerfil() {
-  //   window.location.href = "/miPerfil";
-  // }
 
   const handleAddCualidad = (e) => {
     e.preventDefault();

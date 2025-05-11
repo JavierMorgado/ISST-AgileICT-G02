@@ -14,9 +14,7 @@ export default function LogInEmpresa(props){
         window.location.href = '/register-empresa';
     }
 
-    function gotoEmpresa(){
-        window.location.href = '/miEmpresa/AgyleICT';
-    }
+    
 
     const handleLogin = async () => {
         try {
@@ -28,6 +26,7 @@ export default function LogInEmpresa(props){
           alert('Empresa no encontrada');
         }
       };
+
 
     return(
         <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">

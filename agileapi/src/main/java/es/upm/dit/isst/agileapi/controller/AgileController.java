@@ -15,14 +15,17 @@ import es.upm.dit.isst.agileapi.repository.PuestoRepository;
 
 import org.slf4j.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.*;
 
 import java.net.*;
 import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.core.userdetails.User;
+
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -33,6 +36,12 @@ public class AgileController {
     private final ProfesionalRepository profesionalRepository;
     private final EmpresaRepository empresaRepository;
     private final PuestoRepository puestoRepository;
+
+    @Autowired
+    private JdbcUserDetailsManager userDetailsManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public static final Logger log =
         LoggerFactory.getLogger(AgileController.class);
@@ -45,15 +54,26 @@ public class AgileController {
         
     }
 
-    @PostMapping("/profesionales")
+    @PostMapping("/registrar/profesionales")
     ResponseEntity<Profesional> createProfesional(@RequestBody Profesional profesional) {
         // Validar si el usuario con ese correo electrónico ya existe
         if (profesionalRepository.findById(profesional.getCorreo()).isPresent()) {
             return new ResponseEntity<Profesional>(HttpStatus.CONFLICT);
         }
+        String password = passwordEncoder.encode(profesional.getPassword());
         // Guardar el profesional en la base de datos
+        profesional.setPassword(password);
         Profesional savedProfesional = profesionalRepository.save(profesional);
         log.info("Profesional creado: {}", savedProfesional.getCorreo());
+
+        // Crear usuario para autenticación
+        UserDetails user = User.builder()
+            .username(profesional.getCorreo())
+            .password(password)
+            .roles("PROFESIONAL")
+            .build();
+        userDetailsManager.createUser(user);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProfesional);
     }
 
@@ -65,7 +85,7 @@ public class AgileController {
     }
 
     
-    @PostMapping("/empresas")
+    @PostMapping("/registrar/empresas")
     ResponseEntity<Empresa> createEmpresa(@RequestBody Empresa empresa) {
         // Validar si la empresa con ese correo ya existe
         if (empresaRepository.findById(empresa.getEmail()).isPresent()) {
@@ -73,8 +93,19 @@ public class AgileController {
         }
         
         // Guardar la empresa en la base de datos
+        String password = passwordEncoder.encode(empresa.getPassword());
+        empresa.setPassword(password);
         Empresa savedEmpresa = empresaRepository.save(empresa);
         log.info("Perfil de empresa creado: {}", savedEmpresa.getEmail());
+
+        // Crear usuario para autenticación
+        UserDetails user = User.builder()
+            .username(empresa.getEmail())
+            .password(password)
+            .roles("EMPRESA")
+            .build();
+        userDetailsManager.createUser(user);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEmpresa);
     }
 
@@ -261,7 +292,7 @@ public class AgileController {
     }
 
     // Obtener el mejor profesional para una oferta
-    @GetMapping("/puesto/{id}/mejor-profesional")
+    @GetMapping("/puestos/{id}/mejor-profesional")
     public Profesional getMejorProfesional(@PathVariable Long id) {
         Optional<Puesto> puestoOpt = puestoRepository.findById(id);
         if (puestoOpt.isEmpty()) {
@@ -385,4 +416,5 @@ public class AgileController {
         log.info("Se encontraron {} ofertas para el puesto con ID {}", ofertas.size(), puestoId);
         return ResponseEntity.ok(response);
     }
+
 }

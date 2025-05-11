@@ -1,22 +1,18 @@
 import { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Row, Stack, Button, Form, Col, Container } from 'react-bootstrap';
 import FormInput from './FormInput';
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import { crearPuesto, crearOferta, asignarMejorProfesional, obtenerPerfilEmpresa } from './api/api';
-
-const formatDate = (date) => {
-    if (!date) return '';
-    // Asegurarse de que estamos trabajando con la fecha local
-    const d = new Date(date);
-    d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
-    return d.toISOString().split('T')[0];
-};
+import { useAuth } from "./AuthContext";
 
 export default function RegisterVacante(props){
     const { email } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
+    const { auth } = useAuth();
+
     const [VacanteData, setVacanteData] = useState({
         id: '',
         descripcion_puesto: '',
@@ -61,8 +57,6 @@ export default function RegisterVacante(props){
         }
        
         try {
-            const { data: empresa } = await obtenerPerfilEmpresa(email);
-            console.log('Empresa obtenida:', empresa);
 
             // Crear el objeto JSON para enviar
             const puestoToSend = {
@@ -71,14 +65,14 @@ export default function RegisterVacante(props){
                 cualidadesPuesto: cualidadesList,
                 fechaIni: VacanteData.fecha_ini.toISOString().split('T')[0],
                 fechaFin: VacanteData.fecha_fin.toISOString().split('T')[0],
-                empresa: { email: empresa.email },
+                empresa: { email: email },
             };
             console.log('Puesto a enviar:', puestoToSend);
 
-            const { data: puestoCreado } = await crearPuesto(puestoToSend);
+            const { data: puestoCreado } = await crearPuesto(puestoToSend, auth);
             console.log('Vacante registrada:', puestoCreado);
 
-            const { data: profesional } = await asignarMejorProfesional(puestoCreado.id);
+            const { data: profesional } = await asignarMejorProfesional(puestoCreado.id, auth);
             console.log('Profesional asignado:', profesional);
 
             if (!profesional) {
@@ -91,7 +85,7 @@ export default function RegisterVacante(props){
                 estado: "SOLICITADA", 
                 puesto: {id: puestoCreado.id}, 
                 profesional: {correo: profesional.correo}
-            });
+            }, auth);
             console.log('Oferta creada:', oferta);
 
             alert("Vacante creada");
@@ -162,7 +156,7 @@ export default function RegisterVacante(props){
                             <h6>INDEFINIDO</h6>
                             <div className="form-switch mt-2" style={{ marginBottom: "1rem" }}>
                                 <input
-                                    type="switch"
+                                    type="checkbox"
                                     className="form-check-input"
                                     id="indefinidoFin"
                                     checked={VacanteData.indefinidoFin}
@@ -193,7 +187,7 @@ export default function RegisterVacante(props){
                             <h6>INDEFINIDO</h6>
                             <div className="form-switch mt-2" style={{ marginBottom: "1rem" }}>
                                 <input
-                                    type="switch"
+                                    type="checkbox"
                                     className="form-check-input"
                                     id="indefinidoFin"
                                     checked={VacanteData.indefinidoFin}
@@ -241,7 +235,7 @@ export default function RegisterVacante(props){
                 <button type="submit" className="btn btn-light rounded-pill px-4 fw-semibold mb-3">
                         PUBLICAR
                 </button>
-                <button  onClick={() => navigate(`/miEmpresa/${encodeURIComponent(email)}`)} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
+                <button  onClick={() => navigate(`/miEmpresa/${encodeURIComponent(email)}`, {state: { auth: auth }})} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
                         VOLVER A MI PERFIL
                 </button>
             </form>

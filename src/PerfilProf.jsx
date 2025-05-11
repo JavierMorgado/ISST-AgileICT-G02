@@ -1,18 +1,24 @@
 import React from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { obtenerPerfilProfesional } from "./api/api";
 import MisOfertas from "./MisOfertas";
+import axios from "axios";
+import { useAuth } from "./AuthContext";
+
 
 export default function PerfilProf(props) {
   const navigate = useNavigate();
   const { correo } = useParams();
   const [perfil, setPerfil] = useState(null);
+  const { auth } = useAuth();
+  const { setAuth } = useAuth();
+
 
   useEffect(() => {
     const fetchPerfil = async () => {
       try {
-        const { data } = await obtenerPerfilProfesional(correo);
+        const { data } = await obtenerPerfilProfesional(correo, auth);
         setPerfil(data);
         console.log(data);
         console.log(perfil);
@@ -22,6 +28,14 @@ export default function PerfilProf(props) {
     };
     fetchPerfil();
   }, [correo]);
+
+
+  const handleLogout = () => {
+    setAuth(null); // Esto borra también sessionStorage gracias al useEffect en AuthContext.jsx
+    navigate("/"); // O redirige donde quieras
+  };
+
+
 
   // Si el perfil aún no se ha cargado, muestra un mensaje de carga o un spinner
   if (!perfil) {
@@ -36,6 +50,15 @@ export default function PerfilProf(props) {
     <div className="d-flex flex-column justify-content-start align-items-center vh-100 vw-100">
       <div className='d-flex align-items-center pt-3 mt-5 mb-5'>
           <h1>MI PERFIL</h1>
+          
+      </div>
+      
+      <div>
+        {auth && (
+        <button onClick={handleLogout}>
+          Cerrar sesión
+        </button>
+      )}
       </div>
 
       <div

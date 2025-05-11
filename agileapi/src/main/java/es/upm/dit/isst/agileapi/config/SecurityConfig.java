@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -30,41 +32,56 @@ public class SecurityConfig {
         .authorizeHttpRequests(auth -> {
             auth.requestMatchers("/h2-console/**").permitAll();
             auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**").permitAll();
-            auth.requestMatchers("/api/**").permitAll(); // Regla general para todas las rutas bajo /api
-            auth.requestMatchers("/login-empresa", "/login-profesional").permitAll();
+            auth.requestMatchers("/login-empresa", "/login-profesional", "/register-profesional", "/register-empresa").permitAll();
             auth.requestMatchers("/miPerfil/**").hasRole("PROFESIONAL");
             auth.requestMatchers("/miEmpresa/**", "/miEmpresa/**").hasRole("EMPRESA");
-            auth.requestMatchers("/todos").authenticated();
             auth.requestMatchers("/").permitAll();
+            auth.requestMatchers("/login").permitAll();
+            auth.requestMatchers("/api/agile/registrar/profesionales").permitAll();
+            auth.requestMatchers("/api/agile/registrar/empresas").permitAll();
+            auth.requestMatchers("/api/agile/profesionales/**").hasRole("PROFESIONAL");
+            auth.requestMatchers("/api/agile/empresas/**").hasRole("EMPRESA");
+            auth.requestMatchers("/api/agile/puestos/**").hasRole("EMPRESA"); // porque lo crean las empresas
+            auth.requestMatchers("/api/agile/ofertas/**").hasAnyRole("EMPRESA", "PROFESIONAL"); // si aplica a una oferta
         })
-        .formLogin(Customizer.withDefaults())
-        .logout(logout -> {
-            logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
-            logout.logoutSuccessUrl("/").permitAll();
-        })
+        .httpBasic(Customizer.withDefaults())
+        // .formLogin(form -> form
+        //     .loginProcessingUrl("/login") // Spring espera POST aquí
+        //     .successHandler((req, res, auth) -> res.setStatus(200))
+        //     .failureHandler((req, res, ex) -> res.sendError(401, "Auth failed"))
+        // )
+        // .logout(logout -> {
+        //     logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+        //     logout.logoutSuccessUrl("/").permitAll();
+        // })
         //.cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()));
         .cors(cors ->
             cors.configurationSource(corsConfigurationSource()));
 
         return 
-http.build
-();
+        http.build
+        ();
     }
 
     @Bean
-    public UserDetailsService jdbcUserDetailsService(DataSource dataSource) {
-        String usersByUsernameQuery = "select username, password, enabled from users where username = ?"; // Es un ejemplo
-        String authoritiesByUsernameQuery = "SELECT username, authority FROM authorities WHERE username = ?";
+    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
         JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-        users.setUsersByUsernameQuery(usersByUsernameQuery);
-        users.setAuthoritiesByUsernameQuery(authoritiesByUsernameQuery);
+        users.setUsersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username = ?");
+        users.setAuthoritiesByUsernameQuery("SELECT username, authority FROM authorities WHERE username = ?");
         return users;
-    };
+    }
+
+
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // este es el que interpreta $2a$...
+    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOriginPatterns(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true); // si usas cookies o sesiones

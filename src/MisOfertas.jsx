@@ -2,17 +2,20 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from "axios";
 import { obtenerOfertasAsignadas, cambiarEstadoOferta } from "./api/api";
+import { useAuth } from "./AuthContext";
 
 export default function MisOfertas() {
     const { correo } = useParams();
     const navigate = useNavigate();
     const [ofertas, setOfertas] = useState([]);
+    const { auth } = useAuth();
+
 
     // Llamada a la API para obtener las ofertas del profesional
     useEffect(() => {
         const fetchOfertas = async () => {
           try {
-            const { data } = await obtenerOfertasAsignadas(correo);
+            const { data } = await obtenerOfertasAsignadas(correo, auth);
             setOfertas(data);
             console.log("las ofertas:" + data);
           } catch (error) {
@@ -24,13 +27,13 @@ export default function MisOfertas() {
 
     const handleEstado = async (id, estado) => {
         try {
-            const { data: ofertaActualizada } = await cambiarEstadoOferta(id, estado);
+            const { data: ofertaActualizada } = await cambiarEstadoOferta(id, estado, auth);
             console.log("Oferta actualizada:", ofertaActualizada);
         } catch (error) {
             console.error('Error al aceptar la oferta:', error);
         }
         try {
-            const { data } = await obtenerOfertasAsignadas(correo);
+            const { data } = await obtenerOfertasAsignadas(correo, auth);
             setOfertas(data);
             console.log("las ofertas:" + data);
         } catch (error) {
