@@ -55,14 +55,14 @@ export default function PerfilProf(props) {
       
       <div>
         {auth && (
-        <button onClick={handleLogout}>
+        <button onClick={handleLogout} style={{backgroundColor: '#B0B0B0'}}>
           Cerrar sesión
         </button>
       )}
       </div>
 
       <div
-        className="rounded-5 d-flex flex-column justify-content-center align-items-center"
+        className="rounded-5 d-flex flex-column justify-content-center align-items-center mt-3"
         style={{
           backgroundColor: "#D83000",
           width: "75%",

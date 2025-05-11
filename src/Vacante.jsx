@@ -62,13 +62,13 @@ const { auth } = useAuth();
 
     return(
         <button onClick={goToVacante}
-            style={{position: 'relative', top: '0.8rem'}}>
+            style={{position: 'relative', top: '0.8rem', backgroundColor: 'transparent', border: 'none'}}>
             <Stack 
                 className='align-items-center justify-content-center rounded-5 text-center' 
                 style={{
                     backgroundColor: '#D83000',
                     height: '8rem',
-                    maxWidth: '20rem',
+                    width: '20rem',
                 }}
             >
                 <div className='mt-4 mb-4 pt-3 pb-3 me-5 ms-5'>

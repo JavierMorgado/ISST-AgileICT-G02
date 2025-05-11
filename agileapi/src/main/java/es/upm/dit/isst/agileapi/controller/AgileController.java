@@ -330,12 +330,6 @@ public class AgileController {
                 log.info("El profesional {} cumple con las cualidades requeridas: {}", profesional.getCorreo(), cumpleCualidades);
                 return cumpleCualidades;
             })
-            .filter(profesional -> {
-                log.info("Fechas requeridas para el puesto: Inicio = {}, Fin = {}", puesto.getFechaIni(), puesto.getFechaFin());
-                log.info("Fechas del profesional {}: Inicio = {}, Fin = {}", profesional.getCorreo(), profesional.getFechaIni(), profesional.getFechaFin());
-                return (profesional.getFechaIni().compareTo(puesto.getFechaIni()) <= 0 &&
-                        profesional.getFechaFin().compareTo(puesto.getFechaFin()) >= 0);
-            })
             .findFirst() // Puedes usar lógica adicional para elegir el mejor si hay varios
             .orElse(null);
 

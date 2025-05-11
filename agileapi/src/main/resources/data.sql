@@ -11,8 +11,8 @@ INSERT INTO authorities (username, authority) VALUES
 ('profesional@example.com', 'ROLE_PROFESIONAL');
 
 -- Perfil asociado en tabla profesional (sin importar el campo password aquí)
-INSERT INTO profesional (correo, nombre, telefono, puesto, cualidades, fecha_ini, fecha_fin)
-VALUES ('profesional@example.com', 'Juan González', '666123456', 'Desarrollador Full Stack',
+INSERT INTO profesional (correo, password, nombre, telefono, puesto, cualidades, fecha_ini, fecha_fin)
+VALUES ('profesional@example.com', '$2a$10$KdRY.lkoJr9SkmSP5luLNOje.FvmpYM08Vdbj3SWzjgkQQ1C/6msO', 'Juan González', '666123456', 'Desarrollador Full Stack',
 ARRAY['Java', 'Spring', 'React'], '2025-05-01', '2025-5-31');
 
 INSERT INTO EMPRESA (NOMBRE, EMAIL, PASSWORD, SUSCRIPCION) VALUES ('AgyleICT', 'hr@agyleict.com', '$2a$10$KdRY.lkoJr9SkmSP5luLNOje.FvmpYM08Vdbj3SWzjgkQQ1C/6msO', 'Oro');

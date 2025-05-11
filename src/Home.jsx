@@ -18,50 +18,19 @@ export default function Home(props) {
     navigate("/register-profesional");
   };
 
-  const goToProf = async () => {
-    const username = prompt("Correo:");
-    const password = prompt("Contraseña:");
-
-    try {
-      const res = await axios.get(`http://localhost:8080/api/agile/profesionales/${encodeURIComponent(username)}`, {
-        auth: {
-          username,
-          password
-        }
-      });
-      setAuth({ username: username, password: password });
-
-      console.log("Perfil cargado:", res.data);
-      navigate(`/miPerfil/${encodeURIComponent(username)}`);
-    } catch (error) {
-      alert("Credenciales inválidas o acceso denegado");
-    }
-  };
-
-  const goToEmp = async () => {
-    const username = prompt("Correo:");
-    const password = prompt("Contraseña:");
-
-    try {
-      const res = await axios.get(`http://localhost:8080/api/agile/empresas/${encodeURIComponent(username)}`, {
-        auth: {
-          username,
-          password
-        }
-      });
-      setAuth({ username: username, password: password });
-
-      console.log("Perfil cargado:", res.data);
-      navigate(`/miEmpresa/${encodeURIComponent(username)}`);
-    } catch (error) {
-      alert("Credenciales inválidas o acceso denegado");
-    }
-  };
 
   const handleLogout = () => {
     setAuth(null); // Esto borra también sessionStorage gracias al useEffect en AuthContext.jsx
     navigate("/"); // O redirige donde quieras
   };
+
+  const goToLoginProf = () => {
+    navigate("/login-profesional");
+  };
+
+  const goToLoginEmp = () => {
+    navigate("/login-empresa");
+  }
 
 
   return (
@@ -77,14 +46,14 @@ export default function Home(props) {
     >
       <div className="d-flex justify-content-end align-items-center pt-3 me-3">
         {auth ? (
-          <button onClick={handleLogout}>
+          <button onClick={handleLogout} style={{backgroundColor: '#B0B0B0'}}>
             Cerrar sesión
           </button>
         ) : (
           <>
             <div>INICIA SESIÓN:</div>
             <button
-              onClick={goToEmp}
+              onClick={goToLoginEmp}
               className="rounded-pill ms-3 me-3 botonopcion"
               style={{
                 height: "40px",
@@ -96,37 +65,13 @@ export default function Home(props) {
               EMPRESA
             </button>
             <button
-              onClick={goToProf}
+              onClick={goToLoginProf}
               className="rounded-pill ms-3 me-3 botonopcion"
               style={{
                 height: "40px",
                 backgroundColor: "#D83000",
                 letterSpacing: "0.5px",
                 color: "white",
-              }}
-            >
-              PROFESIONAL
-            </button>
-            <div>REGÍSTRATE:</div>
-            <button
-              onClick={goToEmpresa}
-              className="rounded-pill ms-3 me-3 botonopcion"
-              style={{
-                height: "40px",
-                backgroundColor: "#002C4B",
-                letterSpacing: "0.5px",
-                color: "white",
-              }}
-            >
-              EMPRESA
-            </button>
-            <button
-              onClick={goToProfesional}
-              className="rounded-pill botonopcion"
-              style={{
-                height: "40px",
-                backgroundColor: "#D83000",
-                letterSpacing: "0.5px",
               }}
             >
               PROFESIONAL

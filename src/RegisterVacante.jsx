@@ -21,7 +21,10 @@ export default function RegisterVacante(props){
         fecha_fin: null,
         nomber_puesto: '',
         cualidades_puesto: '',
-    })
+        indefinidoInicio: false,
+        indefinidoFin: false,
+    });
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -34,13 +37,20 @@ export default function RegisterVacante(props){
         e.preventDefault();
         if (VacanteData.cualidades.trim() !== "") {
           setCualidadesList([...cualidadesList, VacanteData.cualidades.trim()]);
-          //setFormData({ ...VacanteData, cualidades: "" }); // Clear the input field
         }
       };
     
-      const handleRemoveCualidad = (index) => {
+    const handleRemoveCualidad = (index) => {
         setCualidadesList(cualidadesList.filter((_, i) => i !== index));
-      };
+    };
+
+    const handleIndefinidoChange = (field) => {
+        setVacanteData((prev) => ({
+            ...prev,
+            [field]: !prev[field],
+            [field === "indefinidoInicio" ? "fecha_ini" : "fecha_fin"]: null,
+        }));
+    };
 
 
     const handleSubmit = async (e) => {
@@ -48,23 +58,24 @@ export default function RegisterVacante(props){
         if (
             !VacanteData.nomber_puesto ||
             !VacanteData.descripcion_puesto ||
-            !VacanteData.fecha_ini ||
-            !VacanteData.fecha_fin ||
             cualidadesList.length === 0
         ) {
             alert('Por favor, rellene todos los campos');
             return;
         }
        
-        try {
+        const formatDateLocal = (date) => {
+        return date.toLocaleDateString('sv-SE'); // "2025-05-11"
+        };
 
+        try {
             // Crear el objeto JSON para enviar
             const puestoToSend = {
                 nombrePuesto: VacanteData.nomber_puesto,
                 descripcionPuesto: VacanteData.descripcion_puesto,
                 cualidadesPuesto: cualidadesList,
-                fechaIni: VacanteData.fecha_ini.toISOString().split('T')[0],
-                fechaFin: VacanteData.fecha_fin.toISOString().split('T')[0],
+                fechaIni: VacanteData.fecha_ini ? formatDateLocal(VacanteData.fecha_ini) : null,
+                fechaFin: VacanteData.fecha_fin ? formatDateLocal(VacanteData.fecha_fin) : null,
                 empresa: { email: email },
             };
             console.log('Puesto a enviar:', puestoToSend);
@@ -138,17 +149,16 @@ export default function RegisterVacante(props){
                 <div className="d-flex justify-content-between mb-5">
                     
                     <div className='d-flex flex-column align-items-center justify-content-between'>
-                        {/* Fecha de Inicio */}
                         <div className="me-3 flex-grow-1 d-flex flex-column align-items-center">
                             <label className="text-uppercase">Fecha de Inicio</label>
                             <DatePicker
-                            selected={VacanteData.fecha_ini}
-                            onChange={(date) =>
-                                setVacanteData({ ...VacanteData, fecha_ini: date })
-                            }
-                            placeholderText="Selecciona una fecha"
-                            dateFormat="dd/MM/yyyy"
-                            style={{ color: "black" }}
+                                selected={VacanteData.fecha_ini}
+                                onChange={(date) =>
+                                    setVacanteData({ ...VacanteData, fecha_ini: date })
+                                }
+                                placeholderText="Selecciona una fecha"
+                                dateFormat="dd/MM/yyyy"
+                                disabled={VacanteData.indefinidoInicio}
                             />
                         </div>
 
@@ -158,9 +168,9 @@ export default function RegisterVacante(props){
                                 <input
                                     type="checkbox"
                                     className="form-check-input"
-                                    id="indefinidoFin"
-                                    checked={VacanteData.indefinidoFin}
-                                    onChange={() => handleIndefinidoChange("indefinidoFin")}
+                                    id="indefinidoInicio"
+                                    checked={VacanteData.indefinidoInicio}
+                                    onChange={() => handleIndefinidoChange("indefinidoInicio")}
                                     style={{ transform: "scale(0.8)" }}
                                 />
                             </div>
@@ -173,13 +183,13 @@ export default function RegisterVacante(props){
                         <div className="flex-grow-1 d-flex flex-column align-items-center">
                             <label className="text-uppercase">Fecha de Fin</label>
                             <DatePicker
-                            selected={VacanteData.fecha_fin}
-                            onChange={(date) =>
-                                setVacanteData({ ...VacanteData, fecha_fin: date })
-                            }
-                            placeholderText="Selecciona una fecha"
-                            dateFormat="dd/MM/yyyy"
-                            style={{ color: "black" }}
+                                selected={VacanteData.fecha_fin}
+                                onChange={(date) =>
+                                    setVacanteData({ ...VacanteData, fecha_fin: date })
+                                }
+                                placeholderText="Selecciona una fecha"
+                                dateFormat="dd/MM/yyyy"
+                                disabled={VacanteData.indefinidoFin}
                             />
                         </div>
                         
@@ -208,26 +218,29 @@ export default function RegisterVacante(props){
                             value={VacanteData.cualidades}
                             onChange={handleChange}
                         />
-
-                        {cualidadesList.map((cualidad, index) => (
-                            <div
-                                key={index}
-                                className="btn btn-light rounded-pill px-3 py-1 mb-2"
-                                style={{ border: "1px solid #ccc", cursor: "pointer", marginTop: "5px" }}
-                                onClick={() => handleRemoveCualidad(index)}
-                                title="Haz clic para eliminar"
-                            >
-                                {cualidad}
-                            </div>
-                        ))}
-
+                        
                         <button
                             onClick={handleAddCualidad}
-                            className="btn btn-light"
+                            className="btn btn-light mb-2"
                             type="button"
                         >
                             Añadir
                         </button>
+
+                        <div className="d-flex flex-row">
+                            {cualidadesList.map((cualidad, index) => (
+                                <div
+                                    key={index}
+                                    className="btn btn-light rounded-pill px-3 py-1 mb-2 me-1"
+                                    style={{ border: "1px solid #ccc", cursor: "pointer", marginTop: "5px" }}
+                                    onClick={() => handleRemoveCualidad(index)}
+                                    title="Haz clic para eliminar"
+                                >
+                                    {cualidad}
+                                </div>
+                            ))}
+                        </div>
+
 
                     </div>
                 </div>

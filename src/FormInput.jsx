@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-export default function FormInput ({ label, name, placeholder, value, onChange }) {
+export default function FormInput ({ label, name, type, placeholder, value, onChange }) {
   const [inputValue, setInputValue] = useState(value);
   const measureRef = useRef(null);
   const inputRef = useRef(null);
@@ -28,7 +28,7 @@ export default function FormInput ({ label, name, placeholder, value, onChange }
         </span>
         <input
           ref={inputRef}
-          type="text"
+          type={type || "text"} 
           name={name}
           value={inputValue}
           onChange={handleChange}

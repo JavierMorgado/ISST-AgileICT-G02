@@ -2,38 +2,41 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { obtenerPerfilProfesional } from "./api/api";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 
 export default function LogInProf(props) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setAuth } = useAuth();
 
   function goToRegisterProf() {
     navigate("/register-profesional");
   }
+  function goToMain() {
+    navigate("/");
+  }
 
   
 
-  const autenticarUsuario = async (correo, password) => {
+  const autenticarUsuario = async () => {
   try {
-    await axios.post(
-      "http://localhost:8080/login",
-      new URLSearchParams({
-        username: correo,
-        password: password
-      }),
-      {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        withCredentials: true
-      }
-    );
-    return true;
-  } catch (error) {
-    console.error("Error de autenticación:", error);
-    return false;
+      const res = await axios.get(`http://localhost:8080/api/agile/profesionales/${encodeURIComponent(email)}`, {
+        auth: {
+          username:email,
+          password:password
+        }
+      });
+      setAuth({ username: email, password: password });
+
+      console.log("Perfil cargado:", res.data);
+      navigate(`/miPerfil/${encodeURIComponent(email)}`);
+    } catch (error) {
+      alert("Credenciales inválidas o acceso denegado");
+      console.error("Error al autenticar:", error);
+    }
   }
-};
 
 
 const manejoLogin = async () => {
@@ -72,9 +75,9 @@ const manejoLogin = async () => {
 
       <div
         className="rounded-5 d-flex flex-column justify-content-center align-items-center"
-        style={{ backgroundColor: "#D83000", width: "75%", height: "50%" }}
+        style={{ backgroundColor: "#D83000", width: "75%"}}
       >
-        <h4 className="mb-4">
+        <h4 className="mb-4 mt-5">
           INICIA SESIÓN CON TU <br /> CORREO Y CONTRASEÑA
         </h4>
 
@@ -95,7 +98,7 @@ const manejoLogin = async () => {
             autoComplete="off"
           />
 
-          <button  onClick={manejoLogin} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
+          <button  onClick={autenticarUsuario} type="button" className="btn btn-light rounded-pill px-4 fw-semibold">
             Iniciar sesión
           </button>
         </div>
@@ -104,7 +107,7 @@ const manejoLogin = async () => {
 
         <button
           onClick={goToRegisterProf}
-          className="rounded-pill"
+          className="rounded-pill mb-5"
           style={{
             width: "150px",
             height: "40px",
@@ -117,6 +120,20 @@ const manejoLogin = async () => {
           REGÍSTRATE
         </button>
       </div>
+
+      <button
+        onClick={goToMain}
+        className="rounded-pill mt-5 mb-5"
+        style={{
+            width: "150px",
+            backgroundColor: "#B0B0B0",
+            letterSpacing: "0.5px",
+            color: "#D83000",
+            textAlign: "center",
+        }}
+    >
+        MENÚ PRINCIPAL
+    </button>
     </div>
   );
 }

@@ -97,6 +97,7 @@ export default function RegisterEmpresa(props){
                 <FormInput
                     label="Contraseña"
                     name="password"
+                    type="password"
                     placeholder="***********"
                     value={formData.password}
                     onChange={handleChange}

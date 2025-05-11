@@ -43,17 +43,22 @@ export default function RegisterProf(props) {
       alert("Por favor, rellene todos los campos");
       return;
     }
-    // Crear el objeto JSON para enviar
+
+    const formatDateLocal = (date) => {
+      return date.toLocaleDateString('sv-SE'); // "2025-05-11"
+    };
+
     const dataToSend = {
       nombre: formData.nombre,
       password: formData.password,
       correo: formData.email,
       telefono: formData.movil,
       puesto: formData.puesto,
-      cualidades: cualidadesList, // Usar cualidadesList como array
-      fechaIni: formData.fechaInicio ? formData.fechaInicio.toISOString().split('T')[0] : null,
-      fechaFin: formData.fechaFin ? formData.fechaFin.toISOString().split('T')[0] : null,
+      cualidades: cualidadesList,
+      fechaIni: formData.fechaInicio ? formatDateLocal(formData.fechaInicio) : null,
+      fechaFin: formData.fechaFin ? formatDateLocal(formData.fechaFin) : null,
     };
+
     try {
       const response = await registrarProfesional(dataToSend);
       console.log('Profesional registrado:', response.data);
@@ -121,16 +126,18 @@ export default function RegisterProf(props) {
               value={formData.nombre}
               onChange={handleChange}
               placeholder="Ej. AgyleICT"
+              autoComplete="off"
             />
           </div>
           <div className="mb-3 w-100">
             <h6 className="text-uppercase">Contraseña</h6>
             <input
-              type="text"
+              type="password"
               name="password"
               placeholder="***********"
               value={formData.password}
               onChange={handleChange}
+              autoComplete="off"
             />
           </div>
           <div className="mb-3 w-100">
@@ -141,6 +148,7 @@ export default function RegisterProf(props) {
               value={formData.email}
               onChange={handleChange}
               placeholder="rh@agyleict.com"
+              autoComplete="off"
             />
           </div>
           <div className="mb-4 w-100">
@@ -151,6 +159,7 @@ export default function RegisterProf(props) {
               value={formData.movil}
               onChange={handleChange}
               placeholder="91 654 55 45"
+              autoComplete="off"
             />
           </div>
 
@@ -167,6 +176,7 @@ export default function RegisterProf(props) {
                   onChange={handleChange}
                   placeholder="EJ. DESARROLLADOR FULL STACK"
                   className="mb-3"
+                  autoComplete="off"
                 />
 
                 <h6>Cualdiades</h6>
@@ -177,27 +187,31 @@ export default function RegisterProf(props) {
                   onChange={handleChange}
                   placeholder="JAVA"
                   className="mb-3"
+                  autoComplete="off"
                 />
-
-                {cualidadesList.map((cualidad, index) => (
-                    <div
-                      key={index}
-                      className="btn btn-light rounded-pill px-3 py-1 mb-2"
-                      style={{ border: "1px solid #ccc", cursor: "pointer", marginTop: "5px" }}
-                      onClick={() => handleRemoveCualidad(index)}
-                      title="Haz clic para eliminar"
-                    >
-                      {cualidad}
-                    </div>
-                ))}
-
+                
                 <button
                     onClick={handleAddCualidad}
-                    className="btn btn-light"
+                    className="btn btn-light mb-2"
                     type="button"
                 >
                     Añadir
                 </button>
+
+                <div className="d-flex flex-row">
+                  {cualidadesList.map((cualidad, index) => (
+                      <div
+                        key={index}
+                        className="btn btn-light rounded-pill px-3 py-1 mb-2 me-1"
+                        style={{ border: "1px solid #ccc", cursor: "pointer", marginTop: "5px" }}
+                        onClick={() => handleRemoveCualidad(index)}
+                        title="Haz clic para eliminar"
+                      >
+                        {cualidad}
+                      </div>
+                  ))}
+                </div>
+
 
               </div>
           </div>
@@ -228,6 +242,7 @@ export default function RegisterProf(props) {
                     checked={formData.indefinidoInicio}
                     onChange={() => handleIndefinidoChange("indefinidoInicio")}
                     style={{ transform: "scale(0.8)" }}
+                    autoComplete="off"
                   />
                 </div>
               </div>
@@ -256,6 +271,7 @@ export default function RegisterProf(props) {
                     checked={formData.indefinidoFin}
                     onChange={() => handleIndefinidoChange("indefinidoFin")}
                     style={{ transform: "scale(0.8)" }}
+                    autoComplete="off"
                     />
                 </div>
               </div>

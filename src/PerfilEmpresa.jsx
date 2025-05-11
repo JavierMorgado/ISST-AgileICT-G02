@@ -66,7 +66,7 @@ export default function PerfilEmpresa(props){
 
                 <div>
                     {auth && (
-                    <button onClick={handleLogout}>
+                    <button onClick={handleLogout} style={{backgroundColor: '#B0B0B0'}}>
                     Cerrar sesión
                     </button>
                     )}
@@ -161,6 +161,10 @@ export default function PerfilEmpresa(props){
                         ></div>
                         <div className='white' style={{fontWeight:'100'}}>Aceptada</div>
                     </div>
+
+                    <button  onClick={() => navigate(`/`)} type="button" className="btn btn-light rounded-pill px-4 fw-semibold mt-3">
+                        VOLVER AL MENÚ
+                    </button>
 
                 </div>
             </div>
